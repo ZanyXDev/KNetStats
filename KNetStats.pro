@@ -33,6 +33,9 @@ SOURCES += \
 TRANSLATIONS = res/i18n/$${TARGET}_en.ts \
                res/i18n/$${TARGET}_ru.ts
 
+RESOURCES += \
+            knetstats.qrc \
+
 lupdate_only {
     #SOURCES +=  \
 }
