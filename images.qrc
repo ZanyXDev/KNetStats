@@ -1,0 +1,31 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>res/img/interfaces_missing.png</file>
+    <file>res/img/icon_pci.png</file>
+    <file>res/img/theme0_both.png</file>
+    <file>res/img/theme0_error.png</file>
+    <file>res/img/theme0_none.png</file>
+    <file>res/img/theme0_rx.png</file>
+    <file>res/img/theme0_tx.png</file>
+    <file>res/img/theme1_both.png</file>
+    <file>res/img/theme1_error.png</file>
+    <file>res/img/theme1_none.png</file>
+    <file>res/img/theme1_rx.png</file>
+    <file>res/img/theme1_tx.png</file>
+    <file>res/img/theme2_both.png</file>
+    <file>res/img/theme2_error.png</file>
+    <file>res/img/theme2_none.png</file>
+    <file>res/img/theme2_rx.png</file>
+    <file>res/img/theme2_tx.png</file>
+    <file>res/img/theme3_both.png</file>
+    <file>res/img/theme3_error.png</file>
+    <file>res/img/theme3_none.png</file>
+    <file>res/img/theme3_rx.png</file>
+    <file>res/img/theme3_tx.png</file>
+    <file>res/img/theme4_both.png</file>
+    <file>res/img/theme4_error.png</file>
+    <file>res/img/theme4_none.png</file>
+    <file>res/img/theme4_rx.png</file>
+    <file>res/img/theme4_tx.png</file>
+</qresource>
+</RCC>
