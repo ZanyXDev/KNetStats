@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15 as QQC2
 import QtGraphicalEffects 1.15
 import Qt.labs.platform 1.1
+import Qt.labs.settings 1.1
 
 import common 1.0
 import io.github.zanyxdev.knetstats.hal 1.0
@@ -18,6 +19,8 @@ QQC2.ApplicationWindow {
   readonly property bool appInForeground: Qt.application.state === Qt.ApplicationActive
 
   property bool appInitialized: false
+  property bool needSetup: true
+  property int themeIcon: 1
   property var screenWidth: Screen.width
   property var screenHeight: Screen.height
   property var screenAvailableWidth: Screen.desktopAvailableWidth
@@ -72,24 +75,42 @@ QQC2.ApplicationWindow {
   // ----- Visual children
   SystemTrayIcon {
     visible: true
-    icon.source: "qrc:/res/img/interfaces_missing.png"
 
+    icon.source: appWnd.needSetup ? "qrc:/res/img/interfaces_missing.png" : "qrc:/res/img/theme"
+                                    + appWnd.themeIcon + "_both.png"
+    Component.onCompleted: {
+      (appWnd.needSetup) ? appWnd.showAppWindow() : appWnd.hide()
+      //showMessage(qsTr("KNetStats"), appWnd.toolTipsText)
+    }
     menu: Menu {
+      MenuItem {
+        enabled: appWnd.needSetup
+        text: qsTr("Configure Interfaces")
+        onTriggered: appWnd.needSetup = false
+      }
       MenuItem {
         text: qsTr("Quit")
         onTriggered: Qt.quit()
       }
     }
-    onActivated: {
-      appWnd.show()
-      appWnd.raise()
-      appWnd.requestActivate()
-    }
+    onActivated: appWnd.showAppWindow()
   }
   //  ----- non visual children
-
+  Settings {
+    id: mSettings
+    category: "Settings"
+    property alias needSetup: appWnd.needSetup
+    property alias themeIcon: appWnd.themeIcon
+  }
   // ----- JavaScript functions
-  function restoreSettings() {//appWnd.enableSounds = mSettings.enableSounds
-    //appWnd.enableMusics = mSettings.enableMusics
+  function restoreSettings() {
+    appWnd.needSetup = mSettings.needSetup
+    appWnd.themeIcon = mSettings.themeIcon
+  }
+
+  function showAppWindow() {
+    appWnd.show()
+    appWnd.raise()
+    appWnd.requestActivate()
   }
 }
