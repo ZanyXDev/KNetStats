@@ -3,11 +3,10 @@ import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15 as QQC2
 import QtGraphicalEffects 1.15
-import Qt.labs.settings 1.0
 
 import common 1.0
-
 import io.github.zanyxdev.knetstats.hal 1.0
+import QSystemTrayIcon 1.0
 
 QQC2.ApplicationWindow {
   id: appWnd
@@ -46,7 +45,6 @@ QQC2.ApplicationWindow {
     Screen [height ${height},width ${width}]
     Build with [${HAL.getAppBuildInfo()}]
     Available physical screens [${Qt.application.screens.length}]
-    mSettings.enableMusics ${mSettings.enableMusics}
     Available Resolution width: ${Screen.desktopAvailableWidth} height ${Screen.desktopAvailableHeight}
     `
     AppSingleton.toLog(infoMsg)
@@ -71,13 +69,23 @@ QQC2.ApplicationWindow {
   }
 
   // ----- Visual children
+  QSystemTrayIcon {
+    id: systemTray
+
+    // Initial initialization of the system tray
+    Component.onCompleted: {
+      icon = iconTrayInterfaceMissing // Set icon
+      toolTip = qsTr("All Interfaces Unavailable")
+      show()
+      if (appWnd.visibility === Window.Hidden) {
+        appWnd.show()
+      } else {
+        appWnd.hide()
+      }
+    }
+  }
 
   //  ----- non visual children
-  Settings {
-    id: mSettings
-    category: "Settings"
-    //property alias enableMusics: appWnd.enableMusics
-  }
 
   // ----- JavaScript functions
   function restoreSettings() {//appWnd.enableSounds = mSettings.enableSounds

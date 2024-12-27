@@ -3,7 +3,7 @@
 TEMPLATE +=app
 TARGET = knetstats
 
-QT       += core qml quick quickcontrols2 multimedia svg
+QT       += core qml quick quickcontrols2 svg quickwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += bump_version
