@@ -3,11 +3,12 @@ import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15 as QQC2
 import QtGraphicalEffects 1.15
+import Qt.labs.platform 1.1
 
 import common 1.0
 import io.github.zanyxdev.knetstats.hal 1.0
-import QSystemTrayIcon 1.0
 
+//import QSystemTrayIcon 1.0
 QQC2.ApplicationWindow {
   id: appWnd
   // ----- Property Declarations
@@ -69,22 +70,22 @@ QQC2.ApplicationWindow {
   }
 
   // ----- Visual children
-  QSystemTrayIcon {
-    id: systemTray
+  SystemTrayIcon {
+    visible: true
+    icon.source: "qrc:/res/img/interfaces_missing.png"
 
-    // Initial initialization of the system tray
-    Component.onCompleted: {
-      icon = iconTrayInterfaceMissing // Set icon
-      toolTip = qsTr("All Interfaces Unavailable")
-      show()
-      if (appWnd.visibility === Window.Hidden) {
-        appWnd.show()
-      } else {
-        appWnd.hide()
+    menu: Menu {
+      MenuItem {
+        text: qsTr("Quit")
+        onTriggered: Qt.quit()
       }
     }
+    onActivated: {
+      appWnd.show()
+      appWnd.raise()
+      appWnd.requestActivate()
+    }
   }
-
   //  ----- non visual children
 
   // ----- JavaScript functions
