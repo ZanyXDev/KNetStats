@@ -13,6 +13,7 @@
 #include <QtGui/QScreen>
 
 #include "hal.h"
+#include "backend.h"
 
 // Declare a user-defined data type to work with an icon in QML
 //Q_DECLARE_METATYPE(QSystemTrayIcon::ActivationReason)
