@@ -31,8 +31,8 @@ QQC2.ApplicationWindow {
   signal screenOrientationUpdated(int screenOrientation)
 
   // ----- Size information
-  width: 320
-  height: 240
+  width: 640
+  height: 480
   maximumHeight: height
   maximumWidth: width
 
