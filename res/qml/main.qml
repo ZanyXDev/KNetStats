@@ -7,6 +7,7 @@ import Qt.labs.platform 1.1
 import Qt.labs.settings 1.1
 
 import common 1.0
+import pages 1.0
 import io.github.zanyxdev.knetstats.hal 1.0
 
 //import QSystemTrayIcon 1.0
@@ -73,6 +74,20 @@ QQC2.ApplicationWindow {
   }
 
   // ----- Visual children
+  Loader {
+    id: loader
+    anchors.fill: parent
+    anchors.topMargin: 4
+    Component.onCompleted: {
+      appWnd.needSetup ? setSource("qrc:/res/qml/pages/configurebase.qml", {
+                                     "opacity": 0.9
+                                   }) : setSource(
+                           "qrc:/res/qml/pages/statisticbase.qml", {
+                             "opacity": 0.9
+                           })
+    }
+  }
+
   SystemTrayIcon {
     visible: true
 

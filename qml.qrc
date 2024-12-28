@@ -6,5 +6,8 @@
         <file>res/qml/common/app_singleton.qml</file>
         <file>res/qml/common/app_ver_txt.qml</file>
         <file>res/qml/common/mydebugrect.qml</file>
+        <file>res/qml/pages/configurebase.qml</file>
+        <file>res/qml/pages/qmldir</file>
+        <file>res/qml/pages/statisticsbase.qml</file>
     </qresource>
 </RCC>
