@@ -59,7 +59,7 @@ void KNetStats::setup() {
 }
 
 void KNetStats::setupBackupTrayIcon() {
-	mBackupTrayIcon = new QSystemTrayIcon(QIcon(":/img/interfaces_missing.png"), this);
+    mBackupTrayIcon = new QSystemTrayIcon(QIcon("qrc:/res/img/interfaces_missing.png"), this);
 	mBackupTrayIcon->setToolTip("All Interfaces Unavailable");
 	auto *mContextMenu = new QMenu(this);
 	mContextMenu->addAction("Configure Interfaces", this, &KNetStats::showConfigure);

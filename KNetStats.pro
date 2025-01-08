@@ -27,8 +27,10 @@ SOURCES += \
             src/knetstats.cpp \
             src/knetstatsview.cpp \
             src/main.cpp  \
-            src/statistics.cpp
+  src/statistics.cpp
 
+FORMS = src/configurebase.ui \
+  src/statisticsbase.ui
 #Translate
 TRANSLATIONS = res/i18n/$${TARGET}_en.ts \
                res/i18n/$${TARGET}_ru.ts

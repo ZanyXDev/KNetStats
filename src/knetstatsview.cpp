@@ -43,11 +43,11 @@ void KNetStatsView::setupView() {
 
 void KNetStatsView::setupTrayIcon() {
 	// Load Icons
-	mIconError = QIcon(":/img/theme" + QString::number(mOptions.mTheme) + "_error.png");
-	mIconNone = QIcon(":/img/theme" + QString::number(mOptions.mTheme) + "_none.png");
-	mIconTx = QIcon(":/img/theme" + QString::number(mOptions.mTheme) + "_tx.png");
-	mIconRx = QIcon(":/img/theme" + QString::number(mOptions.mTheme) + "_rx.png");
-	mIconBoth = QIcon(":/img/theme" + QString::number(mOptions.mTheme) + "_both.png");
+    mIconError = QIcon("qrc:/res/img/theme" + QString::number(mOptions.mTheme) + "_error.png");
+    mIconNone = QIcon("qrc:/res/img/theme" + QString::number(mOptions.mTheme) + "_none.png");
+    mIconTx = QIcon("qrc:/res/img/theme" + QString::number(mOptions.mTheme) + "_tx.png");
+    mIconRx = QIcon("qrc:/res/img/theme" + QString::number(mOptions.mTheme) + "_rx.png");
+    mIconBoth = QIcon("qrc:/res/img/theme" + QString::number(mOptions.mTheme) + "_both.png");
 	mCurrentIcon = &mIconNone;
 	mTrayIcon->setToolTip(QString("Monitoring %1").arg(mInterface));
 	mTrayIcon->setContextMenu(mContextMenu);

@@ -9,8 +9,9 @@
 
 Configure::Configure(QWidget *parent) : QDialog(parent), Ui::ConfigureBase() {
 	setupUi(this);
-	mInterfaceIcon = new QIcon(":/img/icon_pci.png");
-	mInterfaces->setViewMode(QListWidget::ListMode);
+    mInterfaceIcon = new QIcon("qrc:/res/img/icon_pci.png");
+
+    mInterfaces->setViewMode(QListWidget::ListMode);
 
 	refreshInterfaces();
 	connect(this->mRefreshBtn, &QPushButton::clicked, this, &Configure::refreshInterfaces);
@@ -55,9 +56,9 @@ void Configure::changeInterface(QListWidgetItem *item) {
 		// icon view
 		oldview.mTheme = mTheme->currentIndex();
 		// chart view
-		oldview.mChartUplColor = mChartUplColor->color().name();
-		oldview.mChartDldColor = mChartDldColor->color().name();
-		oldview.mChartBgColor = mChartBgColor->color().name();
+        //oldview.mChartUplColor = mChartUplColor->color().name();
+        //oldview.mChartDldColor = mChartDldColor->color().name();
+        //oldview.mChartBgColor = mChartBgColor->color().name();
 		oldview.mChartTransparentBackground = mChartTransparentBackground->isChecked();
 	}
 
@@ -71,9 +72,9 @@ void Configure::changeInterface(QListWidgetItem *item) {
 	mUpdateInterval->setValue(view.mUpdateInterval);
 	mTheme->setCurrentIndex(view.mTheme);
 	// Chart Options
-	mChartUplColor->setColor(view.mChartUplColor);
-	mChartDldColor->setColor(view.mChartDldColor);
-	mChartBgColor->setColor(view.mChartBgColor);
+    //mChartUplColor->setColor(view.mChartUplColor);
+    //mChartDldColor->setColor(view.mChartDldColor);
+    //mChartBgColor->setColor(view.mChartBgColor);
 	mChartTransparentBackground->setChecked(view.mChartTransparentBackground);
 	mCurrentItem = interface;
 
@@ -103,9 +104,9 @@ bool Configure::canSaveConfig() {
 }
 
 void Configure::changeTheme(int theme) {
-	mIconError->setPixmap(QPixmap(":/img/theme" + QString::number(theme) + "_error.png"));
-	mIconNone->setPixmap(QPixmap(":/img/theme" + QString::number(theme) + "_none.png"));
-	mIconTx->setPixmap(QPixmap(":/img/theme" + QString::number(theme) + "_tx.png"));
-	mIconRx->setPixmap(QPixmap(":/img/theme" + QString::number(theme) + "_rx.png"));
-	mIconBoth->setPixmap(QPixmap(":/img/theme" + QString::number(theme) + "_both.png"));
+    mIconError->setPixmap(QPixmap("qrc:/res/img/theme" + QString::number(theme) + "_error.png"));
+    mIconNone->setPixmap(QPixmap("qrc:/res/img/theme" + QString::number(theme) + "_none.png"));
+    mIconTx->setPixmap(QPixmap("qrc:/res/img/theme" + QString::number(theme) + "_tx.png"));
+    mIconRx->setPixmap(QPixmap("qrc:/res/img/theme" + QString::number(theme) + "_rx.png"));
+    mIconBoth->setPixmap(QPixmap("qrc:/res/img/theme" + QString::number(theme) + "_both.png"));
 }
