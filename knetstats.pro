@@ -3,7 +3,7 @@
 TEMPLATE +=app
 TARGET = knetstats
 
-QT       += core qml quick quickcontrols2 svg network
+QT       += core qml quick quickcontrols2 svg network charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += bump_version
