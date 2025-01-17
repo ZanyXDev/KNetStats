@@ -38,13 +38,27 @@ QQC2.Page {
       Layout.row: 0
       Layout.column: 0
       Layout.columnSpan: 3
-      Layout.rowSpan: 5
+      Layout.rowSpan: 4
       Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
       Layout.fillHeight: true
       Layout.fillWidth: true
       Layout.preferredWidth: 3
       Layout.preferredHeight: 5
       color: "green"
+      opacity: 0.8
+      //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
+    }
+    Rectangle {
+      id: interfaceListRefresh
+      Layout.row: 4
+      Layout.column: 0
+      Layout.columnSpan: 3
+      Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+      Layout.fillHeight: true
+      Layout.fillWidth: true
+      Layout.preferredWidth: 3
+      Layout.preferredHeight: 1
+      color: "brown"
       opacity: 0.8
       //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
     }

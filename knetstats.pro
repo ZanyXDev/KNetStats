@@ -11,6 +11,7 @@ CONFIG += c++17
 CONFIG += resources_big
 CONFIG(release,debug|release):CONFIG += qtquickcompiler # Qt Quick compiler
 CONFIG(debug,debug|release):CONFIG += qml_debug  # Add qml_debug
+CONFIG += qmltypes
 
 DEFINES += VERSION_STR=\\\"$$cat(version.txt)\\\"
 DEFINES += PACKAGE_NAME_STR=\\\"$$cat(package_name.txt)\\\"
@@ -26,17 +27,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
         src/backend.h \
+        src/datamodel.h \
         src/hal.h
 
 SOURCES += \
             src/backend.cpp \
+            src/datamodel.cpp \
             src/hal.cpp \
             src/main.cpp
-            src/main.cpp 
 RESOURCES += \
         images.qrc \
         qml.qrc \
         fonts.qrc #i18n.qrc
+
+
+#Мне удалось решить  проблему автоматической регистрации QML_ELEMENT,
+#добавив мою исходную папку в файл .pro:
+#Это немного нелогично, так как мне никогда раньше не приходилось
+#добавлять это для сборки проекта Qt, но, эй, это работает.
+INCLUDEPATH += src
 
 #Translate
 #TRANSLATIONS = res/i18n/$${TARGET}_en.ts \
@@ -55,6 +64,9 @@ QML_DESIGNER_IMPORT_PATH = $$PWD/res/qml
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH = $$PWD/res/qml
 QML2_IMPORT_PATH = $$PWD/res/qml
+
+QML_IMPORT_NAME = io.github.zanyxdev.knetstats
+QML_IMPORT_MAJOR_VERSION = 1
 
 bump_version{
     message("Bump or update App version")
