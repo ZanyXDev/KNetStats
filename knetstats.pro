@@ -26,13 +26,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 HEADERS += \
-        src/backend.h \
-        src/datamodel.h \
+        src/backend.h \        
         src/hal.h
 
 SOURCES += \
-            src/backend.cpp \
-            src/datamodel.cpp \
+            src/backend.cpp \            
             src/hal.cpp \
             src/main.cpp
 RESOURCES += \
