@@ -27,6 +27,23 @@ QQC2.Page {
         null
     }
 
+    EStatistics{
+        id:eStat
+        Component.onCompleted: {
+            let info=`
+                ethernets.length; ${eStat.ethernets.length}
+            `
+            for (var i = 0; i < eStat.ethernets.length; i++)
+                        console.log("EthInfo", i, eStat.ethernets[i])
+            AppSingleton.toLog(info)
+
+        }
+    }
+    QQC2.Label{
+        id:tstLabel
+        text:  qsTr("Speed KB/s")
+    }
+/**
     ChartView{
         id:chartView
         anchors.top: parent.top
@@ -65,10 +82,10 @@ QQC2.Page {
         }
     }
 
-
+*/
     QQC2.Button{
         id:tst
-        anchors.top:chartView.bottom
+        //anchors.top:chartView.bottom
         text: qsTr("Press Me")
         onClicked: {
              backend.userName = "text"

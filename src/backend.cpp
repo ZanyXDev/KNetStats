@@ -21,15 +21,15 @@ void BackEnd::setUserName(const QString &newUserName)
     emit userNameChanged();
 }
 
-QString BackEnd::deviceName() const
+QString BackEnd::currentDevName() const
 {
-    return m_deviceName;
+    return m_currentDevName;
 }
 
-void BackEnd::setDeviceName(const QString &newDeviceName)
+void BackEnd::setCurrentDevName(const QString &newCurrentDevName)
 {
-    if (m_deviceName == newDeviceName)
+    if (m_currentDevName == newCurrentDevName)
         return;
-    m_deviceName = newDeviceName;
-    emit deviceNameChanged();
+    m_currentDevName = newCurrentDevName;
+    emit currentDevNameChanged();
 }
