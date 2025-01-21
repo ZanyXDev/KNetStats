@@ -6,7 +6,7 @@ TARGET = knetstats
 QT       += core qml quick quickcontrols2 svg network charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-CONFIG += bump_version
+#CONFIG += bump_version
 CONFIG += c++17
 CONFIG += resources_big
 CONFIG(release,debug|release):CONFIG += qtquickcompiler # Qt Quick compiler
@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 HEADERS += \
-        src/backend.h \        
+        src/backend.h \
+        src/devicestatistic.h \
         src/hal.h
 
 SOURCES += \
-            src/backend.cpp \            
+            src/backend.cpp \
+            src/devicestatistic.cpp \
             src/hal.cpp \
             src/main.cpp
 RESOURCES += \

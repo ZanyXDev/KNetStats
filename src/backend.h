@@ -34,6 +34,9 @@ public:
     void setUserName(const QString &newUserName);
     void setCurrentDevName(const QString &newCurrentDevName);
 
+public slots:
+    void updateStatistics();
+
 signals:
     void userNameChanged();
 
@@ -43,6 +46,7 @@ signals:
 
 private:
     QString m_userName;
-
     QString m_currentDevName;
+
+
 };

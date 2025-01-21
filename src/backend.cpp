@@ -33,3 +33,8 @@ void BackEnd::setCurrentDevName(const QString &newCurrentDevName)
     m_currentDevName = newCurrentDevName;
     emit currentDevNameChanged();
 }
+
+void BackEnd::updateStatistics()
+{
+
+}
