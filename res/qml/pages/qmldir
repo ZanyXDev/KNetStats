@@ -1,0 +1,3 @@
+module pages
+ConfigureBase 1.0 configurebase.qml
+StatisticBase 1.0 statisticsbase.qml

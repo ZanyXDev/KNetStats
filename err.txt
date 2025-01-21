@@ -1,0 +1,2 @@
+performance,useInitializationList:src/knetstatsview.cpp,15:Variable 'mInterface' is assigned in constructor body. Consider performing initialization in initialization list.
+style,unusedFunction:src/chart.cpp,5:The function 'paintEvent' is never used.
