@@ -27,80 +27,19 @@ QQC2.Page {
         null
     }
 
-    EStatistics{
-        id:eStat
-        Component.onCompleted: {
-            let info=`
-                ethernets.length; ${eStat.ethernets.length}
-            `
-            for (var i = 0; i < eStat.ethernets.length; i++)
-                        console.log("EthInfo", i, eStat.ethernets[i])
-            AppSingleton.toLog(info)
-
-        }
-    }
-    QQC2.Label{
-        id:tstLabel
-        text:  qsTr("Speed KB/s")
-    }
-/**
-    ChartView{
-        id:chartView
-        anchors.top: parent.top
-        anchors.left:parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 60
-
-        animationOptions: ChartView.SeriesAnimations
-        antialiasing: true
-        theme: ChartView.ChartThemeDark
-        property bool openGL: false
-        property bool openGLSupported: false
-
-        ValueAxis {
-            id: axisX
-            min: ChartDataModel.xAxis.x
-            max: ChartDataModel.xAxis.y
-            titleText: qsTr("Delta Time ms")
-            tickCount: 10
-
-        }
-        ValueAxis {
-            id: axisY
-            min: ChartDataModel.yAxis.x
-            max: ChartDataModel.yAxis.y
-
-            titleText: qsTr("Speed KB/s")
-        }
-        LineSeries {
-            id: cpuUsageSeries
-            name: backend.userName
-            axisX: axisX
-            axisY: axisY
-            useOpenGL: chartView.openGL
-        }
-    }
-
-*/
     QQC2.Button{
         id:tst
         //anchors.top:chartView.bottom
         text: qsTr("Press Me")
         onClicked: {
-             backend.userName = "text"
+            backend.userName = "text"
         }
     }
 
-
-    Timer {
-        id: refreshTimer
-        interval: 1 / 60 * 1000 // 60 Hz
-        running: false
-        repeat: true
-        onTriggered: {
-
-        }
+    QQC2.Label{
+        id:tstLabel
+        anchors.top:tst.bottom
+        text:  qsTr("Speed KB/s")
     }
 
     BackEnd {
