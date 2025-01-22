@@ -17,6 +17,7 @@
 #endif
 #include <QAbstractTableModel>
 
+#include "periodictask.h"
 
 class BackEnd : public QObject
 {
@@ -36,17 +37,22 @@ public:
 
 public slots:
     void updateStatistics();
-
+    void refreshInterfaces(); // @sa void Configure::refreshInterfaces()
 signals:
     void userNameChanged();
-
     void deviceNameChanged();
-
     void currentDevNameChanged();
 
+private slots:
+    void reciveStatistic(const QString &device,
+                         bool carrier,
+                         unsigned long long rxBytes,
+                         unsigned long long txBytes,
+                         unsigned long long rxPackets,
+                         unsigned long long txPackets);
 private:
     QString m_userName;
     QString m_currentDevName;
-
-
+    PeriodicTask m_tasks;
+    QStringList m_interfaces;
 };

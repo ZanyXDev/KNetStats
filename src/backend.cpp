@@ -4,6 +4,7 @@
 BackEnd::BackEnd(QObject *parent)
     : QObject{parent} 
 {
+    connect(&m_tasks, &PeriodicTask::taskCompleted, this, &BackEnd::reciveStatistic);
 
 }
 
@@ -36,5 +37,22 @@ void BackEnd::setCurrentDevName(const QString &newCurrentDevName)
 
 void BackEnd::updateStatistics()
 {
+    refreshInterfaces();
+    m_tasks.setDeviceList(m_interfaces);
+}
 
+void BackEnd::refreshInterfaces()
+{
+    m_interfaces.clear();
+
+    for (auto &it:  QNetworkInterface::allInterfaces()) {
+        m_interfaces.append(it.name());
+        //KNetStats::readInterfaceConfig(it.name(), &mConfig[it.name()]);
+    }
+
+}
+
+void BackEnd::reciveStatistic(const QString &device, bool carrier, unsigned long long rxBytes, unsigned long long txBytes, unsigned long long rxPackets, unsigned long long txPackets)
+{
+    qDebug() <<device << carrier << rxBytes << txBytes << rxPackets << txPackets;
 }
