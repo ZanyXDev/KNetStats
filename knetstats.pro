@@ -3,7 +3,7 @@
 TEMPLATE +=app
 TARGET = knetstats
 
-QT       += core qml quick quickcontrols2 svg network charts
+QT       += core qml quick quickcontrols2 svg network charts concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 #CONFIG += bump_version
@@ -28,13 +28,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += \
         src/backend.h \
         src/devicestatistic.h \
-        src/hal.h
+        src/hal.h \
+        src/periodictask.h
 
 SOURCES += \
             src/backend.cpp \
             src/devicestatistic.cpp \
             src/hal.cpp \
-            src/main.cpp
+            src/main.cpp \
+            src/periodictask.cpp
 RESOURCES += \
         images.qrc \
         qml.qrc \
