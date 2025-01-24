@@ -32,7 +32,7 @@ QQC2.Page {
         //anchors.top:chartView.bottom
         text: qsTr("Press Me")
         onClicked: {
-            backend.userName = "text"
+            backend.updateStatistics()
         }
     }
 

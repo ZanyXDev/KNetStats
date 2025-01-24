@@ -28,12 +28,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += \
         src/backend.h \
         src/devicestatistic.h \
+        src/ethdevice.h \
+        src/ethernetdevicemodel.h \
         src/hal.h \
         src/periodictask.h
 
 SOURCES += \
             src/backend.cpp \
             src/devicestatistic.cpp \
+            src/ethdevice.cpp \
+            src/ethernetdevicemodel.cpp \
             src/hal.cpp \
             src/main.cpp \
             src/periodictask.cpp
@@ -74,6 +78,9 @@ bump_version{
     message("Bump or update App version")
     system($$PWD/tools/ci/bump_ver.sh)
 }
+
+DISTFILES += \
+    Pondering.md
 
 
 
