@@ -10,10 +10,10 @@ class DeviceStatistic : public QObject
     Q_OBJECT
     Q_PROPERTY(QString device READ device WRITE setDevice NOTIFY deviceChanged)
     Q_PROPERTY(bool carrier READ carrier WRITE setCarrier NOTIFY carrierChanged)
-    Q_PROPERTY(unsigned long long rxBytes READ rxBytes WRITE setRxBytes NOTIFY rxBytesChanged)
-    Q_PROPERTY(unsigned long long txBytes READ txBytes WRITE setTxBytes NOTIFY txBytesChanged)
-    Q_PROPERTY(unsigned long long rxPackets READ rxPackets WRITE setRxPackets NOTIFY rxPacketsChanged)
-    Q_PROPERTY(unsigned long long txPackets READ txPackets WRITE setTxPackets NOTIFY txPacketsChanged)
+    Q_PROPERTY(quint64 rxBytes READ rxBytes WRITE setRxBytes NOTIFY rxBytesChanged)
+    Q_PROPERTY(quint64 txBytes READ txBytes WRITE setTxBytes NOTIFY txBytesChanged)
+    Q_PROPERTY(quint64 rxPackets READ rxPackets WRITE setRxPackets NOTIFY rxPacketsChanged)
+    Q_PROPERTY(quint64 txPackets READ txPackets WRITE setTxPackets NOTIFY txPacketsChanged)
     QML_ELEMENT
 public:
     explicit DeviceStatistic(QObject *parent = nullptr);
@@ -24,17 +24,17 @@ public:
     bool carrier() const;
     void setCarrier(bool newCarrier);
 
-    unsigned long long rxBytes() const;
-    void setRxBytes(unsigned long long newRxBytes);
+    quint64 rxBytes() const;
+    void setRxBytes(quint64 newRxBytes);
 
-    unsigned long long txBytes() const;
-    void setTxBytes(unsigned long long newTxBytes);
+    quint64 txBytes() const;
+    void setTxBytes(quint64 newTxBytes);
 
-    unsigned long long rxPackets() const;
-    void setRxPackets(unsigned long long newRxPackets);
+    quint64 rxPackets() const;
+    void setRxPackets(quint64 newRxPackets);
 
-    unsigned long long txPackets() const;
-    void setTxPackets(unsigned long long newTxPackets);
+    quint64 txPackets() const;
+    void setTxPackets(quint64 newTxPackets);
 
 signals:
     void deviceChanged();
@@ -48,9 +48,9 @@ private:
 
     QString m_device;
     bool m_carrier;
-    unsigned long long m_rxBytes;
-    unsigned long long m_txBytes;
-    unsigned long long m_rxPackets;
-    unsigned long long m_txPackets;
+    quint64 m_rxBytes;
+    quint64 m_txBytes;
+    quint64 m_rxPackets;
+    quint64 m_txPackets;
 };
 

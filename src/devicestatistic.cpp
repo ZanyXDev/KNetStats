@@ -36,42 +36,42 @@ void DeviceStatistic::setCarrier(bool newCarrier)
     emit carrierChanged();
 }
 
-unsigned long long DeviceStatistic::rxBytes() const
+quint64 DeviceStatistic::rxBytes() const
 {
     return m_rxBytes;
 }
 
-void DeviceStatistic::setRxBytes(unsigned long long newRxBytes)
+void DeviceStatistic::setRxBytes(quint64 newRxBytes)
 {
     m_rxBytes = newRxBytes;
 }
 
-unsigned long long DeviceStatistic::txBytes() const
+quint64 DeviceStatistic::txBytes() const
 {
     return m_txBytes;
 }
 
-void DeviceStatistic::setTxBytes(unsigned long long newTxBytes)
+void DeviceStatistic::setTxBytes(quint64 newTxBytes)
 {
     m_txBytes = newTxBytes;
 }
 
-unsigned long long DeviceStatistic::rxPackets() const
+quint64 DeviceStatistic::rxPackets() const
 {
     return m_rxPackets;
 }
 
-void DeviceStatistic::setRxPackets(unsigned long long newRxPackets)
+void DeviceStatistic::setRxPackets(quint64 newRxPackets)
 {
     m_rxPackets = newRxPackets;
 }
 
-unsigned long long DeviceStatistic::txPackets() const
+quint64 DeviceStatistic::txPackets() const
 {
     return m_txPackets;
 }
 
-void DeviceStatistic::setTxPackets(unsigned long long newTxPackets)
+void DeviceStatistic::setTxPackets(quint64 newTxPackets)
 {
     m_txPackets = newTxPackets;
 }
