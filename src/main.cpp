@@ -16,12 +16,16 @@
 #include <QtCore/QSharedMemory>
 #include <QtCore/QLockFile>
 
+#ifdef HAVE_TRANSLATIONS
+#  include <QTranslator>
+#endif
+
+
 #ifdef QT_DEBUG
 #include <QtCore/QDirIterator>
 #include <QtCore/QLoggingCategory>
 #endif
 
-#include "runguard.h"
 
 int main(int argc, char *argv[]) {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
