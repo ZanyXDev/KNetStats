@@ -1,0 +1,4 @@
+[submodule "3rdparty/KDSingleApplication"]
+	path = 3rdparty/KDSingleApplication
+	url = https://github.com/KDAB/KDSingleApplication.git
+	branch = 1.1
