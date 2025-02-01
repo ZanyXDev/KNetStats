@@ -1,21 +1,27 @@
-#include <QApplication>
-#include <QSystemTrayIcon>
-#include <QIcon>
+#pragma once
+
+#include <QtGui/QIcon>
+#include <QtGui/QScreen>
+
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QSystemTrayIcon>
+#include <QtWidgets/QMessageBox>
+#include <QtQml/QQmlApplicationEngine>
+#include <QtQml/QQmlContext>
+
 #include <QtCore/QCoreApplication>
 #include <QtCore/QTranslator>
+#include <QtCore/QStandardPaths>
+#include <QtCore/QTime>
+#include <QtCore/QSharedMemory>
+#include <QtCore/QLockFile>
+
 #ifdef QT_DEBUG
 #include <QtCore/QDirIterator>
 #include <QtCore/QLoggingCategory>
 #endif
 
-#include <QtQml/QQmlApplicationEngine>
-#include <QtQml/QQmlContext>
-#include <QtGui/QScreen>
-
-
-
-// Declare a user-defined data type to work with an icon in QML
-//Q_DECLARE_METATYPE(QSystemTrayIcon::ActivationReason)
+#include "runguard.h"
 
 int main(int argc, char *argv[]) {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -23,42 +29,42 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
+    bool workMode= true;
 #ifdef QT_DEBUG
     QLocale::setDefault(QLocale::English);
     QLoggingCategory::setFilterRules(QStringLiteral("qt.qml.binding.removal.info=true"));
+    workMode = false;
 #endif
-
-    QCoreApplication::setOrganizationName(PACKAGE_NAME_STR);
-    QCoreApplication::setApplicationName(APP_NAME_STR);
+    QCoreApplication::setOrganizationName("io.github.zanyxdev");
+    QCoreApplication::setApplicationName("KNetStats");
     QCoreApplication::setApplicationVersion(VERSION_STR);
+
     QApplication app(argc, argv);
 
-#ifndef QT_DEBUG
     app.setQuitOnLastWindowClosed(false); // prevent app from closing, when closing dialog message
-#endif
+
+    QDir dirAppConfig( QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) );
+    if (dirAppConfig.exists() == false)
+        dirAppConfig.mkpath(dirAppConfig.path());
+
+    QDir dirAppData( QStandardPaths::writableLocation(QStandardPaths::AppDataLocation ) );
+    if (dirAppData.exists() == false)
+        dirAppData.mkpath(dirAppData.path());
+
     QTranslator myappTranslator;
     if (  myappTranslator.load(QLocale(), QLatin1String("knetstats"), QLatin1String("_"), QLatin1String(":/res/i18n")) ){
         app.installTranslator(&myappTranslator);
     }
 
-    QScreen *screen = qApp->primaryScreen();
-#ifdef QT_DEBUG
-    qDebug() << "screen->devicePixelRatio():" << screen->devicePixelRatio()
-             << "\nscreen->physicalSize():" <<screen->physicalSize()
-             << "\nscreen->logicalDotsPerInch():" << screen->logicalDotsPerInch();
-#endif
-
     QQmlApplicationEngine engine;
     engine.addImportPath("qrc:/res/qml");
     QQmlContext *context = engine.rootContext();  
     context->setContextProperty("AppVersion",VERSION_STR);
-    bool workMode;
-#ifdef QT_DEBUG
-    workMode = false;
-#else
-    workMode = true;
-#endif
-               context->setContextProperty("isDebugMode",!workMode);
+    context->setContextProperty("isDebugMode",!workMode);
+    context->setContextProperty("dirAppConfig",dirAppConfig.path());
+    context->setContextProperty("dirAppData",dirAppData.path());
+    context->setContextProperty("appKey",QCoreApplication::applicationName().toLower()+".sock");
+
     const QUrl url(QStringLiteral("qrc:/res/qml/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, &app,

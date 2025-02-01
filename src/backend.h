@@ -1,52 +1,34 @@
 #pragma once
 
 #include <QObject>
-#include <QtGlobal>
-#include <QNetworkInterface>
-#include <QStringList>
-#include <QFile>
 #include <QtQml/qqml.h>
-
-#include <sys/sysinfo.h>
-#include <unistd.h>
-#include <sys/time.h>
-#include <math.h>
-
-#ifdef QT_DEBUG
-#include <QDebug>
-#endif
-#include <QAbstractTableModel>
+#include <QAbstractListModel>
 
 
 class BackEnd : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
-    Q_PROPERTY(QString currentDevName READ currentDevName WRITE setCurrentDevName NOTIFY currentDevNameChanged)
+    Q_PROPERTY(QString message READ message NOTIFY messageChanged FINAL)
     QML_ELEMENT
 
 public:
     explicit BackEnd(QObject *parent = nullptr);
     // --------------------------------- auto getter --------------------------------------------
-    QString userName() const;
-    QString currentDevName() const;
     // --------------------------------- auto setter --------------------------------------------
-    void setUserName(const QString &newUserName);
-    void setCurrentDevName(const QString &newCurrentDevName);
+    Q_INVOKABLE void loadFromJson(const QString &jsonFileName);
+    Q_INVOKABLE void saveToJson(const QString &jsonFileName);
+
+
+    QString message() const;
 
 public slots:
     void updateStatistics();
+    void reciveMessage(const QString &message);
 
 signals:
-    void userNameChanged();
 
-    void deviceNameChanged();
-
-    void currentDevNameChanged();
+    void messageChanged();
 
 private:
-    QString m_userName;
-    QString m_currentDevName;
-
-
+    QString m_message;
 };

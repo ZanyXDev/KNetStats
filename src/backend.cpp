@@ -8,33 +8,28 @@ BackEnd::BackEnd(QObject *parent)
 }
 
 
-QString BackEnd::userName() const
+void BackEnd::loadFromJson(const QString &jsonFileName)
 {
-    return m_userName;
+
 }
 
-void BackEnd::setUserName(const QString &newUserName)
+void BackEnd::saveToJson(const QString &jsonFileName)
 {
-    if (m_userName == newUserName)
-        return;
-    m_userName = newUserName;
-    emit userNameChanged();
-}
 
-QString BackEnd::currentDevName() const
-{
-    return m_currentDevName;
-}
-
-void BackEnd::setCurrentDevName(const QString &newCurrentDevName)
-{
-    if (m_currentDevName == newCurrentDevName)
-        return;
-    m_currentDevName = newCurrentDevName;
-    emit currentDevNameChanged();
 }
 
 void BackEnd::updateStatistics()
 {
 
+}
+
+void BackEnd::reciveMessage(const QString &message)
+{
+    m_message = message;
+}
+
+
+QString BackEnd::message() const
+{
+    return m_message;
 }

@@ -28,13 +28,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += \
         src/backend.h \
         src/devicestatistic.h \
-        src/hal.h
+        src/hal.h \
+        src/runguard.h
 
 SOURCES += \
             src/backend.cpp \
             src/devicestatistic.cpp \
             src/hal.cpp \
-            src/main.cpp
+            src/main.cpp \
+            src/runguard.cpp
 RESOURCES += \
         images.qrc \
         qml.qrc \
