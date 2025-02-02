@@ -1,5 +1,3 @@
-#pragma once
-
 #include <QtGui/QIcon>
 #include <QtGui/QScreen>
 
@@ -10,15 +8,12 @@
 #include <QtQml/QQmlContext>
 
 #include <QtCore/QCoreApplication>
-#include <QtCore/QTranslator>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTime>
 #include <QtCore/QSharedMemory>
 #include <QtCore/QLockFile>
 
-#ifdef HAVE_TRANSLATIONS
-#  include <QTranslator>
-#endif
+#include <QTranslator>
 
 
 #ifdef QT_DEBUG
@@ -26,6 +21,7 @@
 #include <QtCore/QLoggingCategory>
 #endif
 
+#include <singleapplication.h>
 
 int main(int argc, char *argv[]) {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -44,6 +40,31 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setApplicationVersion(VERSION_STR);
 
     QApplication app(argc, argv);
+    // Separate single instance object (that allows secondary instances)
+    SingleApplication single_instance_guard( argc, argv, true );
+    QString recive_message="123";
+    // If this is a secondary instance
+    if( single_instance_guard.isSecondary() ) {
+        QString msg = QObject::tr("%1 already running. Primary instance PID: %2. Primary instance user: %3")
+                          .arg(QCoreApplication::applicationName())
+                          .arg(single_instance_guard.primaryPid())
+                          .arg(single_instance_guard.primaryUser());
+        single_instance_guard.sendMessage( msg.toUtf8() );
+        qDebug() << "App already running!";
+        qDebug() << "Primary instance PID: " << single_instance_guard.primaryPid();
+        qDebug() << "Primary instance user: " << single_instance_guard.primaryUser();
+        return 0;
+    } else {
+
+        QObject::connect(&single_instance_guard, &SingleApplication::receivedMessage,
+                         [=](int instanceId, QByteArray message) {
+            /* DO SOMETHING 2*/
+            qDebug() << instanceId << message;
+            recive_message.fromUtf8(message);
+        });
+
+
+    }
 
     app.setQuitOnLastWindowClosed(false); // prevent app from closing, when closing dialog message
 
@@ -67,7 +88,7 @@ int main(int argc, char *argv[]) {
     context->setContextProperty("isDebugMode",!workMode);
     context->setContextProperty("dirAppConfig",dirAppConfig.path());
     context->setContextProperty("dirAppData",dirAppData.path());
-    context->setContextProperty("appKey",QCoreApplication::applicationName().toLower()+".sock");
+    context->setContextProperty("recive_message",recive_message);
 
     const QUrl url(QStringLiteral("qrc:/res/qml/main.qml"));
     QObject::connect(
