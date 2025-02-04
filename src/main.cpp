@@ -6,15 +6,15 @@
 #include <QtWidgets/QMessageBox>
 #include <QtQml/QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
+#include <QTimer>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTime>
 #include <QtCore/QSharedMemory>
 #include <QtCore/QLockFile>
-
-#include <QTranslator>
-
+#include <QtCore/QTranslator>
+#include <QtCore/QScopedPointer>
 
 #ifdef QT_DEBUG
 #include <QtCore/QDirIterator>
@@ -22,12 +22,15 @@
 #endif
 
 #include <singleapplication.h>
+#include "messagereciver.h"
 
 int main(int argc, char *argv[]) {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     //QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
+    // Allocate [MessageReciver] before the engine to ensure that it outlives it !!
+    QScopedPointer<MessageReciver>m_msgReciver(new MessageReciver);
 
     bool workMode= true;
 #ifdef QT_DEBUG
@@ -42,28 +45,19 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     // Separate single instance object (that allows secondary instances)
     SingleApplication single_instance_guard( argc, argv, true );
-    QString recive_message="123";
+
     // If this is a secondary instance
     if( single_instance_guard.isSecondary() ) {
         QString msg = QObject::tr("%1 already running. Primary instance PID: %2. Primary instance user: %3")
-                          .arg(QCoreApplication::applicationName())
-                          .arg(single_instance_guard.primaryPid())
-                          .arg(single_instance_guard.primaryUser());
+        .arg(QCoreApplication::applicationName())
+            .arg(single_instance_guard.primaryPid())
+            .arg(single_instance_guard.primaryUser());
         single_instance_guard.sendMessage( msg.toUtf8() );
-        qDebug() << "App already running!";
-        qDebug() << "Primary instance PID: " << single_instance_guard.primaryPid();
-        qDebug() << "Primary instance user: " << single_instance_guard.primaryUser();
         return 0;
     } else {
-
+        QString recive_message;
         QObject::connect(&single_instance_guard, &SingleApplication::receivedMessage,
-                         [=](int instanceId, QByteArray message) {
-            /* DO SOMETHING 2*/
-            qDebug() << instanceId << message;
-            recive_message.fromUtf8(message);
-        });
-
-
+                         m_msgReciver.get(),&MessageReciver::receivedMessage);
     }
 
     app.setQuitOnLastWindowClosed(false); // prevent app from closing, when closing dialog message
@@ -88,7 +82,6 @@ int main(int argc, char *argv[]) {
     context->setContextProperty("isDebugMode",!workMode);
     context->setContextProperty("dirAppConfig",dirAppConfig.path());
     context->setContextProperty("dirAppData",dirAppData.path());
-    context->setContextProperty("recive_message",recive_message);
 
     const QUrl url(QStringLiteral("qrc:/res/qml/main.qml"));
     QObject::connect(
@@ -97,6 +90,9 @@ int main(int argc, char *argv[]) {
             if (!obj && url == objUrl) QCoreApplication::exit(-1);
         },
         Qt::QueuedConnection);
+    // Register the singleton type provider with QML by calling this
+    // function in an initialization function.
+    qmlRegisterSingletonInstance("io.github.zanyxdev.knetstats.MessageReciver", 1, 0,"MessageReciver", m_msgReciver.get());
 
     engine.load(url);
     return app.exec();

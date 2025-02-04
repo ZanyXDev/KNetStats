@@ -9,6 +9,7 @@ import Qt.labs.settings 1.1
 import common 1.0
 import pages 1.0
 import io.github.zanyxdev.knetstats 1.0
+import io.github.zanyxdev.knetstats.MessageReciver 1.0
 
 QQC2.ApplicationWindow {
   id: appWnd
@@ -25,7 +26,8 @@ QQC2.ApplicationWindow {
   property var screenHeight: Screen.height
   property var screenAvailableWidth: Screen.desktopAvailableWidth
   property var screenAvailableHeight: Screen.desktopAvailableHeight
-  property string socketMessage: runGuard.message
+
+  property string message: MessageReciver.message
   // ----- Signal declarations
   signal screenOrientationUpdated(int screenOrientation)
 
@@ -68,10 +70,9 @@ QQC2.ApplicationWindow {
               `appInForeground: [${appInForeground} , appInitialized: ${appInitialized}]`)
     }
   }
-  onSocketMessageChanged: {
-    ///TODO change icon on the SystemTrayIcon
-    sysTrayIcon.showMessage(qsTr("KNetStats"), appWnd.socketMessage,
-                            SystemTrayIcon.Information, 3000)
+  onMessageChanged: {
+    console.log(`recive msg ${message}`)
+    sysTrayIcon.showMessage(qsTr("recive msg"), message, 3000)
   }
   background: {
     null
@@ -140,20 +141,9 @@ QQC2.ApplicationWindow {
     }
   }
 
-  RunGuard {
-    id: runGuard
-    Component.onCompleted: {
-      setAppKey(appKey)
-    }
-    onAppRunningChanged: {
-      if (appRunning) {
-        Qt.quit()
-      }
-    }
-  }
   Settings {
     id: mSettings
-    fileName: dirAppConfig + "/app.conf"
+    //fileName: dirAppConfig + "/app.conf"
     category: "Settings"
     property alias needSetup: appWnd.needSetup
     property alias themeIcon: appWnd.themeIcon

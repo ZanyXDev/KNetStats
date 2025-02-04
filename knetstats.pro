@@ -27,10 +27,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
         src/backend.h \
+  src/messagereciver.h
 
 SOURCES += \
             src/backend.cpp \
-            src/main.cpp
+            src/main.cpp \
+            src/messagereciver.cpp
 RESOURCES += \
         images.qrc \
         qml.qrc \
@@ -71,6 +73,9 @@ bump_version{
     message("Bump or update App version")
     system($$PWD/tools/ci/bump_ver.sh)
 }
+
+DISTFILES += \
+  tips_and_tricks.md
 
 
 
