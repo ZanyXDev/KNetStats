@@ -22,14 +22,3 @@ void BackEnd::updateStatistics()
 {
 
 }
-
-void BackEnd::reciveMessage(const QString &message)
-{
-    m_message = message;
-}
-
-
-QString BackEnd::message() const
-{
-    return m_message;
-}
