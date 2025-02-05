@@ -20,11 +20,6 @@ void MessageReciver::setMessage(const QString &newMessage)
     qDebug() << Q_FUNC_INFO << m_message;
 }
 
-void MessageReciver::testMessage(int counter)
-{
-    m_message = QString("%1 counter").arg(counter);
-      emit messageChanged();
-}
 
 void MessageReciver::receivedMessage(quint32 instanceId, QByteArray message)
 {
