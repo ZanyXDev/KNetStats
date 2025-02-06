@@ -3,7 +3,7 @@
 TEMPLATE +=app
 TARGET = knetstats
 
-QT       += core qml quick quickcontrols2 svg network charts
+QT       += core qml quick quickcontrols2 svg network charts sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 #CONFIG += bump_version
@@ -27,12 +27,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
         src/backend.h \
-  src/messagereciver.h
+  src/databasemanager.h \
+  src/device.h \
+  src/messagereciver.h \
+  src/devicemodel.h
 
 SOURCES += \
             src/backend.cpp \
+            src/databasemanager.cpp \
+            src/device.cpp \
             src/main.cpp \
-            src/messagereciver.cpp
+            src/messagereciver.cpp \
+            src/devicemodel.cpp
 RESOURCES += \
         images.qrc \
         qml.qrc \

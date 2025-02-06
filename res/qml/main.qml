@@ -10,6 +10,7 @@ import common 1.0
 import pages 1.0
 import io.github.zanyxdev.knetstats 1.0
 import io.github.zanyxdev.knetstats.MessageReciver 1.0
+import io.github.zanyxdev.knetstats.DBManager 1.0
 
 QQC2.ApplicationWindow {
   id: appWnd
@@ -55,6 +56,7 @@ QQC2.ApplicationWindow {
     AppSingleton.toLog(infoMsg)
 
     appWnd.restoreSettings()
+    console.log(`DbManager ${DBManager}`)
   }
   onClosing: {
     console.trace()
@@ -79,7 +81,21 @@ QQC2.ApplicationWindow {
   }
 
   // ----- Connections
+  Connections {
+    target: DBManager
+    function onConnectedChanged() {
+      console.trace()
+      console.log(`DBManager: ${DBManager.connected}`)
+    }
+  }
 
+  Connections {
+    target: DBManager
+    function onLastErrorChanged() {
+      console.trace()
+      console.log(`DBManager: ${DBManager.lastError}`)
+    }
+  }
   // ----- Visual children
   Loader {
     id: loader

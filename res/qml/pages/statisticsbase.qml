@@ -4,6 +4,7 @@ import QtCharts 2.15
 
 import common 1.0
 import io.github.zanyxdev.knetstats 1.0
+import io.github.zanyxdev.knetstats.DBManager 1.0
 
 QQC2.Page {
   id: root
@@ -30,7 +31,9 @@ QQC2.Page {
     //anchors.top:chartView.bottom
     text: qsTr("Press Me")
     onClicked: {
-      Qt.quit()
+      console.log(`DbManager second${DBManager}`)
+      DBManager.testSignal()
+      //Qt.quit()
     }
   }
 
