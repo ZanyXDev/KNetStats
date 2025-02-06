@@ -18,7 +18,4 @@ void BackEnd::saveToJson(const QString &jsonFileName)
 
 }
 
-void BackEnd::updateStatistics()
-{
 
-}
