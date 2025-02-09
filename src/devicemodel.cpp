@@ -6,8 +6,7 @@ DeviceModel::DeviceModel(QObject *parent)
 
 QHash<int, QByteArray> DeviceModel::roleNames() const
 {
-    QHash<int, QByteArray> roles;
-    roles[IDRole]="id";
+    QHash<int, QByteArray> roles;  
     roles[InterfaceNameRole]="interfacename";
     roles[SysDevPathRole]="sysdevpath";
     roles[CarrierRole]="carrier";
@@ -46,15 +45,21 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     const EthDevice& ethDevice = m_data[index.row()];
-    switch(role) {
-    case IDRole:
-        return ethDevice.id;
+    switch(role) {   
     case InterfaceNameRole:
         return ethDevice.m_interfaceName;
     case SysDevPathRole:
         return ethDevice.m_sysDevPath;
     case CarrierRole:
         return ethDevice.m_carrier;
+    case MTURole:
+        return ethDevice.m_MTU;
+    case MACRole:
+        return ethDevice.m_MAC;
+    case IPRole:
+        return ethDevice.m_IP;
+    case NetMaskRole:
+        return ethDevice.m_netmask;
     case UpdateIntervalRole:
         return ethDevice.m_updateInterval;
     case MonitoringRole:
@@ -70,23 +75,17 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
     case ChartBgColorRole:
         return ethDevice.m_chartBgColor;
     case ChartTransparentBackgroundRole:
-        return ethDevice.m_chartTransparentBackground;
-    case BRxRole:
-        return ethDevice.m_bRx;
-    case BTxRole:
-        return ethDevice.m_bTx;
-    case PRxRole:
-        return ethDevice.m_pRx;
-    case PTxRole:
-        return ethDevice.m_pTx;
-    case TotalBytesRxRole:
-        return ethDevice.m_totalBytesRx;
-    case TotalBytesTxRole:
-        return ethDevice.m_totalBytesTx;
-    case TotalPktRxRole:
-        return ethDevice.m_totalPktRx;
-    case TotalPktTxRole:
-        return ethDevice.m_totalPktTx;
+        return ethDevice.m_chartTransparentBackground;        
+    case MaxSpeedRole:
+        return ethDevice.m_maxSpeed;
+    case ByteSpeedRxRole:
+        return ethDevice.m_byteSpeedRx;
+    case ByteSpeedTxRole:
+        return ethDevice.m_byteSpeedTx;
+    case PacketSpeedRxRole:
+        return ethDevice.m_pktSpeedRx;
+    case PacketSpeedTxRole:
+        return ethDevice.m_pktSpeedTx;
     default:
         return QVariant();
     }
@@ -98,9 +97,7 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         return false;
     EthDevice& ethDevice = m_data[index.row()];
     bool flag{false};
-    switch(role) {
-    case IDRole:
-        break;
+    switch(role) {    
     case InterfaceNameRole:
         flag = value.canConvert<QString>();
         if (flag)
