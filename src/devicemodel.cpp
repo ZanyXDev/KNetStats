@@ -97,144 +97,125 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
     if (!index.isValid() || index.row() >= m_data.size())
         return false;
     EthDevice& ethDevice = m_data[index.row()];
+    bool flag{false};
     switch(role) {
     case IDRole:
-        return false;
+        break;
     case InterfaceNameRole:
-        if (value.canConvert<QString>()) {
+        flag = value.canConvert<QString>();
+        if (flag)
             ethDevice.m_interfaceName = value.toString();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case SysDevPathRole:
-        if (value.canConvert<QString>()) {
+        flag = value.canConvert<QString>();
+        if (flag)
             ethDevice.m_sysDevPath = value.toString();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case CarrierRole:
-        if (value.canConvert<bool>()) {
+        flag = value.canConvert<bool>();
+        if (flag)
             ethDevice.m_carrier = value.toBool();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case UpdateIntervalRole:
-        if (value.canConvert<int>()) {
+        flag = value.canConvert<int>();
+        if (flag)
             ethDevice.m_updateInterval = value.toInt();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case MonitoringRole:
-        if (value.canConvert<bool>()) {
+        flag = value.canConvert<bool>();
+        if (flag)
             ethDevice.m_monitoring = value.toBool();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case NotificationsRole:
-        if (value.canConvert<bool>()) {
+        flag = value.canConvert<bool>();
+        if (flag)
             ethDevice.m_notifications = value.toBool();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case ThemeRole:
-        if (value.canConvert<int>()) {
+        flag = value.canConvert<int>();
+        if (flag)
             ethDevice.m_theme = value.toInt();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case ChartUplColorRole:
-        if (value.canConvert<uint>()) {
+        flag = value.canConvert<uint>();
+        if (flag)
             ethDevice.m_chartUplColor = value.toUInt();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case ChartDldColorRole:
-        if (value.canConvert<uint>()) {
+        flag = value.canConvert<uint>();
+        if (flag)
             ethDevice.m_chartDldColor = value.toUInt();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case ChartBgColorRole:
-        if (value.canConvert<uint>()) {
+        flag = value.canConvert<uint>();
+        if (flag)
             ethDevice.m_chartBgColor = value.toUInt();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case ChartTransparentBackgroundRole:
-        if (value.canConvert<bool>()) {
+        flag = value.canConvert<bool>();
+        if (flag)
             ethDevice.m_chartTransparentBackground = value.toBool();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case BRxRole:
-        if (value.canConvert<quint64>()) {
+        flag = value.canConvert<quint64>();
+        if (flag)
             ethDevice.m_bRx = value.toULongLong();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case BTxRole:
-        if (value.canConvert<quint64>()) {
+        flag = value.canConvert<quint64>();
+        if (flag)
             ethDevice.m_bTx = value.toULongLong();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case PRxRole:
-        if (value.canConvert<quint64>()) {
+        flag = value.canConvert<quint64>();
+        if (flag)
             ethDevice.m_pRx = value.toULongLong();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case PTxRole:
-        if (value.canConvert<quint64>()) {
+        flag = value.canConvert<quint64>();
+        if (flag)
             ethDevice.m_pTx = value.toULongLong();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case TotalBytesRxRole:
-        if (value.canConvert<quint64>()) {
+        flag = value.canConvert<quint64>();
+        if (flag)
             ethDevice.m_totalBytesRx = value.toULongLong();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case TotalBytesTxRole:
-        if (value.canConvert<quint64>()) {
+        flag = value.canConvert<quint64>();
+        if (flag)
             ethDevice.m_totalBytesTx = value.toULongLong();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case TotalPktRxRole:
-        if (value.canConvert<quint64>()) {
+        flag = value.canConvert<quint64>();
+        if (flag)
             ethDevice.m_totalPktRx = value.toULongLong();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     case TotalPktTxRole:
-        if (value.canConvert<quint64>()) {
+        flag = value.canConvert<quint64>();
+        if (flag)
             ethDevice.m_totalPktTx = value.toULongLong();
-            emit dataChanged(index, index);
-            return true;
-        }
         break;
     default:
-        return false;
+        flag = false;
     }
-    return false;
+
+    if (flag)
+        emit dataChanged(index, index);
+
+    return flag;
 }
+
+Qt::ItemFlags DeviceModel::flags(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return Qt::NoItemFlags; //Qt::ItemIsEnabled;
+
+    Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+
+    // Добавляем флаги редактирования
+    flags |= Qt::ItemIsEditable;
+
+    return flags;
+}
+
