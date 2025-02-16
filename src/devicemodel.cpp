@@ -28,6 +28,10 @@ QHash<int, QByteArray> DeviceModel::roleNames() const
     roles[ByteSpeedTxRole]="bytespeetx";
     roles[PacketSpeedRxRole]="packetspeedrx";
     roles[PacketSpeedTxRole]="packetspeedtx";
+    roles[TotalBytesRxRole]="totlabytesrx";
+    roles[TotalBytesTxRole]="toltalbytestx";
+    roles[TotalPktRxRole]="totalpacketsrx";
+    roles[TotalPktTxRole]="totalpacketstx";
     roles[BusyStateRole]="busystate";
     return roles;
 }
@@ -89,6 +93,14 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         return ethDevice.m_pktSpeedRx;
     case PacketSpeedTxRole:
         return ethDevice.m_pktSpeedTx;
+    case TotalBytesRxRole:
+        return ethDevice.m_totalBytesRx;
+    case TotalBytesTxRole:
+        return ethDevice.m_totalBytesTx;
+    case TotalPktRxRole:
+        return ethDevice.m_totalPktRx;
+    case TotalPktTxRole:
+        return ethDevice.m_totalPktTx;
     case BusyStateRole:
         return ethDevice.m_busystate;
     default:
@@ -202,11 +214,31 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         flag = value.canConvert<quint64>();
         if (flag)
             ethDevice.m_pktSpeedTx = value.toULongLong();
-        break;    
+        break;
+    case TotalBytesRxRole:
+        flag = value.canConvert<quint64>();
+        if (flag)
+            ethDevice.m_totalBytesRx = value.toULongLong();
+        break;
+    case TotalBytesTxRole:
+        flag = value.canConvert<quint64>();
+        if (flag)
+            ethDevice.m_totalBytesTx = value.toULongLong();
+        break;
+    case TotalPktRxRole:
+        flag = value.canConvert<quint64>();
+        if (flag)
+            ethDevice.m_totalPktRx = value.toULongLong();
+        break;
+    case TotalPktTxRole:
+        flag = value.canConvert<quint64>();
+        if (flag)
+            ethDevice.m_totalPktTx = value.toULongLong();
+        break;
     case BusyStateRole:
         flag = value.canConvert<int>();
         if (flag)
-             ethDevice.m_busystate = value.toInt();
+            ethDevice.m_busystate = value.toInt();
         break;
     default:
         flag = false;

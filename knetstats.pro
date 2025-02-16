@@ -29,6 +29,7 @@ HEADERS += \
         src/backend.h \
   src/datamanager.h \
   src/devicemodel.h \
+  src/ethdevice.h \
   src/messagereciver.h
 
 SOURCES += \
