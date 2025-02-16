@@ -32,7 +32,8 @@ public:
         ByteSpeedRxRole,
         ByteSpeedTxRole,
         PacketSpeedRxRole,
-        PacketSpeedTxRole
+        PacketSpeedTxRole,
+        BusyStateRole
     };
 
     QHash<int, QByteArray> roleNames() const override;
@@ -43,23 +44,6 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value,
                  int role = Qt::EditRole) override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
-
-public slots:
-    void addDevice(const QString &interfaceName,
-                   const QString &sysDevPath,
-                   bool carrier,
-                   int MTU,
-                   const QString &mac,
-                   const QString &ip,
-                   const QString &netmask,
-                   int updateInterval,
-                   bool monitoring,
-                   bool notifications,
-                   int theme,
-                   uint chartUplColor,
-                   uint chartDldColor,
-                   uint chartBgColor,
-                   bool chartTransparentBackground);
 
 private:
     struct EthDevice {
@@ -88,6 +72,7 @@ private:
         quint64 m_byteSpeedTx{};
         quint64 m_pktSpeedRx{};
         quint64 m_pktSpeedTx{};
+        int m_busystate{0};
     };
 
     QVector<EthDevice> m_data;

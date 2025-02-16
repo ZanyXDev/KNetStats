@@ -6,10 +6,15 @@ DeviceModel::DeviceModel(QObject *parent)
 
 QHash<int, QByteArray> DeviceModel::roleNames() const
 {
-    QHash<int, QByteArray> roles;  
+    QHash<int, QByteArray> roles;
+
     roles[InterfaceNameRole]="interfacename";
     roles[SysDevPathRole]="sysdevpath";
     roles[CarrierRole]="carrier";
+    roles[MTURole]="mtu";
+    roles[MACRole]="mac";
+    roles[IPRole]="ip";
+    roles[NetMaskRole]="netmask";
     roles[UpdateIntervalRole]="updateinterval";
     roles[MonitoringRole]="monitoring";
     roles[NotificationsRole]="notification";
@@ -18,14 +23,12 @@ QHash<int, QByteArray> DeviceModel::roleNames() const
     roles[ChartDldColorRole]="chartrdldcolor";
     roles[ChartBgColorRole]="chartrbgcolor";
     roles[ChartTransparentBackgroundRole]="charttransparentbackground";
-    roles[BRxRole]="brx";
-    roles[BTxRole]="btx";
-    roles[PRxRole]="prx";
-    roles[PTxRole]="ptx";
-    roles[TotalBytesRxRole]="totalbytesrx";
-    roles[TotalBytesTxRole]="totalbytestx";
-    roles[TotalPktRxRole]="totalpktrx";
-    roles[TotalPktTxRole]="totalpkttx";
+    roles[MaxSpeedRole]="maxspeed";
+    roles[ByteSpeedRxRole]="bytespeedrx";
+    roles[ByteSpeedTxRole]="bytespeetx";
+    roles[PacketSpeedRxRole]="packetspeedrx";
+    roles[PacketSpeedTxRole]="packetspeedtx";
+    roles[BusyStateRole]="busystate";
     return roles;
 }
 
@@ -86,6 +89,8 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         return ethDevice.m_pktSpeedRx;
     case PacketSpeedTxRole:
         return ethDevice.m_pktSpeedTx;
+    case BusyStateRole:
+        return ethDevice.m_busystate;
     default:
         return QVariant();
     }
@@ -112,6 +117,26 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         flag = value.canConvert<bool>();
         if (flag)
             ethDevice.m_carrier = value.toBool();
+        break;        
+    case MTURole:
+        flag = value.canConvert<int>();
+        if (flag)
+            ethDevice.m_MTU = value.toInt();
+        break;
+    case MACRole:
+        flag = value.canConvert<QString>();
+        if (flag)
+            ethDevice.m_MAC = value.toString();
+        break;
+    case IPRole:
+        flag = value.canConvert<QString>();
+        if (flag)
+            ethDevice.m_IP = value.toString();
+        break;
+    case NetMaskRole:
+        flag = value.canConvert<QString>();
+        if (flag)
+            ethDevice.m_netmask = value.toString();
         break;
     case UpdateIntervalRole:
         flag = value.canConvert<int>();
@@ -153,45 +178,35 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         if (flag)
             ethDevice.m_chartTransparentBackground = value.toBool();
         break;
-    case BRxRole:
+    case MaxSpeedRole:
         flag = value.canConvert<quint64>();
         if (flag)
-            ethDevice.m_bRx = value.toULongLong();
+            ethDevice.m_maxSpeed = value.toULongLong();
         break;
-    case BTxRole:
+    case ByteSpeedRxRole:
         flag = value.canConvert<quint64>();
         if (flag)
-            ethDevice.m_bTx = value.toULongLong();
+            ethDevice.m_byteSpeedRx = value.toULongLong();
         break;
-    case PRxRole:
+    case ByteSpeedTxRole:
         flag = value.canConvert<quint64>();
         if (flag)
-            ethDevice.m_pRx = value.toULongLong();
+            ethDevice.m_byteSpeedTx = value.toULongLong();
         break;
-    case PTxRole:
+    case PacketSpeedRxRole:
         flag = value.canConvert<quint64>();
         if (flag)
-            ethDevice.m_pTx = value.toULongLong();
+            ethDevice.m_pktSpeedRx = value.toULongLong();
         break;
-    case TotalBytesRxRole:
+    case PacketSpeedTxRole:
         flag = value.canConvert<quint64>();
         if (flag)
-            ethDevice.m_totalBytesRx = value.toULongLong();
-        break;
-    case TotalBytesTxRole:
-        flag = value.canConvert<quint64>();
+            ethDevice.m_pktSpeedTx = value.toULongLong();
+        break;    
+    case BusyStateRole:
+        flag = value.canConvert<int>();
         if (flag)
-            ethDevice.m_totalBytesTx = value.toULongLong();
-        break;
-    case TotalPktRxRole:
-        flag = value.canConvert<quint64>();
-        if (flag)
-            ethDevice.m_totalPktRx = value.toULongLong();
-        break;
-    case TotalPktTxRole:
-        flag = value.canConvert<quint64>();
-        if (flag)
-            ethDevice.m_totalPktTx = value.toULongLong();
+             ethDevice.m_busystate = value.toInt();
         break;
     default:
         flag = false;
