@@ -27,10 +27,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
         src/backend.h \
-  src/datamanager.h \
-  src/devicemodel.h \
-  src/ethdevice.h \
-  src/messagereciver.h
+        src/datamanager.h \
+        src/devicemodel.h \
+        src/ethdevice.h \
+        src/messagereciver.h
 
 SOURCES += \
             src/backend.cpp \

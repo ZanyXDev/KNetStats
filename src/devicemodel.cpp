@@ -1,5 +1,6 @@
 #include "devicemodel.h"
 
+
 DeviceModel::DeviceModel(QObject *parent)
     : QAbstractItemModel{parent}
 {}
@@ -11,10 +12,12 @@ QHash<int, QByteArray> DeviceModel::roleNames() const
     roles[InterfaceNameRole]="interfacename";
     roles[SysDevPathRole]="sysdevpath";
     roles[CarrierRole]="carrier";
+
     roles[MTURole]="mtu";
     roles[MACRole]="mac";
     roles[IPRole]="ip";
     roles[NetMaskRole]="netmask";
+
     roles[UpdateIntervalRole]="updateinterval";
     roles[MonitoringRole]="monitoring";
     roles[NotificationsRole]="notification";
@@ -22,6 +25,7 @@ QHash<int, QByteArray> DeviceModel::roleNames() const
     roles[ChartUplColorRole]="chartruplcolor";
     roles[ChartDldColorRole]="chartrdldcolor";
     roles[ChartBgColorRole]="chartrbgcolor";
+
     roles[ChartTransparentBackgroundRole]="charttransparentbackground";
     roles[MaxSpeedRole]="maxspeed";
     roles[ByteSpeedRxRole]="bytespeedrx";
@@ -43,7 +47,7 @@ int DeviceModel::rowCount(const QModelIndex &parent) const
 
 int DeviceModel::columnCount(const QModelIndex &parent) const
 {
-    return parent.isValid() ? 0 : 20; // ID, ... TotalPktTxRole
+    return parent.isValid() ? 0 : this->roleNames().count();
 }
 
 QVariant DeviceModel::data(const QModelIndex &index, int role) const
@@ -149,7 +153,7 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         flag = value.canConvert<QString>();
         if (flag)
             ethDevice.m_netmask = value.toString();
-        break;
+        break;    
     case UpdateIntervalRole:
         flag = value.canConvert<int>();
         if (flag)
@@ -205,20 +209,10 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         if (flag)
             ethDevice.m_byteSpeedTx = value.toULongLong();
         break;
-    case PacketSpeedRxRole:
-        flag = value.canConvert<quint64>();
-        if (flag)
-            ethDevice.m_pktSpeedRx = value.toULongLong();
-        break;
     case PacketSpeedTxRole:
         flag = value.canConvert<quint64>();
         if (flag)
             ethDevice.m_pktSpeedTx = value.toULongLong();
-        break;
-    case TotalBytesRxRole:
-        flag = value.canConvert<quint64>();
-        if (flag)
-            ethDevice.m_totalBytesRx = value.toULongLong();
         break;
     case TotalBytesTxRole:
         flag = value.canConvert<quint64>();
@@ -244,22 +238,111 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         flag = false;
     }
 
-    if (flag)
-        emit dataChanged(index, index);
+    if (flag) emit dataChanged(index, index);
 
     return flag;
 }
 
 Qt::ItemFlags DeviceModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid())
-        return Qt::NoItemFlags; //Qt::ItemIsEnabled;
-
-    Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-
-    // Добавляем флаги редактирования
-    flags |= Qt::ItemIsEditable;
-
-    return flags;
+    if (!index.isValid()) return Qt::NoItemFlags;
+    return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable;
 }
+
+QModelIndex DeviceModel::index(int row, int column, const QModelIndex &parent) const
+{
+    if (!hasIndex(row, column, parent)) return QModelIndex();
+    return createIndex(row, column);
+}
+
+QModelIndex DeviceModel::parent(const QModelIndex &index) const
+{
+    Q_UNUSED(index);
+    return QModelIndex(); // Плоская структура данных
+}
+
+QModelIndex DeviceModel::findDevice(const QString &sysDevPath) const
+{
+    /**
+     * @brief std::find_if получает начало и конец QVector
+     * Лямбда-функция проверяет каждое значение поля m_sysDevPath
+     * При совпадении возвращается итератор на найденный элемент
+     * Важные замечания по использованию кода:
+     * Проверяйте результат через m_data.end() перед использованием найденного элемента
+     * Если элемент не найден, it будет равен m_data.end()
+     * Для получения индекса найденного элемента можно использовать:
+     * int index = std::distance(m_data.begin(), it);
+     */
+    auto it = std::find_if(m_data.begin(), m_data.end(),
+                           [&](const EthDevice& device) {
+                               return device.m_sysDevPath == sysDevPath;
+                           });
+    if (it != m_data.end()) {
+        int idx = std::distance(m_data.begin(), it);
+        return index(idx, 0);
+    }
+    return QModelIndex();
+}
+
+QModelIndex DeviceModel::getDevice(int index) const
+{
+    if (index < 0 || index >= m_data.size()) {
+        return QModelIndex(); // Возврат недействительного индекса
+    }
+    return createIndex(index, 0); // Создаём индекс для первой колонки
+}
+
+bool DeviceModel::removeDevice(const QModelIndex &index)
+{
+    if (!index.isValid() || index.row() >= m_data.size()) {
+        return false;
+    }
+
+    beginRemoveRows(QModelIndex(), index.row(), index.row());
+    m_data.removeAt(index.row());
+    endRemoveRows();
+    return true;
+}
+
+bool DeviceModel::removeDevice(int row)
+{
+    return removeDevice(index(row, 0));
+}
+
+bool DeviceModel::removeDevices(const QModelIndexList &indexes)
+{
+    if (indexes.isEmpty()) {
+        return false;
+    }
+
+    // Сортируем индексы по убыванию для корректного удаления
+    QModelIndexList sortedIndexes = indexes;
+    std::sort(sortedIndexes.begin(), sortedIndexes.end(),
+              [](const QModelIndex& a, const QModelIndex& b) {
+                  return a.row() > b.row();
+              });
+
+    bool success = true;
+    for (const QModelIndex& index : sortedIndexes) {
+        success &= removeDevice(index);
+    }
+    return success;
+}
+
+void DeviceModel::addOrUpdateDevice(const EthDevice &device)
+{
+    QModelIndex existingIndex = findDevice(device.m_sysDevPath);
+    if (existingIndex.isValid()) {
+        removeDevice(existingIndex);
+    }
+    beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
+    m_data.append(device);
+    endInsertRows();
+}
+
+
+
+
+
+
 

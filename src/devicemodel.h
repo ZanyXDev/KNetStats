@@ -9,7 +9,9 @@ class DeviceModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    explicit DeviceModel(QObject *parent = nullptr);
+
+    explicit DeviceModel(QObject *parent = nullptr);      
+
     enum Roles {        
         InterfaceNameRole = Qt::UserRole + 1,
         SysDevPathRole,
@@ -37,18 +39,26 @@ public:
         TotalPktTxRole,
         BusyStateRole
     };
-  // QAbstractItemModel interface
-    QHash<int, QByteArray> roleNames() const override;
+    // QAbstractItemModel interface
+    QHash<int, QByteArray> roleNames() const override;    
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
-    bool setData(const QModelIndex &index, const QVariant &value,
-                 int role = Qt::EditRole) override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex& index) const override;
 
-private:
+    QModelIndex findDevice(const QString& sysDevPath) const;
+    QModelIndex getDevice(int index) const;
+    bool removeDevice(const QModelIndex& index);
+    bool removeDevice(int row);
+    bool removeDevices(const QModelIndexList& indexes);
 
+public slots:
+    void addOrUpdateDevice(const EthDevice& device);
+private:        
     QVector<EthDevice> m_data;
 };
 

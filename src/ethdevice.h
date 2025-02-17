@@ -1,7 +1,9 @@
 #pragma once
+
 #include  <QString>
 
 struct EthDevice {
+    // 26 fields
     QString m_interfaceName{};
     QString m_sysDevPath{};
     bool m_carrier{false};
@@ -27,6 +29,7 @@ struct EthDevice {
     quint64 m_byteSpeedTx{};
     quint64 m_pktSpeedRx{};
     quint64 m_pktSpeedTx{};
+
     // Statistics
     quint64 m_totalBytesRx{};
     quint64 m_totalBytesTx{};
