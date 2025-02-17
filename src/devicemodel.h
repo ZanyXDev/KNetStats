@@ -56,6 +56,8 @@ public:
     bool removeDevice(int row);
     bool removeDevices(const QModelIndexList& indexes);
 
+    // QByteArray toByteArray() const;
+    // bool fromByteArray(const QByteArray& data);
 public slots:
     void addOrUpdateDevice(const EthDevice& device);
 private:        

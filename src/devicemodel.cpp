@@ -1,5 +1,8 @@
 #include "devicemodel.h"
 
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 DeviceModel::DeviceModel(QObject *parent)
     : QAbstractItemModel{parent}
@@ -22,11 +25,18 @@ QHash<int, QByteArray> DeviceModel::roleNames() const
     roles[MonitoringRole]="monitoring";
     roles[NotificationsRole]="notification";
     roles[ThemeRole]="theme";
+<<<<<<< HEAD
     roles[ChartUplColorRole]="chartruplcolor";
     roles[ChartDldColorRole]="chartrdldcolor";
     roles[ChartBgColorRole]="chartrbgcolor";
 
     roles[ChartTransparentBackgroundRole]="charttransparentbackground";
+=======
+    roles[ChartUplColorRole]="chartuplcolor";
+    roles[ChartDldColorRole]="chartdldcolor";
+    roles[ChartBgColorRole]="chartbgcolor";
+    roles[ChartTransparentBackgroundRole]="charttransparentbackground";    
+>>>>>>> 0e7949e (fix error in roleNames())
     roles[MaxSpeedRole]="maxspeed";
     roles[ByteSpeedRxRole]="bytespeedrx";
     roles[ByteSpeedTxRole]="bytespeetx";
@@ -328,6 +338,7 @@ bool DeviceModel::removeDevices(const QModelIndexList &indexes)
     }
     return success;
 }
+
 
 void DeviceModel::addOrUpdateDevice(const EthDevice &device)
 {
