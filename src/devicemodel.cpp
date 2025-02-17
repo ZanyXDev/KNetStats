@@ -339,6 +339,13 @@ bool DeviceModel::removeDevices(const QModelIndexList &indexes)
     return success;
 }
 
+void DeviceModel::clear()
+{
+    beginResetModel();
+    m_data.clear();
+    endResetModel();
+}
+
 
 void DeviceModel::addOrUpdateDevice(const EthDevice &device)
 {

@@ -82,6 +82,12 @@ bump_version{
 DISTFILES += \
   tips_and_tricks.md
 
-
+message( Config: $$CONFIG )
+message( Libs: $$LIBS )
+message( Defines: $$DEFINES )
+message( Resources: $$RESOURCES )
+message( Object dir: $$OBJECTS_DIR )
+unix: message( CXX flags: $$QMAKE_CXXFLAGS )
+message( QT Plugins: $$QTPLUGIN )
 
 

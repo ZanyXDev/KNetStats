@@ -55,6 +55,7 @@ public:
     bool removeDevice(const QModelIndex& index);
     bool removeDevice(int row);
     bool removeDevices(const QModelIndexList& indexes);
+    void clear();
 
     // QByteArray toByteArray() const;
     // bool fromByteArray(const QByteArray& data);
