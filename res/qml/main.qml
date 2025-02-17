@@ -11,6 +11,7 @@ import pages 1.0
 import io.github.zanyxdev.knetstats 1.0
 import io.github.zanyxdev.knetstats.MessageReciver 1.0
 
+
 QQC2.ApplicationWindow {
   id: appWnd
   // ----- Property Declarations
@@ -140,6 +141,7 @@ QQC2.ApplicationWindow {
       backend.loadFromJson(dirAppData + "/devices.json")
     }
   }
+
 
   Settings {
     id: mSettings
