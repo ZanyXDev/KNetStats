@@ -3,6 +3,7 @@
 #include <QAbstractItemModel>
 #include <QObject>
 #include <QColor>
+#include <QStringList>
 #include "ethdevice.h"
 
 class DeviceModel : public QAbstractItemModel
@@ -59,9 +60,13 @@ public:
 
     // QByteArray toByteArray() const;
     // bool fromByteArray(const QByteArray& data);
+    const QStringList &getInterfaceList();
+
 public slots:
     void addOrUpdateDevice(const EthDevice& device);
 private:        
     QVector<EthDevice> m_data;
+    QStringList m_interfaceList;
+
 };
 

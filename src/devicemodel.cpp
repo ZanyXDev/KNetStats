@@ -15,28 +15,18 @@ QHash<int, QByteArray> DeviceModel::roleNames() const
     roles[InterfaceNameRole]="interfacename";
     roles[SysDevPathRole]="sysdevpath";
     roles[CarrierRole]="carrier";
-
     roles[MTURole]="mtu";
     roles[MACRole]="mac";
     roles[IPRole]="ip";
     roles[NetMaskRole]="netmask";
-
     roles[UpdateIntervalRole]="updateinterval";
     roles[MonitoringRole]="monitoring";
     roles[NotificationsRole]="notification";
     roles[ThemeRole]="theme";
-<<<<<<< HEAD
-    roles[ChartUplColorRole]="chartruplcolor";
-    roles[ChartDldColorRole]="chartrdldcolor";
-    roles[ChartBgColorRole]="chartrbgcolor";
-
-    roles[ChartTransparentBackgroundRole]="charttransparentbackground";
-=======
     roles[ChartUplColorRole]="chartuplcolor";
     roles[ChartDldColorRole]="chartdldcolor";
     roles[ChartBgColorRole]="chartbgcolor";
     roles[ChartTransparentBackgroundRole]="charttransparentbackground";    
->>>>>>> 0e7949e (fix error in roleNames())
     roles[MaxSpeedRole]="maxspeed";
     roles[ByteSpeedRxRole]="bytespeedrx";
     roles[ByteSpeedTxRole]="bytespeetx";
@@ -344,6 +334,17 @@ void DeviceModel::clear()
     beginResetModel();
     m_data.clear();
     endResetModel();
+}
+
+const QStringList &DeviceModel::getInterfaceList()
+{
+    m_interfaceList.clear();
+
+    for (const auto& device : m_data) {
+        m_interfaceList.append(device.m_interfaceName);
+    }
+
+    return m_interfaceList;
 }
 
 
