@@ -19,6 +19,6 @@ signals:
 private:
     DeviceModel m_deviceModel;
 
-    QStringList m_interfaceNameModel;
+
 };
 
