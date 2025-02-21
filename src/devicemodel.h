@@ -51,10 +51,11 @@ public:
     QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex& index) const override;
 
-    QModelIndex findDevice(const QString& sysDevPath) const;
+    QModelIndex findDevice(const QString &interfaceName) const;
     QModelIndex getDevice(int index) const;
     bool removeDevice(const QModelIndex& index);
     bool removeDevice(int row);
+    bool removeDevice(const QString &interfaceName);
     bool removeDevices(const QModelIndexList& indexes);
     void clear();
 
@@ -63,7 +64,7 @@ public:
     const QStringList &getInterfaceList();
 
 public slots:
-    void addOrUpdateDevice(const EthDevice& device);
+    void addDevice(const EthDevice &device);
 private:        
     QVector<EthDevice> m_data;
     QStringList m_interfaceList;

@@ -261,11 +261,11 @@ QModelIndex DeviceModel::parent(const QModelIndex &index) const
     return QModelIndex(); // Плоская структура данных
 }
 
-QModelIndex DeviceModel::findDevice(const QString &sysDevPath) const
+QModelIndex DeviceModel::findDevice(const QString &interfaceName) const
 {
     /**
      * @brief std::find_if получает начало и конец QVector
-     * Лямбда-функция проверяет каждое значение поля m_sysDevPath
+     * Лямбда-функция проверяет каждое значение поля m_interfaceName
      * При совпадении возвращается итератор на найденный элемент
      * Важные замечания по использованию кода:
      * Проверяйте результат через m_data.end() перед использованием найденного элемента
@@ -275,7 +275,7 @@ QModelIndex DeviceModel::findDevice(const QString &sysDevPath) const
      */
     auto it = std::find_if(m_data.begin(), m_data.end(),
                            [&](const EthDevice& device) {
-                               return device.m_sysDevPath == sysDevPath;
+                               return device.m_interfaceName == interfaceName;
                            });
     if (it != m_data.end()) {
         int idx = std::distance(m_data.begin(), it);
@@ -307,6 +307,11 @@ bool DeviceModel::removeDevice(const QModelIndex &index)
 bool DeviceModel::removeDevice(int row)
 {
     return removeDevice(index(row, 0));
+}
+
+bool DeviceModel::removeDevice(const QString &interfaceName)
+{
+    return removeDevice( findDevice( interfaceName ));
 }
 
 bool DeviceModel::removeDevices(const QModelIndexList &indexes)
@@ -348,9 +353,9 @@ const QStringList &DeviceModel::getInterfaceList()
 }
 
 
-void DeviceModel::addOrUpdateDevice(const EthDevice &device)
+void DeviceModel::addDevice(const EthDevice &device)
 {
-    QModelIndex existingIndex = findDevice(device.m_sysDevPath);
+    QModelIndex existingIndex = findDevice(device.m_interfaceName);
     if (existingIndex.isValid()) {
         removeDevice(existingIndex);
     }
