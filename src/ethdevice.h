@@ -4,10 +4,11 @@
 #include <QObject>
 
 struct EthDevice {
-    // 26 fields
+    // 27 fields
     QString m_interfaceName{QObject::tr("Unknown")};
     QString m_sysDevPath{QObject::tr("Unknown")};
     bool m_carrier{false};
+    bool m_interfaceMissing{false};
     //IP
     int m_MTU{0};
     QString m_MAC{QObject::tr("N/A")};
