@@ -9,16 +9,16 @@
 class DataManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QStringList interfaceNameModel MEMBER m_interfaceNameModel NOTIFY interfaceNameModelChanged)
+    //Q_PROPERTY(QStringList interfaceNameModel MEMBER m_interfaceNameModel NOTIFY interfaceNameModelChanged)
 public:
     explicit DataManager(QObject *parent = nullptr);
     Q_INVOKABLE void refreshInterfaces();
-signals:  
+signals:
     void interfaceNameModelChanged();
-
+    void showMessageInSysTray(const QString &message);
 private:
     DeviceModel m_deviceModel;
 
-
+    bool fillDevice(const QString &interfaceName, EthDevice &m_device);
 };
 
