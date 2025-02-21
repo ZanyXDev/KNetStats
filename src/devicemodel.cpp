@@ -374,8 +374,13 @@ void DeviceModel::updateDevice(const EthDevice &device)
 {
     QModelIndex index = findDevice(device.m_interfaceName);
     if (index.isValid()) {
-         EthDevice& ethDevice = m_data[ index.row() ];
-
+        setData(index, device.m_carrier, CarrierRole);
+        setData(index, device.m_interfaceMissing, InterfaceMissingRole);
+        setData(index, device.m_MTU, MTURole);
+        setData(index, device.m_MAC, MACRole);
+        setData(index, device.m_IP, IPRole);
+        setData(index, device.m_netmask, NetMaskRole);
+        setData(index, device.m_theme, UpdateIntervalRole);
     }else{
         beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
         m_data.append(device);
