@@ -37,6 +37,8 @@ Manually building KNetStats requires Git and the following packages to be instal
 ```bash
 # Clone and enter this repository
 $ git clone https://github.com/telans/KNetStats && cd KNetStats
+# Add git submodule
+$ git submodule update --init
  
 # Configure and build the program
 $ cmake -B build

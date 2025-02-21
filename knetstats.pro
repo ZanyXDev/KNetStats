@@ -27,19 +27,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
         src/backend.h \
-        src/devicestatistic.h \
-        src/hal.h
+        src/datamanager.h \
+        src/devicemodel.h \
+        src/ethdevice.h \
+        src/messagereciver.h
 
 SOURCES += \
             src/backend.cpp \
-            src/devicestatistic.cpp \
-            src/hal.cpp \
-            src/main.cpp
+            src/datamanager.cpp \
+            src/devicemodel.cpp \
+            src/main.cpp \
+            src/messagereciver.cpp
 RESOURCES += \
         images.qrc \
         qml.qrc \
         fonts.qrc #i18n.qrc
 
+#add https://github.com/itay-grudev/SingleApplication
+include(3rdparty/singleapplication/singleapplication.pri)
+DEFINES += QAPPLICATION_CLASS=QApplication
 
 #Мне удалось решить  проблему автоматической регистрации QML_ELEMENT,
 #добавив мою исходную папку в файл .pro:
@@ -73,6 +79,15 @@ bump_version{
     system($$PWD/tools/ci/bump_ver.sh)
 }
 
+DISTFILES += \
+  tips_and_tricks.md
 
+message( Config: $$CONFIG )
+message( Libs: $$LIBS )
+message( Defines: $$DEFINES )
+message( Resources: $$RESOURCES )
+message( Object dir: $$OBJECTS_DIR )
+unix: message( CXX flags: $$QMAKE_CXXFLAGS )
+message( QT Plugins: $$QTPLUGIN )
 
 

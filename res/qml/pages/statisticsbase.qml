@@ -1,12 +1,14 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15 as QQC2
 import QtCharts 2.15
+import QtQuick.Layouts 1.15
 
 import common 1.0
 import io.github.zanyxdev.knetstats 1.0
+import io.github.zanyxdev.knetstats.DataManager 1.0
 
 QQC2.Page {
-    id:root
+    id: root
     property bool eggPage: false
     // Property thats used for sizing/margins/layout
     QtObject {
@@ -17,32 +19,44 @@ QQC2.Page {
         readonly property int spacing: 8
         readonly property int spacing_x3: 3 * __p.spacing
         readonly property int cell_size: 64
-
     }
     Component.onCompleted: {
         AppSingleton.toLog(`StatisticBase page [${root.height}h,${root.width}w]`)
-
     }
     background: {
         null
     }
 
-    QQC2.Button{
-        id:tst
-        //anchors.top:chartView.bottom
-        text: qsTr("Press Me")
-        onClicked: {
-            backend.userName = "text"
+    RowLayout{
+        anchors.fill: parent
+        anchors.margins: __p.safe_padding
+        ListView{
+            id: listView
+            // anchors.fill: parent
+
+            model: DataManager.interfaceNameModel
+            delegate:Text {
+                text: modelData
+                color: "blue"
+            }
+        }
+        QQC2.Button {
+            id: tst1
+
+            text: qsTr("Refresh")
+            onClicked: {
+                DataManager.refreshInterfaces()
+            }
+        }
+        QQC2.Button {
+            id: tst2
+
+            //anchors.top:chartView.bottom
+            text: qsTr("Press Me")
+            onClicked: {
+                Qt.quit()
+            }
         }
     }
 
-    QQC2.Label{
-        id:tstLabel
-        anchors.top:tst.bottom
-        text:  qsTr("Speed KB/s")
-    }
-
-    BackEnd {
-        id: backend
-    }
 }
