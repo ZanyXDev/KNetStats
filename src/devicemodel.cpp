@@ -15,6 +15,7 @@ QHash<int, QByteArray> DeviceModel::roleNames() const
     roles[InterfaceNameRole]="interfacename";
     roles[SysDevPathRole]="sysdevpath";
     roles[CarrierRole]="carrier";
+    roles[InterfaceMissingRole]="interfacemissing";
     roles[MTURole]="mtu";
     roles[MACRole]="mac";
     roles[IPRole]="ip";
@@ -63,6 +64,8 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         return ethDevice.m_sysDevPath;
     case CarrierRole:
         return ethDevice.m_carrier;
+    case InterfaceMissingRole:
+        return ethDevice.m_interfaceMissing;
     case MTURole:
         return ethDevice.m_MTU;
     case MACRole:
@@ -133,7 +136,12 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         flag = value.canConvert<bool>();
         if (flag)
             ethDevice.m_carrier = value.toBool();
-        break;        
+        break;
+    case InterfaceMissingRole:
+        flag = value.canConvert<bool>();
+        if (flag)
+            ethDevice.m_interfaceMissing = value.toBool();
+        break;
     case MTURole:
         flag = value.canConvert<int>();
         if (flag)
@@ -238,7 +246,7 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         flag = false;
     }
 
-    if (flag) emit dataChanged(index, index);
+    if (flag) emit dataChanged(index, index); // Always dataChanged first column in row. is is valid ???
 
     return flag;
 }
@@ -359,9 +367,20 @@ void DeviceModel::addDevice(const EthDevice &device)
     if (existingIndex.isValid()) {
         removeDevice(existingIndex);
     }
-    beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-    m_data.append(device);
-    endInsertRows();
+    updateDevice( device );
+}
+
+void DeviceModel::updateDevice(const EthDevice &device)
+{
+    QModelIndex index = findDevice(device.m_interfaceName);
+    if (index.isValid()) {
+         EthDevice& ethDevice = m_data[ index.row() ];
+
+    }else{
+        beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
+        m_data.append(device);
+        endInsertRows();
+    }
 }
 
 

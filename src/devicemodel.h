@@ -17,6 +17,7 @@ public:
         InterfaceNameRole = Qt::UserRole + 1,
         SysDevPathRole,
         CarrierRole,
+        InterfaceMissingRole,
         MTURole,
         MACRole,
         IPRole,
@@ -65,6 +66,7 @@ public:
 
 public slots:
     void addDevice(const EthDevice &device);
+    void updateDevice(const EthDevice &device);
 private:        
     QVector<EthDevice> m_data;
     QStringList m_interfaceList;
