@@ -12,7 +12,9 @@ class DataManager : public QObject
     //Q_PROPERTY(QStringList interfaceNameModel MEMBER m_interfaceNameModel NOTIFY interfaceNameModelChanged)
 public:
     explicit DataManager(QObject *parent = nullptr);
+    ~DataManager();
     Q_INVOKABLE void refreshInterfaces();
+    Q_INVOKABLE bool loadSettings(const  QString &appConfigDir);
 signals:
     void interfaceNameModelChanged();
     void showMessageInSysTray(const QString &message);

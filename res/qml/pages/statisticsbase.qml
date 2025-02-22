@@ -54,6 +54,7 @@ QQC2.Page {
             //anchors.top:chartView.bottom
             text: qsTr("Press Me")
             onClicked: {
+                console.trace()
                 Qt.quit()
             }
         }

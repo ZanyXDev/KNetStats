@@ -8,6 +8,11 @@ DataManager::DataManager(QObject *parent)
 
 }
 
+DataManager::~DataManager()
+{
+ qDebug() << Q_FUNC_INFO;
+}
+
 void DataManager::refreshInterfaces()
 {    
     QStringList realInterfaceList;
@@ -56,6 +61,11 @@ void DataManager::refreshInterfaces()
             emit showMessageInSysTray( msg.arg(item).arg(tr("updated")));
         }
     }
+}
+
+bool DataManager::loadSettings(const QString &appConfigDir)
+{
+    return false;
 }
 
 bool DataManager::fillDevice(const QString &interfaceName, EthDevice &m_device)

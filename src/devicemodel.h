@@ -11,7 +11,8 @@ class DeviceModel : public QAbstractItemModel
     Q_OBJECT
 public:
 
-    explicit DeviceModel(QObject *parent = nullptr);      
+    explicit DeviceModel(QObject *parent = nullptr);
+    ~DeviceModel();
 
     enum Roles {        
         InterfaceNameRole = Qt::UserRole + 1,

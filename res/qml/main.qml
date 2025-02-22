@@ -4,161 +4,143 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15 as QQC2
 import QtGraphicalEffects 1.15
 import Qt.labs.platform 1.1
-import Qt.labs.settings 1.1
 
 import common 1.0
 import pages 1.0
 import io.github.zanyxdev.knetstats 1.0
 import io.github.zanyxdev.knetstats.MessageReciver 1.0
-
+import io.github.zanyxdev.knetstats.DataManager 1.0
 
 QQC2.ApplicationWindow {
-  id: appWnd
-  // ----- Property Declarations
+    id: appWnd
+    // ----- Property Declarations
 
-  // Required properties should be at the top.
-  readonly property int screenOrientation: Qt.LandscapeOrientation
-  readonly property bool appInForeground: Qt.application.state === Qt.ApplicationActive
+    // Required properties should be at the top.
+    readonly property int screenOrientation: Qt.LandscapeOrientation
+    readonly property bool appInForeground: Qt.application.state === Qt.ApplicationActive
 
-  property bool appInitialized: false
-  property bool needSetup: true
-  property int themeIcon: 1
-  property var screenWidth: Screen.width
-  property var screenHeight: Screen.height
-  property var screenAvailableWidth: Screen.desktopAvailableWidth
-  property var screenAvailableHeight: Screen.desktopAvailableHeight
+    property bool appInitialized: false
+    property bool needSetup//: DataManager.loadSettings( dirAppConfig )
+    property int themeIcon: 1
+    property var screenWidth: Screen.width
+    property var screenHeight: Screen.height
+    property var screenAvailableWidth: Screen.desktopAvailableWidth
+    property var screenAvailableHeight: Screen.desktopAvailableHeight
 
-  property string message: MessageReciver.message
-  // ----- Signal declarations
-  signal screenOrientationUpdated(int screenOrientation)
+    property string message: MessageReciver.message
+    // ----- Signal declarations
+    signal screenOrientationUpdated(int screenOrientation)
 
-  // ----- Size information
-  width: 640
-  height: 480
-  maximumHeight: height
-  maximumWidth: width
+    // ----- Size information
+    width: 640
+    height: 480
+    maximumHeight: height
+    maximumWidth: width
 
-  minimumHeight: height
-  minimumWidth: width
-  // ----- Then comes the other properties. There's no predefined order to these.
-  visible: true
-  visibility: Window.Windowed
-
-  // ----- Then attached properties and attached signal handlers.
-
-  // ----- Signal handlers
-  Component.onCompleted: {
-    let infoMsg = `Screen.height[${Screen.height}], Screen.width[${Screen.width}]
-    Screen [height ${height},width ${width}]
-    Available physical screens [${Qt.application.screens.length}]
-    Available Resolution width: ${Screen.desktopAvailableWidth} height ${Screen.desktopAvailableHeight}
-    `
-    AppSingleton.toLog(infoMsg)
-
-    appWnd.restoreSettings()
-  }
-  onClosing: {
-    console.trace()
-  }
-  onAppInForegroundChanged: {
-    if (appInForeground) {
-      if (!appInitialized) {
-        appInitialized = true
-      }
-    } else {
-      if (isDebugMode)
-        AppSingleton.toLog(
-              `appInForeground: [${appInForeground} , appInitialized: ${appInitialized}]`)
-    }
-  }
-  onMessageChanged: {
-    console.log(`recive msg ${message}`)
-    sysTrayIcon.showMessage(qsTr("recive msg"), message, 3000)
-  }
-  background: {
-    null
-  }
-
-  // ----- Connections
-
-  // ----- Visual children
-  Loader {
-    id: loader
-
-    anchors.fill: parent
-    anchors.topMargin: 4
-    Component.onCompleted: {
-      if (isDebugMode) {
-        sysTrayIcon.showMessage(qsTr("statisticsbase.qml"), appWnd.toolTipsText)
-        setSource("qrc:/res/qml/pages/statisticsbase.qml", {
-                    "opacity": 0.9,
-                    "eggPage": true
-                  })
-      } else {
-        appWnd.needSetup ? setSource("qrc:/res/qml/pages/configurebase.qml", {
-                                       "opacity": 0.9
-                                     }) : setSource(
-                             "qrc:/res/qml/pages/statisticsbase.qml", {
-                               "opacity": 0.9
-                             })
-      }
-    }
-  }
-
-  SystemTrayIcon {
-    id: sysTrayIcon
+    minimumHeight: height
+    minimumWidth: width
+    // ----- Then comes the other properties. There's no predefined order to these.
     visible: true
+    visibility: Window.Windowed
 
-    icon.source: appWnd.needSetup ? "qrc:/res/img/interfaces_missing.png" : "qrc:/res/img/theme"
-                                    + appWnd.themeIcon + "_both.png"
+    // ----- Then attached properties and attached signal handlers.
+
+    // ----- Signal handlers
     Component.onCompleted: {
-      if (!isDebugMode) {
-        (appWnd.needSetup) ? appWnd.showAppWindow() : appWnd.hide()
-        showMessage(qsTr("KNetStats"), appWnd.toolTipsText)
-      }
+        let infoMsg = `Screen.height[${Screen.height}], Screen.width[${Screen.width}]
+        Screen [height ${height},width ${width}]
+        Available physical screens [${Qt.application.screens.length}]
+        Available Resolution width: ${Screen.desktopAvailableWidth} height ${Screen.desktopAvailableHeight}
+        `
+        AppSingleton.toLog(infoMsg)
     }
-    menu: Menu {
-      MenuItem {
-        enabled: appWnd.needSetup
-        text: qsTr("Configure Interfaces")
-        onTriggered: appWnd.needSetup = false
-      }
-      MenuItem {
-        text: qsTr("Quit")
-        onTriggered: {
-          console.log(backend.userName)
-          //backend.setCurrentDevName(dirAppData + "/devices.json")
-          Qt.quit()
+    onClosing: {
+        console.trace()
+    }
+    onAppInForegroundChanged: {
+        if (appInForeground) {
+            if (!appInitialized) {
+                appInitialized = true
+            }
+        } else {
+            if (isDebugMode)
+                AppSingleton.toLog(
+                            `appInForeground: [${appInForeground} , appInitialized: ${appInitialized}]`)
         }
-      }
     }
-    onActivated: appWnd.showAppWindow()
-  }
-  //  ----- non visual children
-  BackEnd {
-    id: backend
-    Component.onCompleted: {
-      backend.loadFromJson(dirAppData + "/devices.json")
+    onMessageChanged: {
+        console.log(`recive msg ${message}`)
+        sysTrayIcon.showMessage(qsTr("recive msg"), message, 3000)
     }
-  }
+    background: {
+        null
+    }
 
+    // ----- Connections
 
-  Settings {
-    id: mSettings
-    //fileName: dirAppConfig + "/app.conf"
-    category: "Settings"
-    property alias needSetup: appWnd.needSetup
-    property alias themeIcon: appWnd.themeIcon
-  }
-  // ----- JavaScript functions
-  function restoreSettings() {
-    appWnd.needSetup = mSettings.needSetup
-    appWnd.themeIcon = mSettings.themeIcon
-  }
+    // ----- Visual children
+    Loader {
+        id: loader
 
-  function showAppWindow() {
-    appWnd.show()
-    appWnd.raise()
-    appWnd.requestActivate()
-  }
+        anchors.fill: parent
+        anchors.topMargin: 4
+        Component.onCompleted: {
+            //sysTrayIcon.showMessage(qsTr("statisticsbase.qml"), appWnd.toolTipsText)
+            appWnd.needSetup ? setSource("qrc:/res/qml/pages/configurebase.qml", {
+                                             "opacity": 0.9
+                                         }) : setSource(
+                                   "qrc:/res/qml/pages/statisticsbase.qml", {
+                                       "opacity": 0.9
+                                   })
+
+        }
+    }
+
+    SystemTrayIcon {
+        id: sysTrayIcon
+        visible: true
+
+        icon.source: appWnd.needSetup ? "qrc:/res/img/interfaces_missing.png" : "qrc:/res/img/theme"
+                                        + appWnd.themeIcon + "_both.png"
+        Component.onCompleted: {
+            if (!isDebugMode) {
+                (appWnd.needSetup) ? appWnd.showAppWindow() : appWnd.hide()
+                showMessage(qsTr("KNetStats"), appWnd.toolTipsText)
+            }
+        }
+        menu: Menu {
+            MenuItem {
+                enabled: appWnd.needSetup
+                text: qsTr("Configure Interfaces")
+                onTriggered: appWnd.needSetup = false
+            }
+            MenuItem {
+                text: qsTr("Quit")
+                onTriggered: {
+                    console.trace()
+                    //backend.setCurrentDevName(dirAppData + "/devices.json")
+                    Qt.quit()
+                }
+            }
+        }
+        onActivated: appWnd.showAppWindow()
+    }
+    //  ----- non visual children
+    BackEnd {
+        id: backend
+        Component.onCompleted: {
+            backend.loadFromJson(dirAppData + "/devices.json")
+        }
+    }
+
+    // ----- JavaScript functions
+    function moveToCenter() {
+        appWnd.y = (screenAvailableHeight / 2) - (height / 2)
+        appWnd.x = (screenAvailableWidth / 2) - (width / 2)
+    }
+    function showAppWindow() {
+        appWnd.show()
+        appWnd.raise()
+        appWnd.requestActivate()
+    }
 }

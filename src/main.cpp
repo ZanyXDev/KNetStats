@@ -47,6 +47,10 @@ int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
     app.setQuitOnLastWindowClosed(false); // prevent app from closing, when closing dialog message
+
+    QObject::connect(&app, &QApplication::aboutToQuit,
+                     m_msgReciver.get(),&MessageReciver::aboutToQuit);
+
     // Separate single instance object (that allows secondary instances)
     SingleApplication single_instance_guard( argc, argv, true );
 

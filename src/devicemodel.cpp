@@ -8,6 +8,11 @@ DeviceModel::DeviceModel(QObject *parent)
     : QAbstractItemModel{parent}
 {}
 
+DeviceModel::~DeviceModel()
+{
+ qDebug() << Q_FUNC_INFO;
+}
+
 QHash<int, QByteArray> DeviceModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
