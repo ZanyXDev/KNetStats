@@ -33,11 +33,12 @@ HEADERS += \
         src/messagereciver.h
 
 SOURCES += \
+            src/main.cpp \
             src/backend.cpp \
             src/datamanager.cpp \
             src/devicemodel.cpp \
-            src/main.cpp \
             src/messagereciver.cpp
+
 RESOURCES += \
         images.qrc \
         qml.qrc \
@@ -45,7 +46,7 @@ RESOURCES += \
 
 #add https://github.com/itay-grudev/SingleApplication
 include(3rdparty/singleapplication/singleapplication.pri)
-DEFINES += QAPPLICATION_CLASS=QApplication
+DEFINES += QAPPLICATION_CLASS=FreeStandingSingleApplication
 
 #Мне удалось решить  проблему автоматической регистрации QML_ELEMENT,
 #добавив мою исходную папку в файл .pro:
