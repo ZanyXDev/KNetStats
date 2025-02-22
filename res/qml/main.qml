@@ -20,7 +20,7 @@ QQC2.ApplicationWindow {
     readonly property bool appInForeground: Qt.application.state === Qt.ApplicationActive
 
     property bool appInitialized: false
-    property bool needSetup//: DataManager.loadSettings( dirAppConfig )
+    property bool needSetup: DataManager.loadSettings( dirAppConfig )
     property int themeIcon: 1
     property var screenWidth: Screen.width
     property var screenHeight: Screen.height
@@ -79,22 +79,38 @@ QQC2.ApplicationWindow {
     // ----- Connections
 
     // ----- Visual children
-    Loader {
-        id: loader
-
+    Rectangle{
         anchors.fill: parent
         anchors.topMargin: 4
-        Component.onCompleted: {
-            //sysTrayIcon.showMessage(qsTr("statisticsbase.qml"), appWnd.toolTipsText)
-            appWnd.needSetup ? setSource("qrc:/res/qml/pages/configurebase.qml", {
-                                             "opacity": 0.9
-                                         }) : setSource(
-                                   "qrc:/res/qml/pages/statisticsbase.qml", {
-                                       "opacity": 0.9
-                                   })
+        color: "green"
+        QQC2.Button {
+            id: tst2
 
+            //anchors.top:chartView.bottom
+            text: qsTr("Press Me")
+            onClicked: {
+                console.trace()
+                Qt.quit()
+            }
         }
     }
+
+    // Loader {
+    //     id: loader
+
+    //     anchors.fill: parent
+    //     anchors.topMargin: 4
+    //     Component.onCompleted: {
+    //         //sysTrayIcon.showMessage(qsTr("statisticsbase.qml"), appWnd.toolTipsText)
+    //         appWnd.needSetup ? setSource("qrc:/res/qml/pages/configurebase.qml", {
+    //                                          "opacity": 0.9
+    //                                      }) : setSource(
+    //                                "qrc:/res/qml/pages/statisticsbase.qml", {
+    //                                    "opacity": 0.9
+    //                                })
+
+    //     }
+    // }
 
     SystemTrayIcon {
         id: sysTrayIcon
@@ -125,7 +141,7 @@ QQC2.ApplicationWindow {
         }
         onActivated: appWnd.showAppWindow()
     }
-    //  ----- non visual children
+    // ----- non visual children
     BackEnd {
         id: backend
         Component.onCompleted: {
