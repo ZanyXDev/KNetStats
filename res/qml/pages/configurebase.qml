@@ -37,70 +37,56 @@ QQC2.Page {
       id: interfaceList
       Layout.row: 0
       Layout.column: 0
-      Layout.columnSpan: 3
-      Layout.rowSpan: 4
+      Layout.columnSpan: 2
+      Layout.rowSpan: 6
       Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
       Layout.fillHeight: true
       Layout.fillWidth: true
-      Layout.preferredWidth: 3
-      Layout.preferredHeight: 5
+      Layout.preferredWidth: 2
+      Layout.preferredHeight: 6
       color: "green"
       opacity: 0.8
       //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
     }
     Rectangle {
       id: interfaceListRefresh
-      Layout.row: 4
+      Layout.row: 6
       Layout.column: 0
-      Layout.columnSpan: 3
+      Layout.columnSpan: 2
       Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
       Layout.fillHeight: true
       Layout.fillWidth: true
-      Layout.preferredWidth: 3
+      Layout.preferredWidth: 2
       Layout.preferredHeight: 1
       color: "brown"
       opacity: 0.8
       //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
     }
     Rectangle {
-      id: emptyBlock
-      Layout.row: 5
-      Layout.column: 0
-      Layout.columnSpan: 3
-      Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-      Layout.fillHeight: true
-      Layout.fillWidth: true
-      Layout.preferredWidth: 3
-      Layout.preferredHeight: 1
-      color: "darkgreen"
-      opacity: 0.8
-      //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
-    }
-    Rectangle {
       id: interfaceConfigurationGroup
       Layout.row: 0
-      Layout.column: 3
-      Layout.columnSpan: 5
-      Layout.rowSpan: 3
+      Layout.column: 2
+      Layout.columnSpan: 6
+      Layout.rowSpan: 4
       Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
       Layout.fillHeight: true
       Layout.fillWidth: true
-      Layout.preferredWidth: 5
-      Layout.preferredHeight: 3
+      Layout.preferredWidth: 6
+      Layout.preferredHeight: 4
       color: "yellow"
       opacity: 0.8
       //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
     }
     Rectangle {
       id: charApperanceGroup
-      Layout.row: 3
-      Layout.column: 3
-      Layout.columnSpan: 5
+      Layout.row: 4
+      Layout.column: 2
+      Layout.columnSpan: 6
       Layout.rowSpan: 2
       Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
       Layout.fillHeight: true
       Layout.fillWidth: true
-      Layout.preferredWidth: 5
+      Layout.preferredWidth: 6
       Layout.preferredHeight: 2
       color: "lightblue"
       opacity: 0.8
@@ -108,13 +94,13 @@ QQC2.Page {
     }
     Rectangle {
       id: buttonsBlock
-      Layout.row: 5
-      Layout.column: 3
-      Layout.columnSpan: 5
+      Layout.row: 6
+      Layout.column: 2
+      Layout.columnSpan: 6
       Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
       Layout.fillHeight: true
       Layout.fillWidth: true
-      Layout.preferredWidth: 5
+      Layout.preferredWidth: 6
       Layout.preferredHeight: 1
       color: "darkblue"
       opacity: 0.8
