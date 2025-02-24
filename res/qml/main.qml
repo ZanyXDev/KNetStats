@@ -20,7 +20,7 @@ QQC2.ApplicationWindow {
   readonly property bool appInForeground: Qt.application.state === Qt.ApplicationActive
 
   property bool appInitialized: false
-  property bool needSetup: DataManager.loadSettings(dirAppConfig)
+  property bool needSetup: false
   property int themeIcon: 1
   property var screenWidth: Screen.width
   property var screenHeight: Screen.height
@@ -32,8 +32,8 @@ QQC2.ApplicationWindow {
   signal screenOrientationUpdated(int screenOrientation)
 
   // ----- Size information
-  width: 640
-  height: 480
+  width: 800
+  height: 600
   maximumHeight: height
   maximumWidth: width
 
@@ -53,6 +53,7 @@ QQC2.ApplicationWindow {
     Available Resolution width: ${Screen.desktopAvailableWidth} height ${Screen.desktopAvailableHeight}
     `
     AppSingleton.toLog(infoMsg)
+    needSetup = !DataManager.loadSettings(dirAppConfig)
   }
   onVisibilityChanged: {
     updatePosition()
@@ -81,38 +82,34 @@ QQC2.ApplicationWindow {
   // Handle screen changes
 
   // ----- Visual children
-  Rectangle {
+  // Rectangle {
+  //   anchors.fill: parent
+  //   anchors.topMargin: 4
+  //   color: "green"
+  //   QQC2.Button {
+  //     id: tst2
+
+  //     //anchors.top:chartView.bottom
+  //     text: qsTr("Press Me")
+  //     onClicked: {
+  //       console.trace()
+  //       Qt.quit()
+  //     }
+  //   }
+  // }
+  Loader {
+    id: loader
     anchors.fill: parent
     anchors.topMargin: 4
-    color: "green"
-    QQC2.Button {
-      id: tst2
-
-      //anchors.top:chartView.bottom
-      text: qsTr("Press Me")
-      onClicked: {
-        console.trace()
-        Qt.quit()
-      }
+    Component.onCompleted: {
+      appWnd.needSetup ? setSource("qrc:/res/qml/pages/configurebase.qml", {
+                                     "opacity": 0.9
+                                   }) : setSource(
+                           "qrc:/res/qml/pages/statisticsbase.qml", {
+                             "opacity": 0.9
+                           })
     }
   }
-
-  // Loader {
-  //     id: loader
-
-  //     anchors.fill: parent
-  //     anchors.topMargin: 4
-  //     Component.onCompleted: {
-  //         //sysTrayIcon.showMessage(qsTr("statisticsbase.qml"), appWnd.toolTipsText)
-  //         appWnd.needSetup ? setSource("qrc:/res/qml/pages/configurebase.qml", {
-  //                                          "opacity": 0.9
-  //                                      }) : setSource(
-  //                                "qrc:/res/qml/pages/statisticsbase.qml", {
-  //                                    "opacity": 0.9
-  //                                })
-
-  //     }
-  // }
   //Another place in your code
   //sysTray.showMessage(title, message, SystemTrayIcon.Information, 1000)
   SystemTrayIcon {
@@ -122,7 +119,7 @@ QQC2.ApplicationWindow {
     icon.source: appWnd.needSetup ? "qrc:/res/img/interfaces_missing.png" : "qrc:/res/img/theme"
                                     + appWnd.themeIcon + "_both.png"
     Component.onCompleted: {
-      (!appWnd.needSetup) ? appWnd.showAppWindow() : appWnd.hide()
+      appWnd.needSetup ? appWnd.showAppWindow() : appWnd.hide()
 
       showMessage(qsTr("KNetStats"), qsTr("Need setup interfaces!"),
                   SystemTrayIcon.Warning, 3000)
