@@ -1,12 +1,12 @@
 #pragma once
 
-#include <QAbstractItemModel>
+#include <QAbstractListModel>
 #include <QObject>
 #include <QColor>
 #include <QStringList>
 #include "ethdevice.h"
 
-class DeviceModel : public QAbstractItemModel
+class DeviceModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
