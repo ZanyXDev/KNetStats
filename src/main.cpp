@@ -24,7 +24,7 @@
 
 #include <singleapplication.h>
 #include "messagereciver.h"
-#include "datamanager.h"
+//#include "datamanager.h"
 
 int main(int argc, char *argv[]) {
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 
     // Allocate [MessageReciver] before the engine to ensure that it outlives it !!
     QScopedPointer<MessageReciver>m_msgReciver(new MessageReciver);
-    QScopedPointer<DataManager>m_dataManager(new DataManager);
+   // QScopedPointer<DataManager>m_dataManager(new DataManager);
 
     QApplication app(argc, argv);
     app.setQuitOnLastWindowClosed(false); // prevent app from closing, when closing dialog message
@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
     // Register the singleton type provider with QML by calling this
     // function in an initialization function.
     qmlRegisterSingletonInstance("io.github.zanyxdev.knetstats.MessageReciver", 1, 0,"MessageReciver", m_msgReciver.get());
-    qmlRegisterSingletonInstance("io.github.zanyxdev.knetstats.DataManager", 1, 0,"DataManager", m_dataManager.get());
+   // qmlRegisterSingletonInstance("io.github.zanyxdev.knetstats.DataManager", 1, 0,"DataManager", m_dataManager.get());
     engine.load(url);
     return app.exec();
 }

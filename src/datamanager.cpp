@@ -4,17 +4,23 @@
 
 DataManager::DataManager(QObject *parent)
     : QObject{parent}
+    , m_deviceModel(new DeviceModel(this))
 {
 
 }
 
 DataManager::~DataManager()
 {
- qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
+    if (m_deviceModel)
+        delete m_deviceModel;
 }
 
 void DataManager::refreshInterfaces()
-{    
+{
+    if (!m_deviceModel)
+        return;
+
     QStringList realInterfaceList;
 
     auto interfaces = QNetworkInterface::allInterfaces();
@@ -22,7 +28,7 @@ void DataManager::refreshInterfaces()
         realInterfaceList.append( it.name() );
     }
 
-    QStringList modelInterfaceList = m_deviceModel.getInterfaceList();
+    QStringList modelInterfaceList = m_deviceModel->getInterfaceList();
     // Преобразуем списки в множества
     QSet<QString> setFromReal(realInterfaceList.begin(),realInterfaceList.end());
     QSet<QString> setFromModel(modelInterfaceList.begin(),modelInterfaceList.end());
@@ -43,13 +49,13 @@ void DataManager::refreshInterfaces()
 
     for (const QString& item : onlyInModel) {
         emit showMessageInSysTray( msg.arg(item).arg(tr("removed")));
-        m_deviceModel.removeDevice( item );
+        m_deviceModel->removeDevice( item );
     }
 
     for (const QString& item : onlyInReal) {
         EthDevice ethDevice;
         if (fillDevice(item, ethDevice)){
-            m_deviceModel.addDevice( ethDevice );
+            m_deviceModel->addDevice( ethDevice );
             emit showMessageInSysTray( msg.arg(item).arg(tr("added")));
         }
     }
@@ -57,7 +63,7 @@ void DataManager::refreshInterfaces()
     for (const QString& item : common) {
         EthDevice ethDevice;
         if (fillDevice(item, ethDevice)){
-            m_deviceModel.updateDevice( ethDevice );
+            m_deviceModel->updateDevice( ethDevice );
             emit showMessageInSysTray( msg.arg(item).arg(tr("updated")));
         }
     }
@@ -127,5 +133,3 @@ bool DataManager::fillDevice(const QString &interfaceName, EthDevice &m_device)
 
     return true;
 }
-
-
