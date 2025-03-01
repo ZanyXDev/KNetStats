@@ -113,7 +113,8 @@ bool DataManager::fillDevice(const QString &interfaceName, EthDevice &m_device)
 
     // Определяем тему на основе типа интерфейса
     m_device.m_theme = (interface.type() == QNetworkInterface::Wifi) ? 0 : 1;
-
+    m_device.m_cardType = (interface.type() == QNetworkInterface::Wifi) ? false : true;
+    qDebug()<<  "    m_device.m_cardType " <<    m_device.m_cardType ;
     // Обработка IP и маски сети
     if (interface.flags() & QNetworkInterface::IsRunning) {
         QStringList ipAddresses;

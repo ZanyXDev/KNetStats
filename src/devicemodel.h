@@ -27,6 +27,7 @@ public:
         MonitoringRole,
         NotificationsRole,
         ThemeRole,
+        CardTypeRole,
         ChartUplColorRole,
         ChartDldColorRole,
         ChartBgColorRole,

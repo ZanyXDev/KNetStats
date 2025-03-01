@@ -29,6 +29,7 @@ QHash<int, QByteArray> DeviceModel::roleNames() const
     roles[MonitoringRole]="monitoring";
     roles[NotificationsRole]="notification";
     roles[ThemeRole]="theme";
+    roles[CardTypeRole]="cardtype";
     roles[ChartUplColorRole]="chartuplcolor";
     roles[ChartDldColorRole]="chartdldcolor";
     roles[ChartBgColorRole]="chartbgcolor";
@@ -87,6 +88,8 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         return ethDevice.m_notifications;
     case ThemeRole:
         return ethDevice.m_theme;
+    case CardTypeRole:
+        return ethDevice.m_cardType;
     case ChartUplColorRole:
         return ethDevice.m_chartUplColor;
     case ChartDldColorRole:
@@ -186,6 +189,11 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         flag = value.canConvert<int>();
         if (flag)
             ethDevice.m_theme = value.toInt();
+        break;        
+    case CardTypeRole:
+        flag = value.canConvert<bool>();
+        if (flag)
+            ethDevice.m_cardType = value.toBool();
         break;
     case ChartUplColorRole:
         flag = value.canConvert<uint>();
@@ -385,7 +393,8 @@ void DeviceModel::updateDevice(const EthDevice &device)
         setData(index, device.m_MAC, MACRole);
         setData(index, device.m_IP, IPRole);
         setData(index, device.m_netmask, NetMaskRole);
-        setData(index, device.m_theme, UpdateIntervalRole);
+        setData(index, device.m_theme, ThemeRole);
+        setData(index, device.m_cardType, CardTypeRole);
     }else{
         beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
         m_data.append(device);

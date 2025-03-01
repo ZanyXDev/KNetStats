@@ -20,6 +20,7 @@ struct EthDevice {
     bool m_notifications{false};
     // icon view
     int m_theme{0};
+    bool m_cardType{false};
     // chart view
     uint m_chartUplColor{0}; // save and restore QColor.rgba() and QColor::fromRgba(value.toUInt());
     uint m_chartDldColor{0};
