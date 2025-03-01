@@ -75,42 +75,12 @@ QQC2.ApplicationWindow {
         console.log(`recive msg ${message}`)
         sysTrayIcon.showMessage(qsTr("recive msg"), message, 3000)
     }
+    // ----- Connections
+
+    // ----- Visual items
     background: {
         null
     }
-
-    // ----- Connections
-
-    // ----- Visual children
-    // Rectangle {
-    //     anchors.fill: parent
-    //     anchors.topMargin: 4
-    //     color: "grey"
-    //     ListView{
-    //         id:view
-    //         anchors.fill: parent
-    //         model:dataManager.deviceModel
-    //         delegate: Rectangle{
-    //             implicitHeight:14
-
-    //             width: parent.width
-    //             color: "red"
-    //             Text {
-    //                 id: test
-    //                 text: model.interfacename
-    //             }
-    //         }
-    //         Component.onCompleted: {
-    //             dataManager.refreshInterfaces()
-    //             console.trace()
-    //             AppSingleton.toLog(` model [${model}]`)
-    //             AppSingleton.toLog(` dataManager.deviceModel [${dataManager.deviceModel}]`)
-    //         }
-    //     }
-
-
-    // }
-
 
     Loader {
         id: loader
@@ -122,12 +92,12 @@ QQC2.ApplicationWindow {
 
         }
     }
-    //Another place in your code
-    //sysTray.showMessage(title, message, SystemTrayIcon.Information, 1000)
+
     SystemTrayIcon {
         id: sysTrayIcon
         visible: true
-
+        //Another place in your code
+        //sysTray.showMessage(title, message, SystemTrayIcon.Information, 1000)
         icon.source: appWnd.needSetup ? "qrc:/res/img/interfaces_missing.png" : "qrc:/res/img/theme"
                                         + appWnd.themeIcon + "_both.png"
         Component.onCompleted: {
@@ -163,6 +133,9 @@ QQC2.ApplicationWindow {
 
     DataManager{
         id:dataManager
+        Component.onCompleted: {
+            dataManager.refreshInterfaces()
+        }
     }
 
     // ----- JavaScript functions
