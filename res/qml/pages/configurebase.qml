@@ -1,12 +1,15 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15 as QQC2
 import QtQuick.Layouts 1.15
+import QtGraphicalEffects 1.0
 
 import common 1.0
+import ui_items 1.0
 
 QQC2.Page {
     id: root
 
+    readonly property bool _small_width: AppSingleton.is_width_small(parent.width)
     // Property thats used for sizing/margins/layout
     QtObject {
         id: __p
@@ -20,7 +23,7 @@ QQC2.Page {
     // ----- Signal handlers
     Component.onCompleted: {
         AppSingleton.toLog(`ConfigureBase page [${root.height}h,${root.width}w]`)
-        AppSingleton.toLog(`dataManager.deviceModel [${dataManager.deviceModel}]`)       
+        AppSingleton.toLog(`dataManager.deviceModel [${dataManager.deviceModel}]`)
     }
     background: {
         null
@@ -35,8 +38,7 @@ QQC2.Page {
         columns: 8
         rows: 6
 
-        Rectangle {
-            id: interfaceList
+        Item {
             Layout.row: 0
             Layout.column: 0
             Layout.columnSpan: 2
@@ -46,9 +48,15 @@ QQC2.Page {
             Layout.fillWidth: true
             Layout.preferredWidth: 2
             Layout.preferredHeight: 6
-            color: "green"
-            opacity: 0.8
-            //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
+
+            DeviceListView{
+                id: interfaceList
+                anchors.fill: parent
+                model:dataManager.deviceModel
+                headerText:qsTr("Devices")
+                spacing:(_small_width) ? __p.padding_amount_2x : __p.padding_amount
+            }
+
         }
         Rectangle {
             id: interfaceListRefresh
