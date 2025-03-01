@@ -9,5 +9,7 @@
         <file>res/qml/pages/configurebase.qml</file>
         <file>res/qml/pages/qmldir</file>
         <file>res/qml/pages/statisticsbase.qml</file>
+        <file>res/qml/ui_items/qmldir</file>
+        <file>res/qml/ui_items/dev_listview.qml</file>
     </qresource>
 </RCC>
