@@ -27,37 +27,6 @@ QQC2.Page {
         null
     }
 
-    RowLayout{
-        anchors.fill: parent
-        anchors.margins: __p.safe_padding
-        ListView{
-            id: listView
-            // anchors.fill: parent
 
-            model: DataManager.interfaceNameModel
-            delegate:Text {
-                text: modelData
-                color: "blue"
-            }
-        }
-        QQC2.Button {
-            id: tst1
-
-            text: qsTr("Refresh")
-            onClicked: {
-                DataManager.refreshInterfaces()
-            }
-        }
-        QQC2.Button {
-            id: tst2
-
-            //anchors.top:chartView.bottom
-            text: qsTr("Press Me")
-            onClicked: {
-                console.trace()
-                Qt.quit()
-            }
-        }
-    }
 
 }
