@@ -1,31 +1,39 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource>
-    <file>res/img/interfaces_missing.png</file>
-    <file>res/img/icon_pci.png</file>
-    <file>res/img/theme0_both.png</file>
-    <file>res/img/theme0_error.png</file>
-    <file>res/img/theme0_none.png</file>
-    <file>res/img/theme0_rx.png</file>
-    <file>res/img/theme0_tx.png</file>
-    <file>res/img/theme1_both.png</file>
-    <file>res/img/theme1_error.png</file>
-    <file>res/img/theme1_none.png</file>
-    <file>res/img/theme1_rx.png</file>
-    <file>res/img/theme1_tx.png</file>
-    <file>res/img/theme2_both.png</file>
-    <file>res/img/theme2_error.png</file>
-    <file>res/img/theme2_none.png</file>
-    <file>res/img/theme2_rx.png</file>
-    <file>res/img/theme2_tx.png</file>
-    <file>res/img/theme3_both.png</file>
-    <file>res/img/theme3_error.png</file>
-    <file>res/img/theme3_none.png</file>
-    <file>res/img/theme3_rx.png</file>
-    <file>res/img/theme3_tx.png</file>
-    <file>res/img/theme4_both.png</file>
-    <file>res/img/theme4_error.png</file>
-    <file>res/img/theme4_none.png</file>
-    <file>res/img/theme4_rx.png</file>
-    <file>res/img/theme4_tx.png</file>
-</qresource>
+<RCC>
+    <qresource prefix="/">
+        <file>res/img/interfaces_missing.png</file>
+        <file>res/img/icon_pci.png</file>
+        <file>res/img/theme0_both.png</file>
+        <file>res/img/theme0_error.png</file>
+        <file>res/img/theme0_none.png</file>
+        <file>res/img/theme0_rx.png</file>
+        <file>res/img/theme0_tx.png</file>
+        <file>res/img/theme1_both.png</file>
+        <file>res/img/theme1_error.png</file>
+        <file>res/img/theme1_none.png</file>
+        <file>res/img/theme1_rx.png</file>
+        <file>res/img/theme1_tx.png</file>
+        <file>res/img/theme2_both.png</file>
+        <file>res/img/theme2_error.png</file>
+        <file>res/img/theme2_none.png</file>
+        <file>res/img/theme2_rx.png</file>
+        <file>res/img/theme2_tx.png</file>
+        <file>res/img/theme3_both.png</file>
+        <file>res/img/theme3_error.png</file>
+        <file>res/img/theme3_none.png</file>
+        <file>res/img/theme3_rx.png</file>
+        <file>res/img/theme3_tx.png</file>
+        <file>res/img/theme4_both.png</file>
+        <file>res/img/theme4_error.png</file>
+        <file>res/img/theme4_none.png</file>
+        <file>res/img/theme4_rx.png</file>
+        <file>res/img/theme4_tx.png</file>
+        <file alias="network-wired.svg">3rdparty/tango-icon-theme-0.8.90/scalable/devices/network-wired.svg</file>
+        <file alias="network-wireless.svg">3rdparty/tango-icon-theme-0.8.90/scalable/devices/network-wireless.svg</file>
+        <file alias="network-error.svg">3rdparty/tango-icon-theme-0.8.90/scalable/status/network-error.svg</file>
+        <file alias="network-idle.svg">3rdparty/tango-icon-theme-0.8.90/scalable/status/network-idle.svg</file>
+        <file alias="network-offline.svg">3rdparty/tango-icon-theme-0.8.90/scalable/status/network-offline.svg</file>
+        <file alias="network-receive.svg">3rdparty/tango-icon-theme-0.8.90/scalable/status/network-receive.svg</file>
+        <file alias="network-transmit-receive.svg">3rdparty/tango-icon-theme-0.8.90/scalable/status/network-transmit-receive.svg</file>
+        <file alias="network-transmit.svg">3rdparty/tango-icon-theme-0.8.90/scalable/status/network-transmit.svg</file>
+    </qresource>
 </RCC>
