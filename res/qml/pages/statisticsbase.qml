@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.15
 
 import common 1.0
 import io.github.zanyxdev.knetstats 1.0
-import io.github.zanyxdev.knetstats.DataManager 1.0
+
 
 QQC2.Page {
     id: root
