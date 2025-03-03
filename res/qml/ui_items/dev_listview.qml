@@ -3,28 +3,43 @@ import QtQuick.Controls 2.15 as QQC2
 import QtQuick.Layouts 1.15
 import common 1.0
 
-Item{
+FocusScope{
     id:root
 
     property alias model:listView.model
+    readonly property alias index: listView.currentIndex
     property string headerText
     property color textHeaderColor: "yellow"
     property color textItemColor: "black"
     property color backgroundHeaderColor: "darkblue"
-    property color backgroundItemColor: "darkgrey"
+    property color backgroundItemColor: "lightgrey"
     property color borderColor: "blue"
+    property color highlightColor: "lightblue"
     property int deviceType
     property int spacing
+
     ListView{
         id: listView
-        currentIndex: 1
-        onCurrentIndexChanged: { console.log("currentIndex changed") }
+
         anchors.fill: parent
         spacing:  root.spacing
+        highlightFollowsCurrentItem: true
+        clip:true
+        focus: true
+        keyNavigationEnabled: true // Enable key up and key down
+
         delegate: deviceDelegate
         header: headerComponent
         highlight: highlightComponent
-        //footer: footerComponent
+
+        QQC2.ScrollBar.vertical: QQC2.ScrollBar {
+            policy:listView.contentHeight > listView.height ?
+                       QQC2.ScrollBar.AlwaysOn : QQC2.ScrollBar.AlwaysOff
+        }
+
+        Keys.onUpPressed: listView.decrementCurrentIndex()
+        Keys.onDownPressed:  listView.incrementCurrentIndex()
+        onCurrentIndexChanged: { console.log("currentIndex changed") }
     }
 
     Component{
@@ -42,7 +57,7 @@ Item{
                     color: root.backgroundHeaderColor
                 }
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignTop
+                verticalAlignment:Text.AlignVCenter
                 color: root.textHeaderColor
                 text:root.headerText
                 font {
@@ -53,13 +68,14 @@ Item{
             Item{
                 Layout.fillWidth: true
             }
-
         }
     }
 
     Component{
         id:deviceDelegate
         RowLayout{
+            id:deviceRowLayout
+            property bool isCurrentItem:  ListView.isCurrentItem && listView.activeFocus
             width: ListView.view ? ListView.view.width : 0
             spacing:  root.spacing
             Item{ Layout.fillHeight: true }
@@ -69,35 +85,50 @@ Item{
                 smooth: true
                 source: model.cardtype ? "qrc:/network-wired.svg" : "qrc:/network-wireless.svg"
                 fillMode: Image.Pad
-                sourceSize: Qt.size(32,32)
+                sourceSize: Qt.size(36,36)
             }
             QQC2.Label {
                 Layout.fillWidth: true
-                background: Rectangle {
-                    anchors.fill: parent
-                    radius: 4
-                    // border.color: root.borderColor
-                    // border.width: 2
-                    color: root.backgroundItemColor
-                }
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignTop
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
                 color: root.textItemColor
                 text:model.interfacename
                 font {
                     family: AppSingleton.droidFont.name
                     pointSize: AppSingleton.averageFontSize
                 }
+                MouseArea{
+                    id:mA
+                    anchors.fill: parent
+                    onClicked: {
+                        listView.currentIndex = index
+                        AppSingleton.toLog(`listView.currentIndex ${listView.currentIndex}`)
+                    }
+                }
             }
+            Item{ Layout.fillHeight: true }
+
         }
     }
 
     Component{
         id:highlightComponent
+
         Rectangle{
+            z:2
+            color: root.highlightColor
+            opacity: 0.72
+            y: listView.currentItem.y
             radius: 4
-            color: "lightblue"
             width: ListView.view ? ListView.view.width : 0
+
+            Behavior on y {
+                SpringAnimation {
+                    spring: 3
+                    damping: 0.2
+                }
+            }
         }
     }
 }
+

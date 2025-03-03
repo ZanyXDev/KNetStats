@@ -400,7 +400,7 @@ void DeviceModel::updateDevice(const EthDevice &device)
         m_data.append(device);
         endInsertRows();
     }
-    qDebug() <<Q_FUNC_INFO <<  "m_data.size():"<<m_data.size();
+    //qDebug() <<Q_FUNC_INFO <<  "m_data.size():"<<m_data.size();
 }
 
 

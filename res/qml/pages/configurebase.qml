@@ -10,6 +10,7 @@ QQC2.Page {
     id: root
 
     readonly property bool _small_width: AppSingleton.is_width_small(parent.width)
+    property int modelIndex: -1
     // Property thats used for sizing/margins/layout
     QtObject {
         id: __p
@@ -38,7 +39,8 @@ QQC2.Page {
         columns: 8
         rows: 6
 
-        Item {
+        DeviceListView{
+            id: interfaceList
             Layout.row: 0
             Layout.column: 0
             Layout.columnSpan: 2
@@ -49,17 +51,19 @@ QQC2.Page {
             Layout.preferredWidth: 2
             Layout.preferredHeight: 6
 
-            DeviceListView{
-                id: interfaceList
-                anchors.fill: parent
-                model:dataManager.deviceModel
-                headerText:qsTr("Devices")
-                spacing:(_small_width) ? __p.padding_amount_2x : __p.padding_amount
+            focus:true
+            model:dataManager.deviceModel
+            headerText:qsTr("Devices")
+            spacing:(_small_width) ? __p.padding_amount_2x : __p.padding_amount
+            onIndexChanged: {
+                root.modelIndex = index
             }
-
         }
-        Rectangle {
-            id: interfaceListRefresh
+
+        QQC2.Button{
+            ///Todo Change to ImageButton or ShaderButton
+            id:refreshButton
+
             Layout.row: 6
             Layout.column: 0
             Layout.columnSpan: 2
@@ -68,10 +72,14 @@ QQC2.Page {
             Layout.fillWidth: true
             Layout.preferredWidth: 2
             Layout.preferredHeight: 1
-            color: "brown"
-            opacity: 0.8
-            //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
+            KeyNavigation.tab: interfaceList
+            text: qsTr("Refresh")
+            onClicked: {
+                dataManager.refreshInterfaces()
+                interfaceList.forceActiveFocus()
+            }
         }
+
         Rectangle {
             id: interfaceConfigurationGroup
             Layout.row: 0
