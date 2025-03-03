@@ -91,10 +91,45 @@ QQC2.Page {
             Layout.fillWidth: true
             Layout.preferredWidth: 6
             Layout.preferredHeight: 4
-            color: "yellow"
-            opacity: 0.8
-            //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
+
+            Rectangle{
+                id:innerRectangle
+                anchors.fill: parent
+                anchors.margins: 16
+                border.color: "darkgrey"
+                border.width: 2
+                radius: 4
+                color: "transparent"
+                GridLayout {
+                    id: _innerGrid
+                    anchors.fill: parent
+                    anchors.margins: __p.safe_padding
+                    columnSpacing: __p.spacing
+                    rowSpacing: __p.spacing
+                    columns: 8
+                    rows: 6
+                }
+            }
+            QQC2.Label {
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: 8
+                anchors.leftMargin: 32
+                background: Rectangle {
+                    anchors.fill: parent
+                    color: "white"
+                }
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment:Text.AlignVCenter
+                color: "black"
+                text:qsTr("Interface Configuration")
+                font {
+                    family: AppSingleton.droidFont.name
+                    pointSize: AppSingleton.smallFontSize
+                }
+            }
         }
+
         Rectangle {
             id: charApperanceGroup
             Layout.row: 4
