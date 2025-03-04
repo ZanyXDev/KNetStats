@@ -9,8 +9,7 @@ import ui_items 1.0
 QQC2.Page {
   id: root
   readonly property bool _small_width: AppSingleton.is_width_small(parent.width)
-  property int modelIndex: -1
-  // Property thats used for sizing/margins/layout
+  property int modelIndex: 0
   QtObject {
     id: __p
     readonly property int safe_padding: 24
@@ -20,11 +19,25 @@ QQC2.Page {
     readonly property int spacing_x3: 3 * __p.spacing
     readonly property int cell_size: 64
   }
+  QtObject {
+    id: currentDevice
+    property string m_interfaceName
+    property string m_sysDevPath
+    property int m_updateInterval
+    property bool m_monitoring
+    property bool m_notifications
+    property int m_theme
+  }
 
   // ----- Signal handlers
   Component.onCompleted: {
     AppSingleton.toLog(`ConfigureBase page [${root.height}h,${root.width}w]`)
     AppSingleton.toLog(`dataManager.deviceModel [${dataManager.deviceModel}]`)
+    dataManager.refreshInterfaces()
+    getValuesFromIndex()
+  }
+  onModelIndexChanged: {
+    getValuesFromIndex()
   }
   background: {
     null
@@ -183,6 +196,7 @@ QQC2.Page {
       opacity: 0.8
       //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
     }
+
     Rectangle {
       id: buttonsBlock
       Layout.row: 6
@@ -197,5 +211,17 @@ QQC2.Page {
       opacity: 0.8
       //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
     }
+  }
+
+  // ----- JavaScript functions
+  function getValuesFromIndex() {
+
+    var itemData = dataManager.deviceModel.get(modelIndex)
+    currentDevice.m_interfaceName = itemData.interfacename
+    currentDevice.m_sysDevPath = itemData.sysdevpath
+    currentDevice.m_updateInterval = itemData.updateinterval
+    currentDevice.m_monitoring = itemData.monitoring
+    currentDevice.m_notifications = itemData.notification
+    currentDevice.m_theme = itemData.theme
   }
 }
