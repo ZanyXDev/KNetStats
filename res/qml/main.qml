@@ -10,148 +10,144 @@ import pages 1.0
 import io.github.zanyxdev.knetstats 1.0
 import io.github.zanyxdev.knetstats.MessageReciver 1.0
 
-
 QQC2.ApplicationWindow {
-    id: appWnd
-    // ----- Property Declarations
+  id: appWnd
+  // ----- Property Declarations
 
-    // Required properties should be at the top.
-    readonly property int screenOrientation: Qt.LandscapeOrientation
-    readonly property bool appInForeground: Qt.application.state === Qt.ApplicationActive
+  // Required properties should be at the top.
+  readonly property int screenOrientation: Qt.LandscapeOrientation
+  readonly property bool appInForeground: Qt.application.state === Qt.ApplicationActive
 
-    property bool appInitialized: false
-    property bool needSetup: false
-    property int themeIcon: 1
-    property var screenWidth: Screen.width
-    property var screenHeight: Screen.height
-    property var screenAvailableWidth: Screen.desktopAvailableWidth
-    property var screenAvailableHeight: Screen.desktopAvailableHeight
+  property bool appInitialized: false
+  property bool needSetup: false
+  property int themeIcon: 1
+  property var screenWidth: Screen.width
+  property var screenHeight: Screen.height
+  property var screenAvailableWidth: Screen.desktopAvailableWidth
+  property var screenAvailableHeight: Screen.desktopAvailableHeight
 
-    property string message: MessageReciver.message
+  property string message: MessageReciver.message
 
-    // ----- Signal declarations
-    signal screenOrientationUpdated(int screenOrientation)
+  // ----- Signal declarations
+  signal screenOrientationUpdated(int screenOrientation)
 
-    // ----- Size information
-    width: 800
-    height: 600
-    maximumHeight: height
-    maximumWidth: width
+  // ----- Size information
+  width: 800
+  height: 600
+  maximumHeight: height
+  maximumWidth: width
 
-    minimumHeight: height
-    minimumWidth: width
-    // ----- Then comes the other properties. There's no predefined order to these.
+  minimumHeight: height
+  minimumWidth: width
+  // ----- Then comes the other properties. There's no predefined order to these.
+  visible: true
+  visibility: Window.Windowed
+
+  // ----- Then attached properties and attached signal handlers.
+
+  // ----- Signal handlers
+  Component.onCompleted: {
+    let infoMsg = `Screen.height[${Screen.height}], Screen.width[${Screen.width}]
+    Screen [height ${height},width ${width}]
+    Available physical screens [${Qt.application.screens.length}]
+    Available Resolution width: ${Screen.desktopAvailableWidth} height ${Screen.desktopAvailableHeight}
+    `
+    AppSingleton.toLog(infoMsg)
+    needSetup = !dataManager.loadSettings(dirAppConfig)
+  }
+  onVisibilityChanged: {
+    updatePosition()
+  }
+  onAppInForegroundChanged: {
+    if (appInForeground) {
+      if (!appInitialized) {
+        appInitialized = true
+      }
+    } else {
+
+      if (isDebugMode)
+        AppSingleton.toLog(`appInForeground: [${appInForeground} , appInitialized: ${appInitialized}]`)
+    }
+  }
+  onMessageChanged: {
+    console.log(`recive msg ${message}`)
+    sysTrayIcon.showMessage(qsTr("recive msg"), message, 3000)
+  }
+  // ----- Connections
+
+  // ----- Visual items
+  background: {
+    null
+  }
+
+  Loader {
+    id: loader
+    anchors.fill: parent
+    source: appWnd.needSetup ? "qrc:/res/qml/pages/configurebase.qml" : "qrc:/res/qml/pages/statisticsbase.qml"
+
+    anchors.topMargin: 4
+    onLoaded: {
+
+    }
+  }
+
+  SystemTrayIcon {
+    id: sysTrayIcon
     visible: true
-    visibility: Window.Windowed
-
-    // ----- Then attached properties and attached signal handlers.
-
-    // ----- Signal handlers
+    //Another place in your code
+    //sysTray.showMessage(title, message, SystemTrayIcon.Information, 1000)
+    icon.source: appWnd.needSetup ? "qrc:/res/img/interfaces_missing.png" : "qrc:/res/img/theme" + appWnd.themeIcon + "_both.png"
     Component.onCompleted: {
-        let infoMsg = `Screen.height[${Screen.height}], Screen.width[${Screen.width}]
-        Screen [height ${height},width ${width}]
-        Available physical screens [${Qt.application.screens.length}]
-        Available Resolution width: ${Screen.desktopAvailableWidth} height ${Screen.desktopAvailableHeight}
-        `
-        AppSingleton.toLog(infoMsg)
-        needSetup = !dataManager.loadSettings(dirAppConfig)
-    }
-    onVisibilityChanged: {
-        updatePosition()
-    }
-    onAppInForegroundChanged: {
-        if (appInForeground) {
-            if (!appInitialized) {
-                appInitialized = true
-            }
-        } else {
+      appWnd.needSetup ? appWnd.showAppWindow() : appWnd.hide()
 
-            if (isDebugMode)
-                AppSingleton.toLog(
-                            `appInForeground: [${appInForeground} , appInitialized: ${appInitialized}]`)
+      showMessage(qsTr("KNetStats"), qsTr("Need setup interfaces!"), SystemTrayIcon.Warning, 3000)
+    }
+    menu: Menu {
+      MenuItem {
+        enabled: appWnd.needSetup
+        text: qsTr("Configure Interfaces")
+        onTriggered: appWnd.needSetup = false
+      }
+      MenuItem {
+        text: qsTr("Quit")
+        onTriggered: {
+          console.trace()
+          //backend.setCurrentDevName(dirAppData + "/devices.json")
+          Qt.quit()
         }
+      }
     }
-    onMessageChanged: {
-        console.log(`recive msg ${message}`)
-        sysTrayIcon.showMessage(qsTr("recive msg"), message, 3000)
+    onActivated: appWnd.showAppWindow()
+  }
+  // ----- non visual children
+  BackEnd {
+    id: backend
+    Component.onCompleted: {
+      backend.loadFromJson(dirAppData + "/devices.json")
     }
-    // ----- Connections
+  }
 
-    // ----- Visual items
-    background: {
-        null
+  DataManager {
+    id: dataManager
+    Component.onCompleted: {
+      dataManager.refreshInterfaces()
     }
+  }
 
-    Loader {
-        id: loader
-        anchors.fill: parent
-        source: appWnd.needSetup ? "qrc:/res/qml/pages/configurebase.qml" : "qrc:/res/qml/pages/statisticsbase.qml"
+  // ----- JavaScript functions
+  function moveToCenter() {
+    appWnd.y = (screenAvailableHeight / 2) - (height / 2)
+    appWnd.x = (screenAvailableWidth / 2) - (width / 2)
+  }
 
-        anchors.topMargin: 4
-        onLoaded: {
+  function showAppWindow() {
+    appWnd.show()
+    appWnd.raise()
+    appWnd.requestActivate()
+  }
 
-        }
-    }
-
-    SystemTrayIcon {
-        id: sysTrayIcon
-        visible: true
-        //Another place in your code
-        //sysTray.showMessage(title, message, SystemTrayIcon.Information, 1000)
-        icon.source: appWnd.needSetup ? "qrc:/res/img/interfaces_missing.png" : "qrc:/res/img/theme"
-                                        + appWnd.themeIcon + "_both.png"
-        Component.onCompleted: {
-            appWnd.needSetup ? appWnd.showAppWindow() : appWnd.hide()
-
-            showMessage(qsTr("KNetStats"), qsTr("Need setup interfaces!"),
-                        SystemTrayIcon.Warning, 3000)
-        }
-        menu: Menu {
-            MenuItem {
-                enabled: appWnd.needSetup
-                text: qsTr("Configure Interfaces")
-                onTriggered: appWnd.needSetup = false
-            }
-            MenuItem {
-                text: qsTr("Quit")
-                onTriggered: {
-                    console.trace()
-                    //backend.setCurrentDevName(dirAppData + "/devices.json")
-                    Qt.quit()
-                }
-            }
-        }
-        onActivated: appWnd.showAppWindow()
-    }
-    // ----- non visual children
-    BackEnd {
-        id: backend
-        Component.onCompleted: {
-            backend.loadFromJson(dirAppData + "/devices.json")
-        }
-    }
-
-    DataManager{
-        id:dataManager
-        Component.onCompleted: {
-            dataManager.refreshInterfaces()
-        }
-    }
-
-    // ----- JavaScript functions
-    function moveToCenter() {
-        appWnd.y = (screenAvailableHeight / 2) - (height / 2)
-        appWnd.x = (screenAvailableWidth / 2) - (width / 2)
-    }
-
-    function showAppWindow() {
-        appWnd.show()
-        appWnd.raise()
-        appWnd.requestActivate()
-    }
-
-    function updatePosition() {
-        x = (Screen.desktopAvailableWidth - width) / 2
-        y = (Screen.desktopAvailableHeight - height) / 2
-    }
+  function updatePosition() {
+    x = (Screen.desktopAvailableWidth - width) / 2
+    y = (Screen.desktopAvailableHeight - height) / 2
+  }
 }

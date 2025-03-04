@@ -5,36 +5,36 @@ import QtQuick.Layouts 1.15
 import QtGraphicalEffects 1.0
 
 Rectangle {
-    id:debugRect
+  id:debugRect
 
-    anchors.fill: parent
-    border.color: "#ff0000"
-    color: "#ffffff"
-    opacity: 0.8
-    visible: true
+  anchors.fill: parent
+  border.color: "#ff0000"
+  color: "#ffffff"
+  opacity: 0.8
+  visible: true
 
-    /**
+  /**
      *usage Text {
     *             visible: logAndReturnValue(varName)
     *             text: "Example Text"
     *      }
     */
-    function logAndReturnValue(varToLog)
-    {
-        if (isDebugMode)
-            console.log("value: " + varToLog);
-        return varToLog;
-    }
+  function logAndReturnValue(varToLog)
+  {
+    if (isDebugMode)
+      console.log("value: " + varToLog);
+    return varToLog;
+  }
 
-    Component.onCompleted: {
-        if (isDebugMode){
-            console.log("------------ debugRect ----------")
-            console.log("parent.height:"+parent.height)
-            console.log("parent.width:"+parent.width)
+  Component.onCompleted: {
+    if (isDebugMode){
+      console.log("------------ debugRect ----------")
+      console.log("parent.height:"+parent.height)
+      console.log("parent.width:"+parent.width)
 
-            for (var prop in debugRect) {
-                print(prop += " (" + typeof(debugRect[prop]) + ") = " + debugRect[prop]);
-            }
-        }
+      for (var prop in debugRect) {
+        print(prop += " (" + typeof(debugRect[prop]) + ") = " + debugRect[prop]);
+      }
     }
+  }
 }

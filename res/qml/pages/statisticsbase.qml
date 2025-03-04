@@ -8,24 +8,24 @@ import io.github.zanyxdev.knetstats 1.0
 
 
 QQC2.Page {
-    id: root
-    property bool eggPage: false
-    // Property thats used for sizing/margins/layout
-    QtObject {
-        id: __p
-        readonly property int safe_padding: 24
-        readonly property int padding_amount: 2
-        readonly property int padding_amount_2x: 2 * __p.padding_amount
-        readonly property int spacing: 8
-        readonly property int spacing_x3: 3 * __p.spacing
-        readonly property int cell_size: 64
-    }
-    Component.onCompleted: {
-        AppSingleton.toLog(`StatisticBase page [${root.height}h,${root.width}w]`)
-    }
-    background: {
-        null
-    }
+  id: root
+  property bool eggPage: false
+  // Property thats used for sizing/margins/layout
+  QtObject {
+    id: __p
+    readonly property int safe_padding: 24
+    readonly property int padding_amount: 2
+    readonly property int padding_amount_2x: 2 * __p.padding_amount
+    readonly property int spacing: 8
+    readonly property int spacing_x3: 3 * __p.spacing
+    readonly property int cell_size: 64
+  }
+  Component.onCompleted: {
+    AppSingleton.toLog(`StatisticBase page [${root.height}h,${root.width}w]`)
+  }
+  background: {
+    null
+  }
 
 
 
