@@ -3,10 +3,10 @@ import QtQuick.Controls 2.15 as QQC2
 import QtQuick.Layouts 1.15
 import common 1.0
 
-FocusScope{
-  id:root
+FocusScope {
+  id: root
 
-  property alias model:listView.model
+  property alias model: listView.model
   readonly property alias index: listView.currentIndex
   property string headerText
   property color textHeaderColor: "yellow"
@@ -18,13 +18,13 @@ FocusScope{
   property int deviceType
   property int spacing
 
-  ListView{
+  ListView {
     id: listView
 
     anchors.fill: parent
-    spacing:  root.spacing
+    spacing: root.spacing
     highlightFollowsCurrentItem: true
-    clip:true
+    clip: true
     focus: true
     keyNavigationEnabled: true // Enable key up and key down
 
@@ -33,20 +33,18 @@ FocusScope{
     highlight: highlightComponent
 
     QQC2.ScrollBar.vertical: QQC2.ScrollBar {
-      policy:listView.contentHeight > listView.height ?
-               QQC2.ScrollBar.AlwaysOn : QQC2.ScrollBar.AlwaysOff
+      policy: listView.contentHeight > listView.height ? QQC2.ScrollBar.AlwaysOn : QQC2.ScrollBar.AlwaysOff
     }
 
     Keys.onUpPressed: listView.decrementCurrentIndex()
-    Keys.onDownPressed:  listView.incrementCurrentIndex()
-    onCurrentIndexChanged: { console.log("currentIndex changed") }
+    Keys.onDownPressed: listView.incrementCurrentIndex()
   }
 
-  Component{
-    id:headerComponent
+  Component {
+    id: headerComponent
     ColumnLayout {
       width: ListView.view ? ListView.view.width : 0
-      spacing:  (_small_width) ? __p.padding_amount_2x : __p.padding_amount
+      spacing: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
       QQC2.Label {
         Layout.fillWidth: true
         background: Rectangle {
@@ -57,65 +55,67 @@ FocusScope{
           color: root.backgroundHeaderColor
         }
         horizontalAlignment: Text.AlignHCenter
-        verticalAlignment:Text.AlignVCenter
+        verticalAlignment: Text.AlignVCenter
         color: root.textHeaderColor
-        text:root.headerText
+        text: root.headerText
         font {
           family: AppSingleton.droidFont.name
           pointSize: AppSingleton.middleFontSize
         }
       }
-      Item{
+      Item {
         Layout.fillWidth: true
       }
     }
   }
 
-  Component{
-    id:deviceDelegate
-    RowLayout{
-      id:deviceRowLayout
-      property bool isCurrentItem:  ListView.isCurrentItem && listView.activeFocus
+  Component {
+    id: deviceDelegate
+    RowLayout {
+      id: deviceRowLayout
+      property bool isCurrentItem: ListView.isCurrentItem && listView.activeFocus
       width: ListView.view ? ListView.view.width : 0
-      spacing:  root.spacing
-      Item{ Layout.fillHeight: true }
+      spacing: root.spacing
+      Item {
+        Layout.fillHeight: true
+      }
       Image {
-        id:itemImage
-        Layout.alignment:  Qt.AlignHCenter | Qt.AlignVCenter
+        id: itemImage
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         smooth: true
         source: model.cardtype ? "qrc:/network-wired.svg" : "qrc:/network-wireless.svg"
         fillMode: Image.Pad
-        sourceSize: Qt.size(36,36)
+        sourceSize: Qt.size(36, 36)
       }
       QQC2.Label {
         Layout.fillWidth: true
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         color: root.textItemColor
-        text:model.interfacename
+        text: model.interfacename
         font {
           family: AppSingleton.droidFont.name
           pointSize: AppSingleton.averageFontSize
         }
-        MouseArea{
-          id:mA
+        MouseArea {
+          id: mA
           anchors.fill: parent
           onClicked: {
             listView.currentIndex = index
-            AppSingleton.toLog(`listView.currentIndex ${listView.currentIndex}`)
           }
         }
       }
-      Item{ Layout.fillHeight: true }
-
+      Item {
+        Layout.fillHeight: true
+      }
     }
   }
 
-  Component{
-    id:highlightComponent
+  Component {
+    id: highlightComponent
 
-    Rectangle{
-      z:2
+    Rectangle {
+      z: 2
       color: root.highlightColor
       opacity: 0.72
       y: listView.currentItem.y
@@ -131,4 +131,3 @@ FocusScope{
     }
   }
 }
-

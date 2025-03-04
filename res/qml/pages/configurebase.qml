@@ -71,6 +71,9 @@ QQC2.Page {
       onIndexChanged: {
         root.modelIndex = index
       }
+      Component.onCompleted: {
+        interfaceList.forceActiveFocus()
+      }
     }
 
     QQC2.Button {
@@ -85,7 +88,7 @@ QQC2.Page {
       Layout.fillWidth: true
       Layout.preferredWidth: 2
       Layout.preferredHeight: 1
-      KeyNavigation.tab: interfaceList
+      KeyNavigation.tab: monitoringCheckButton
       text: qsTr("Refresh")
       onClicked: {
         dataManager.refreshInterfaces()
@@ -110,7 +113,7 @@ QQC2.Page {
         pointSize: AppSingleton.smallFontSize
       }
 
-      inlineContent: GridLayout {
+      contentItem: GridLayout {
         id: _innerGrid
         anchors.fill: parent
         anchors.margins: __p.safe_padding
@@ -118,8 +121,9 @@ QQC2.Page {
         rowSpacing: __p.spacing
         columns: 8
         rows: 6
-        QQC2.RadioButton {
-          id: monitoringRadioButton
+
+        QQC2.CheckBox {
+          id: monitoringCheckButton
           Layout.row: 0
           Layout.column: 0
           Layout.columnSpan: 5
@@ -129,6 +133,8 @@ QQC2.Page {
           Layout.fillWidth: true
           Layout.preferredWidth: 1
           Layout.preferredHeight: 5
+          focus: true
+          KeyNavigation.tab: displayTrayNotificationCheckButton
           text: qsTr("Monitor this Interface")
           checkable: true
           checked: currentDevice.m_monitoring
@@ -136,8 +142,8 @@ QQC2.Page {
             dataManager.setMonitoring(root.modelIndex, checked)
           }
         }
-        QQC2.RadioButton {
-          id: displayTrayNotificationRadioButton
+        QQC2.CheckBox {
+          id: displayTrayNotificationCheckButton
           Layout.row: 1
           Layout.column: 0
           Layout.columnSpan: 5
@@ -147,6 +153,7 @@ QQC2.Page {
           Layout.fillWidth: true
           Layout.preferredWidth: 1
           Layout.preferredHeight: 5
+          KeyNavigation.tab: updateIntervalSpinBox
           text: qsTr("Display tray notifications")
           checkable: true
           checked: currentDevice.m_notifications
@@ -171,6 +178,7 @@ QQC2.Page {
           text: qsTr("Update interval:")
         }
         QQC2.SpinBox {
+          id: updateIntervalSpinBox
           Layout.row: 2
           Layout.column: 4
           Layout.columnSpan: 3
@@ -180,6 +188,7 @@ QQC2.Page {
           Layout.fillWidth: true
           Layout.preferredWidth: 1
           Layout.preferredHeight: 4
+          KeyNavigation.tab: comboBoxTheme
           from: 0
           to: 1000
           stepSize: 125
@@ -205,6 +214,7 @@ QQC2.Page {
           text: qsTr("Icon theme:")
         }
         QQC2.ComboBox {
+          id: comboBoxTheme
           Layout.row: 3
           Layout.column: 4
           Layout.columnSpan: 3
@@ -214,6 +224,7 @@ QQC2.Page {
           Layout.fillWidth: true
           Layout.preferredWidth: 1
           Layout.preferredHeight: 4
+          KeyNavigation.tab: interfaceList
           model: [qsTr("Classic"), qsTr("Modern"), qsTr("Network"), qsTr("Wireless"), qsTr("Kppp")]
           currentIndex: currentDevice.m_theme
           onCurrentIndexChanged: {

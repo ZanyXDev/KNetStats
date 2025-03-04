@@ -13,9 +13,8 @@ Item {
   property color labelTextColor: "black"
   property string borderText: qsTr("GroupBox")
   property bool enabled: true
-  property Component inlineContent: ContentItem {}
-
-  component ContentItem: Text {
+  property alias contentItem: innerRectangle.contentItem
+  property Component inlineContent: Text {
     text: qsTr("Not defined inline content Item")
     color: "red"
   }
@@ -24,22 +23,19 @@ Item {
     id: outerGroup
     anchors.fill: parent
     color: "transparent"
-    Rectangle {
+    QQC2.Pane {
       id: innerRectangle
       anchors.fill: parent
       anchors.margins: root.borderMargins
-
-      border {
-        color: root.borderColor
-        width: root.borderWidth
-      }
-
-      radius: root.radius
-      color: "transparent"
-      Loader {
-        id: loader
+      activeFocusOnTab: true
+      background: Rectangle {
         anchors.fill: parent
-        sourceComponent: inlineContent
+        border {
+          color: root.borderColor
+          width: root.borderWidth
+        }
+        radius: root.radius
+        color: "transparent"
       }
     }
     QQC2.Label {
