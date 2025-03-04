@@ -80,7 +80,7 @@ QQC2.Page {
       }
     }
 
-    Rectangle {
+    SimpleGroupBox {
       id: interfaceConfigurationGroup
       Layout.row: 0
       Layout.column: 2
@@ -91,99 +91,79 @@ QQC2.Page {
       Layout.fillWidth: true
       Layout.preferredWidth: 6
       Layout.preferredHeight: 4
-      color: "transparent"
-      Rectangle {
-        id: innerRectangle
-        anchors.fill: parent
-        anchors.margins: 8
-        border.color: "darkgrey"
-        border.width: 2
-        radius: 4
-        color: "transparent"
-        GridLayout {
-          id: _innerGrid
-          anchors.fill: parent
-          anchors.margins: __p.safe_padding
-          columnSpacing: __p.spacing
-          rowSpacing: __p.spacing
-          columns: 8
-          rows: 6
-          QQC2.RadioButton {
-            id: monitoringRadioButton
-            Layout.row: 0
-            Layout.column: 0
-            Layout.columnSpan: 5
-            Layout.rowSpan: 1
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.preferredWidth: 1
-            Layout.preferredHeight: 5
-            text: qsTr("Monitor this Interface")
-            checkable: true
-          }
-          QQC2.RadioButton {
-            id: displayTrayNotificationRadioButton
-            Layout.row: 1
-            Layout.column: 0
-            Layout.columnSpan: 5
-            Layout.rowSpan: 1
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.preferredWidth: 1
-            Layout.preferredHeight: 5
-            text: qsTr("Display tray notifications")
-            checkable: true
-          }
-          QQC2.Label {
-            id: updateIntervalLabel
-            Layout.row: 2
-            Layout.column: 0
-            Layout.columnSpan: 3
-            Layout.rowSpan: 1
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.preferredWidth: 1
-            Layout.preferredHeight: 3
-            Layout.leftMargin: 10
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-            text: qsTr("Update interval:")
-          }
-          QQC2.SpinBox {
-            Layout.row: 2
-            Layout.column: 4
-            Layout.columnSpan: 3
-            Layout.rowSpan: 1
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.preferredWidth: 1
-            Layout.preferredHeight: 4
-            from: 0
-            to: 1000
-            stepSize: 125
-          }
-        }
+      borderText: qsTr("InterfaceConfiguration")
+      font {
+        family: AppSingleton.droidFont.name
+        pointSize: AppSingleton.smallFontSize
       }
-      QQC2.Label {
-        anchors.top: parent.top
-        anchors.left: parent.left
-        // anchors.topMargin: __p.padding_amount
-        anchors.leftMargin: 32
-        background: Rectangle {
-          anchors.fill: parent
-          color: "white"
+
+      inlineContent: GridLayout {
+        id: _innerGrid
+        anchors.fill: parent
+        anchors.margins: __p.safe_padding
+        columnSpacing: __p.spacing
+        rowSpacing: __p.spacing
+        columns: 8
+        rows: 6
+        QQC2.RadioButton {
+          id: monitoringRadioButton
+          Layout.row: 0
+          Layout.column: 0
+          Layout.columnSpan: 5
+          Layout.rowSpan: 1
+          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+          Layout.fillHeight: true
+          Layout.fillWidth: true
+          Layout.preferredWidth: 1
+          Layout.preferredHeight: 5
+          text: qsTr("Monitor this Interface")
+          checkable: true
         }
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        color: "black"
-        text: qsTr(" Interface Configuration ")
-        font {
-          family: AppSingleton.droidFont.name
-          pointSize: AppSingleton.smallFontSize
+        QQC2.RadioButton {
+          id: displayTrayNotificationRadioButton
+          Layout.row: 1
+          Layout.column: 0
+          Layout.columnSpan: 5
+          Layout.rowSpan: 1
+          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+          Layout.fillHeight: true
+          Layout.fillWidth: true
+          Layout.preferredWidth: 1
+          Layout.preferredHeight: 5
+          text: qsTr("Display tray notifications")
+
+          checkable: true
+        }
+        QQC2.Label {
+          id: updateIntervalLabel
+          Layout.row: 2
+          Layout.column: 0
+          Layout.columnSpan: 3
+          Layout.rowSpan: 1
+          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+          Layout.fillHeight: true
+          Layout.fillWidth: true
+          Layout.preferredWidth: 1
+          Layout.preferredHeight: 3
+          Layout.leftMargin: 10
+          horizontalAlignment: Text.AlignLeft
+          verticalAlignment: Text.AlignVCenter
+
+          text: qsTr("Update interval:")
+        }
+        QQC2.SpinBox {
+          Layout.row: 2
+          Layout.column: 4
+          Layout.columnSpan: 3
+          Layout.rowSpan: 1
+          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+          Layout.fillHeight: true
+          Layout.fillWidth: true
+          Layout.preferredWidth: 1
+          Layout.preferredHeight: 4
+          from: 0
+          to: 1000
+          stepSize: 125
         }
       }
     }
