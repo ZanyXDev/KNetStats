@@ -22,6 +22,7 @@ Item {
 
   Rectangle {
     id: outerGroup
+    anchors.fill: parent
     color: "transparent"
     Rectangle {
       id: innerRectangle
@@ -53,7 +54,7 @@ Item {
       horizontalAlignment: Text.AlignHCenter
       verticalAlignment: Text.AlignVCenter
       color: root.labelTextColor
-      text: root.borderText
+      text: "  " + root.borderText + "  "
     }
   }
 }
