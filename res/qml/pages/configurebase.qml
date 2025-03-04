@@ -131,6 +131,7 @@ QQC2.Page {
           Layout.preferredHeight: 5
           text: qsTr("Monitor this Interface")
           checkable: true
+          checked: currentDevice.m_monitoring
         }
         QQC2.RadioButton {
           id: displayTrayNotificationRadioButton
@@ -144,8 +145,8 @@ QQC2.Page {
           Layout.preferredWidth: 1
           Layout.preferredHeight: 5
           text: qsTr("Display tray notifications")
-
           checkable: true
+          checked: currentDevice.m_notifications
         }
         QQC2.Label {
           id: updateIntervalLabel
@@ -161,7 +162,6 @@ QQC2.Page {
           Layout.leftMargin: 10
           horizontalAlignment: Text.AlignLeft
           verticalAlignment: Text.AlignVCenter
-
           text: qsTr("Update interval:")
         }
         QQC2.SpinBox {
@@ -177,6 +177,36 @@ QQC2.Page {
           from: 0
           to: 1000
           stepSize: 125
+          value: currentDevice.m_updateInterval
+        }
+        QQC2.Label {
+          id: iconThemeLabel
+          Layout.row: 3
+          Layout.column: 0
+          Layout.columnSpan: 3
+          Layout.rowSpan: 1
+          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+          Layout.fillHeight: true
+          Layout.fillWidth: true
+          Layout.preferredWidth: 1
+          Layout.preferredHeight: 3
+          Layout.leftMargin: 10
+          horizontalAlignment: Text.AlignLeft
+          verticalAlignment: Text.AlignVCenter
+          text: qsTr("Icon theme:")
+        }
+        QQC2.ComboBox {
+          Layout.row: 3
+          Layout.column: 4
+          Layout.columnSpan: 3
+          Layout.rowSpan: 1
+          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+          Layout.fillHeight: true
+          Layout.fillWidth: true
+          Layout.preferredWidth: 1
+          Layout.preferredHeight: 4
+          model: [qsTr("Classic"), qsTr("Modern"), qsTr("Network"), qsTr("Wireless"), qsTr("Kppp")]
+          currentIndex: currentDevice.m_theme
         }
       }
     }
