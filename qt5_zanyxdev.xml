@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QtCreatorCodeStyle>
+<!-- Written by QtCreator 15.0.0, 2025-03-04T08:04:25. -->
+<qtcreator>
+ <data>
+  <variable>CodeStyleData</variable>
+  <valuemap type="QVariantMap">
+   <value type="bool" key="AutoSpacesForTabs">false</value>
+   <value type="int" key="IndentSize">2</value>
+   <value type="int" key="LineLength">120</value>
+   <value type="int" key="PaddingMode">2</value>
+   <value type="bool" key="SpacesForTabs">true</value>
+   <value type="int" key="TabSize">2</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>DisplayName</variable>
+  <value type="QString">Qt (zanyxdev)</value>
+ </data>
+</qtcreator>
