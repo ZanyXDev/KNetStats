@@ -264,25 +264,6 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
     return flag;
 }
 
-QVariantMap DeviceModel::get(int index) const
-{
-    QVariantMap m_data;
-
-    if (index <0 || index >= rowCount() ) return m_data;
-    const QModelIndex idx = this->index(index,0);
-
-    const  QHash<int, QByteArray> &roles = roleNames();
-    if (roles.isEmpty() ) return m_data;
-
-    QHashIterator<int, QByteArray> it(roles);
-    while (it.hasNext()){
-        it.next();
-        const QByteArray rolename = it.value();
-        m_data[rolename] = this->data(idx,it.key());
-    }
-    return m_data;
-}
-
 Qt::ItemFlags DeviceModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid()) return Qt::NoItemFlags;
@@ -391,7 +372,6 @@ const QStringList &DeviceModel::getInterfaceList()
 
     return m_interfaceList;
 }
-
 
 void DeviceModel::addDevice(const EthDevice &device)
 {

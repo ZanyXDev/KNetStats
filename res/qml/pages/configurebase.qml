@@ -132,6 +132,9 @@ QQC2.Page {
           text: qsTr("Monitor this Interface")
           checkable: true
           checked: currentDevice.m_monitoring
+          onCheckedChanged: {
+            dataManager.setMonitoring(root.modelIndex, checked)
+          }
         }
         QQC2.RadioButton {
           id: displayTrayNotificationRadioButton
@@ -147,6 +150,9 @@ QQC2.Page {
           text: qsTr("Display tray notifications")
           checkable: true
           checked: currentDevice.m_notifications
+          onCheckedChanged: {
+            dataManager.setNotifications(root.modelIndex, checked)
+          }
         }
         QQC2.Label {
           id: updateIntervalLabel
@@ -178,6 +184,9 @@ QQC2.Page {
           to: 1000
           stepSize: 125
           value: currentDevice.m_updateInterval
+          onValueChanged: {
+            dataManager.setUpdateInterval(root.modelIndex, value)
+          }
         }
         QQC2.Label {
           id: iconThemeLabel
@@ -207,6 +216,11 @@ QQC2.Page {
           Layout.preferredHeight: 4
           model: [qsTr("Classic"), qsTr("Modern"), qsTr("Network"), qsTr("Wireless"), qsTr("Kppp")]
           currentIndex: currentDevice.m_theme
+          onCurrentIndexChanged: {
+            console.log(`currentDevice.m_theme:${currentDevice.m_theme}`)
+            console.log(`comboBoxTheme.currentIndex:${comboBoxTheme.currentIndex}`)
+            dataManager.setTheme(root.modelIndex, currentIndex)
+          }
         }
       }
     }
@@ -246,7 +260,7 @@ QQC2.Page {
   // ----- JavaScript functions
   function getValuesFromIndex() {
 
-    var itemData = dataManager.deviceModel.get(modelIndex)
+    var itemData = dataManager.get(modelIndex)
     currentDevice.m_interfaceName = itemData.interfacename
     currentDevice.m_sysDevPath = itemData.sysdevpath
     currentDevice.m_updateInterval = itemData.updateinterval

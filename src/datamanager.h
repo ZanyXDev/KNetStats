@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QNetworkInterface>
 #include <QtQml/qqml.h>
+#include <QVariantMap>
+#include <QVariant>
 
 #include "devicemodel.h"
 
@@ -18,11 +20,18 @@ public:
     Q_INVOKABLE void refreshInterfaces();
     Q_INVOKABLE bool loadSettings(const  QString &appConfigDir);
     DeviceModel* deviceModel() const { return m_deviceModel; }
+
+    Q_INVOKABLE bool setMonitoring(int index, const QVariant &value);
+    Q_INVOKABLE bool setNotifications(int index, const QVariant &value);
+    Q_INVOKABLE bool setTheme(int index, const QVariant &value);
+    Q_INVOKABLE bool setUpdateInterval(int index, const QVariant &value);
+    Q_INVOKABLE QVariantMap get(int index) const;
+
 signals:
     void showMessageInSysTray(const QString &message);
 
 private:
-     DeviceModel* m_deviceModel;
+    DeviceModel* m_deviceModel;
 
     bool fillDevice(const QString &interfaceName, EthDevice &m_device);
 };

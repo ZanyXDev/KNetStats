@@ -1,6 +1,6 @@
 #include "datamanager.h"
-
 #include <QDir>
+#include <QModelIndex>
 
 DataManager::DataManager(QObject *parent)
     : QObject{parent}
@@ -74,6 +74,54 @@ bool DataManager::loadSettings(const QString &appConfigDir)
     return false;
 }
 
+bool DataManager::setMonitoring(int index, const QVariant &value)
+{
+    if (index < 0 || index >= m_deviceModel->rowCount() ) return false;
+    const QModelIndex idx = m_deviceModel->index(index,0);
+    return m_deviceModel->setData(idx, value, m_deviceModel->MonitoringRole);
+}
+
+bool DataManager::setNotifications(int index, const QVariant &value)
+{
+    if (index < 0 || index >= m_deviceModel->rowCount() ) return false;
+    const QModelIndex idx = m_deviceModel->index(index,0);
+    return m_deviceModel->setData(idx, value, m_deviceModel->NotificationsRole);
+}
+
+bool DataManager::setTheme(int index, const QVariant &value)
+{
+    if (index < 0 || index >= m_deviceModel->rowCount() ) return false;
+    const QModelIndex idx = m_deviceModel->index(index,0);
+    return m_deviceModel->setData(idx, value, m_deviceModel->ThemeRole);
+}
+
+bool DataManager::setUpdateInterval(int index, const QVariant &value)
+{
+    if (index < 0 || index >= m_deviceModel->rowCount() ) return false;
+    const QModelIndex idx = m_deviceModel->index(index,0);
+    return m_deviceModel->setData(idx, value, m_deviceModel->UpdateIntervalRole);
+}
+
+QVariantMap DataManager::get(int index) const
+{
+    QVariantMap m_data;
+
+    if (index < 0 || index >= m_deviceModel->rowCount() )  return m_data;
+    const QModelIndex idx = m_deviceModel->index(index,0);
+
+    const  QHash<int, QByteArray> &roles = m_deviceModel->roleNames();
+    if (roles.isEmpty() ) return m_data;
+
+    QHashIterator<int, QByteArray> it(roles);
+    while (it.hasNext()){
+        it.next();
+        const QByteArray rolename = it.value();
+        m_data[rolename] =m_deviceModel->data(idx,it.key());
+    }
+    return m_data;
+}
+
+//------------------------------ Private --------------------------------------
 bool DataManager::fillDevice(const QString &interfaceName, EthDevice &m_device)
 {
     // Лямбда для проверки существования директории /sys/class/net/interface
@@ -112,9 +160,9 @@ bool DataManager::fillDevice(const QString &interfaceName, EthDevice &m_device)
     m_device.m_MAC = interface.hardwareAddress();
 
     // Определяем тему на основе типа интерфейса
-    m_device.m_theme = (interface.type() == QNetworkInterface::Wifi) ? 0 : 1;
+    // m_device.m_theme = (interface.type() == QNetworkInterface::Wifi) ? 0 : 1;
     m_device.m_cardType = (interface.type() == QNetworkInterface::Wifi) ? false : true;
-    qDebug()<<  "    m_device.m_cardType " <<    m_device.m_cardType ;
+
     // Обработка IP и маски сети
     if (interface.flags() & QNetworkInterface::IsRunning) {
         QStringList ipAddresses;
