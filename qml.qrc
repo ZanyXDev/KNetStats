@@ -11,5 +11,6 @@
         <file>res/qml/pages/statisticsbase.qml</file>
         <file>res/qml/ui_items/qmldir</file>
         <file>res/qml/ui_items/dev_listview.qml</file>
+        <file>res/qml/ui_items/s_groupbox.qml</file>
     </qresource>
 </RCC>
