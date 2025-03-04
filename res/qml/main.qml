@@ -129,9 +129,6 @@ QQC2.ApplicationWindow {
 
   DataManager {
     id: dataManager
-    Component.onCompleted: {
-      dataManager.refreshInterfaces()
-    }
   }
 
   // ----- JavaScript functions

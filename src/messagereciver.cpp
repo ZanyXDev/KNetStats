@@ -5,11 +5,6 @@ MessageReciver::MessageReciver(QObject *parent)
     , m_message("")
 {}
 
-MessageReciver::~MessageReciver()
-{
-  qDebug() << Q_FUNC_INFO;
-}
-
 QString MessageReciver::message() const
 {
     return m_message;
@@ -18,11 +13,9 @@ QString MessageReciver::message() const
 void MessageReciver::setMessage(const QString &newMessage)
 {
 
-    if (m_message == newMessage)
-        return;
+    if (m_message == newMessage) return;
     m_message = newMessage;
     emit messageChanged();
-    qDebug() << Q_FUNC_INFO << m_message;
 }
 
 
@@ -32,10 +25,5 @@ void MessageReciver::receivedMessage(quint32 instanceId, QByteArray message)
 
     m_message = QString::fromUtf8(message);
     emit messageChanged();
-      qDebug() << Q_FUNC_INFO << m_message;
 }
 
-void MessageReciver::aboutToQuit()
-{
-    qDebug() << Q_FUNC_INFO << m_message;
-}
