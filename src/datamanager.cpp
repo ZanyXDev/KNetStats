@@ -6,7 +6,8 @@ DataManager::DataManager(QObject *parent)
     : QObject{parent}
     , m_deviceModel(new DeviceModel(this))
 {
-
+    QObject::connect(m_deviceModel,&DeviceModel::dataChanged,
+                     this,&DataManager::dataChanged);
 }
 
 DataManager::~DataManager()

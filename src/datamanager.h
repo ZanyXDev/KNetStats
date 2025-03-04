@@ -29,7 +29,7 @@ public:
 
 signals:
     void showMessageInSysTray(const QString &message);
-
+    void dataChanged();
 private:
     DeviceModel* m_deviceModel;
 

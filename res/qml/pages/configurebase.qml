@@ -42,6 +42,12 @@ QQC2.Page {
   background: {
     null
   }
+  Connections {
+    target: dataManager
+    function onDataChanged() {
+      getValuesFromIndex()
+    }
+  }
   // ----- Visual children
   GridLayout {
     id: _grid
@@ -228,9 +234,7 @@ QQC2.Page {
           model: [qsTr("Classic"), qsTr("Modern"), qsTr("Network"), qsTr("Wireless"), qsTr("Kppp")]
           currentIndex: currentDevice.m_theme
           onCurrentIndexChanged: {
-            console.log(`currentDevice.m_theme:${currentDevice.m_theme}`)
-            console.log(`comboBoxTheme.currentIndex:${comboBoxTheme.currentIndex}`)
-            dataManager.setTheme(root.modelIndex, currentIndex)
+            dataManager.setTheme(root.modelIndex, comboBoxTheme.currentIndex)
           }
         }
       }
