@@ -10,7 +10,7 @@ DeviceModel::DeviceModel(QObject *parent)
 
 DeviceModel::~DeviceModel()
 {
- qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
 }
 
 QHash<int, QByteArray> DeviceModel::roleNames() const
@@ -262,6 +262,25 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
     if (flag) emit dataChanged(index, index); // Always dataChanged first column in row. is is valid ???
 
     return flag;
+}
+
+QVariantMap DeviceModel::get(int index) const
+{
+    QVariantMap m_data;
+
+    if (index <0 || index >= rowCount() ) return m_data;
+    const QModelIndex idx = this->index(index,0);
+
+    const  QHash<int, QByteArray> &roles = roleNames();
+    if (roles.isEmpty() ) return m_data;
+
+    QHashIterator<int, QByteArray> it(roles);
+    while (it.hasNext()){
+        it.next();
+        const QByteArray rolename = it.value();
+        m_data[rolename] = this->data(idx,it.key());
+    }
+    return m_data;
 }
 
 Qt::ItemFlags DeviceModel::flags(const QModelIndex &index) const
