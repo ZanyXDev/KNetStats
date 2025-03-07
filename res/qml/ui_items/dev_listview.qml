@@ -7,6 +7,8 @@ FocusScope {
   id: root
 
   property alias model: listView.model
+  property alias footer: listView.footer
+
   readonly property alias index: listView.currentIndex
   property string headerText
   property color textHeaderColor: "yellow"
@@ -44,8 +46,10 @@ FocusScope {
     id: headerComponent
     ColumnLayout {
       width: ListView.view ? ListView.view.width : 0
-      spacing: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
+      spacing: root.spacing
+
       QQC2.Label {
+        id: headerLabel
         Layout.fillWidth: true
         background: Rectangle {
           anchors.fill: parent
@@ -60,7 +64,7 @@ FocusScope {
         text: root.headerText
         font {
           family: AppSingleton.droidFont.name
-          pointSize: AppSingleton.middleFontSize
+          pointSize: AppSingleton.averageFontSize
         }
       }
       Item {
