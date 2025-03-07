@@ -49,226 +49,275 @@ QQC2.Page {
     }
   }
   // ----- Visual children
-  GridLayout {
-    id: _grid
-    anchors.fill: parent
-    anchors.margins: __p.safe_padding
-    columnSpacing: __p.spacing
-    rowSpacing: __p.spacing
-    columns: 8
-    rows: 6
-
-    DeviceListView {
-      id: interfaceList
-      Layout.row: 0
-      Layout.column: 0
-      Layout.columnSpan: 2
-      Layout.rowSpan: 6
-      Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-      Layout.fillHeight: true
-      Layout.fillWidth: true
-      Layout.preferredWidth: 2
-      Layout.preferredHeight: 6
-
-      focus: true
-      model: dataManager.deviceModel
-      headerText: qsTr("Devices")
-      spacing: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
-      onIndexChanged: {
-        root.modelIndex = index
-      }
-      Component.onCompleted: {
-        interfaceList.forceActiveFocus()
-      }
+  RowLayout {
+    id: mainLayout
+    anchors {
+      fill: parent
+      margins: __p.padding_amount_2x * 2
     }
-
-    QQC2.Button {
-      ///Todo Change to ImageButton or ShaderButton
-      id: refreshButton
-
-      Layout.row: 6
-      Layout.column: 0
-      Layout.columnSpan: 2
-      Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+    spacing: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
+    ColumnLayout {
+      id: leftLayout
       Layout.fillHeight: true
       Layout.fillWidth: true
-      Layout.preferredWidth: 2
-      Layout.preferredHeight: 1
-      KeyNavigation.tab: monitoringCheckButton
-      text: qsTr("Refresh")
-      onClicked: {
-        dataManager.refreshInterfaces()
-        interfaceList.forceActiveFocus()
-      }
-    }
-
-    SimpleGroupBox {
-      id: interfaceConfigurationGroup
-      Layout.row: 0
-      Layout.column: 2
-      Layout.columnSpan: 6
-      Layout.rowSpan: 4
-      Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-      Layout.fillHeight: true
-      Layout.fillWidth: true
-      Layout.preferredWidth: 6
-      Layout.preferredHeight: 4
-      borderText: qsTr("InterfaceConfiguration")
-      font {
-        family: AppSingleton.droidFont.name
-        pointSize: AppSingleton.smallFontSize
-      }
-
-      contentItem: GridLayout {
-        id: _innerGrid
-        anchors.fill: parent
-        anchors.margins: __p.safe_padding
-        columnSpacing: __p.spacing
-        rowSpacing: __p.spacing
-        columns: 8
-        rows: 6
-
-        QQC2.CheckBox {
-          id: monitoringCheckButton
-          Layout.row: 0
-          Layout.column: 0
-          Layout.columnSpan: 5
-          Layout.rowSpan: 1
-          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-          Layout.fillHeight: true
-          Layout.fillWidth: true
-          Layout.preferredWidth: 1
-          Layout.preferredHeight: 5
-          focus: true
-          KeyNavigation.tab: displayTrayNotificationCheckButton
-          text: qsTr("Monitor this Interface")
-          checkable: true
-          checked: currentDevice.m_monitoring
-          onCheckedChanged: {
-            dataManager.setMonitoring(root.modelIndex, checked)
-          }
-        }
-        QQC2.CheckBox {
-          id: displayTrayNotificationCheckButton
-          Layout.row: 1
-          Layout.column: 0
-          Layout.columnSpan: 5
-          Layout.rowSpan: 1
-          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-          Layout.fillHeight: true
-          Layout.fillWidth: true
-          Layout.preferredWidth: 1
-          Layout.preferredHeight: 5
-          KeyNavigation.tab: updateIntervalSpinBox
-          text: qsTr("Display tray notifications")
-          checkable: true
-          checked: currentDevice.m_notifications
-          onCheckedChanged: {
-            dataManager.setNotifications(root.modelIndex, checked)
-          }
-        }
-        QQC2.Label {
-          id: updateIntervalLabel
-          Layout.row: 2
-          Layout.column: 0
-          Layout.columnSpan: 3
-          Layout.rowSpan: 1
-          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-          Layout.fillHeight: true
-          Layout.fillWidth: true
-          Layout.preferredWidth: 1
-          Layout.preferredHeight: 3
-          Layout.leftMargin: 10
-          horizontalAlignment: Text.AlignLeft
-          verticalAlignment: Text.AlignVCenter
-          text: qsTr("Update interval:")
-        }
-        QQC2.SpinBox {
-          id: updateIntervalSpinBox
-          Layout.row: 2
-          Layout.column: 4
-          Layout.columnSpan: 3
-          Layout.rowSpan: 1
-          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-          Layout.fillHeight: true
-          Layout.fillWidth: true
-          Layout.preferredWidth: 1
-          Layout.preferredHeight: 4
-          KeyNavigation.tab: comboBoxTheme
-          from: 0
-          to: 1000
-          stepSize: 125
-          value: currentDevice.m_updateInterval
-          onValueChanged: {
-            dataManager.setUpdateInterval(root.modelIndex, value)
-          }
-        }
-        QQC2.Label {
-          id: iconThemeLabel
-          Layout.row: 3
-          Layout.column: 0
-          Layout.columnSpan: 3
-          Layout.rowSpan: 1
-          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-          Layout.fillHeight: true
-          Layout.fillWidth: true
-          Layout.preferredWidth: 1
-          Layout.preferredHeight: 3
-          Layout.leftMargin: 10
-          horizontalAlignment: Text.AlignLeft
-          verticalAlignment: Text.AlignVCenter
-          text: qsTr("Icon theme:")
-        }
-        QQC2.ComboBox {
-          id: comboBoxTheme
-          Layout.row: 3
-          Layout.column: 4
-          Layout.columnSpan: 3
-          Layout.rowSpan: 1
-          Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-          Layout.fillHeight: true
-          Layout.fillWidth: true
-          Layout.preferredWidth: 1
-          Layout.preferredHeight: 4
-          KeyNavigation.tab: interfaceList
-          model: [qsTr("Classic"), qsTr("Modern"), qsTr("Network"), qsTr("Wireless"), qsTr("Kppp")]
-          currentIndex: currentDevice.m_theme
-          onCurrentIndexChanged: {
-            dataManager.setTheme(root.modelIndex, comboBoxTheme.currentIndex)
-          }
-        }
-      }
-    }
-
-    Rectangle {
-      id: charApperanceGroup
-      Layout.row: 4
-      Layout.column: 2
-      Layout.columnSpan: 6
-      Layout.rowSpan: 2
-      Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-      Layout.fillHeight: true
-      Layout.fillWidth: true
-      Layout.preferredWidth: 6
       Layout.preferredHeight: 2
-      color: "lightblue"
-      opacity: 0.8
-      //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
-    }
+      spacing: __p.spacing
+      DeviceListView {
+        id: interfaceList
+        Layout.preferredHeight: 9
+        Layout.preferredWidth: 2
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+        KeyNavigation.tab: buttonRefresh
+        focus: true
+        model: dataManager.deviceModel
+        headerText: qsTr("Devices")
+        spacing: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
 
-    Rectangle {
-      id: buttonsBlock
-      Layout.row: 6
-      Layout.column: 2
-      Layout.columnSpan: 6
-      Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+        onIndexChanged: {
+          root.modelIndex = index
+        }
+        Component.onCompleted: {
+          interfaceList.forceActiveFocus()
+        }
+      }
+      QQC2.Button {
+        id: buttonRefresh
+        Layout.preferredHeight: 1
+        Layout.preferredWidth: 2
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+        KeyNavigation.tab: monitoringCheckButton
+        text: qsTr("Resfresh")
+      }
+    }
+    ColumnLayout {
+      id: rightLayout
       Layout.fillHeight: true
       Layout.fillWidth: true
-      Layout.preferredWidth: 6
-      Layout.preferredHeight: 1
-      color: "darkblue"
-      opacity: 0.8
-      //padding: (_small_width) ? __p.padding_amount_2x : __p.padding_amount
+      Layout.preferredWidth: 8
+      spacing: __p.spacing
+      SimpleGroupBox {
+        id: interfaceConfigurationGroup
+        Layout.preferredHeight: 4
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+        borderText: qsTr("InterfaceConfiguration")
+        font {
+          family: AppSingleton.droidFont.name
+          pointSize: AppSingleton.smallFontSize
+        }
+
+        contentItem: GridLayout {
+          anchors.fill: parent
+          anchors.margins: __p.padding_amount_2x * 3
+          rowSpacing: __p.spacing
+          columns: 6
+          rows: 6
+          QQC2.CheckBox {
+            id: monitoringCheckButton
+            Layout.row: 0
+            Layout.column: 0
+            Layout.columnSpan: 6
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            focus: true
+            KeyNavigation.tab: displayTrayNotificationCheckButton
+            text: qsTr("Monitor this Interface")
+            checkable: true
+            checked: currentDevice.m_monitoring
+            onCheckedChanged: {
+              dataManager.setMonitoring(root.modelIndex, checked)
+            }
+          }
+          QQC2.CheckBox {
+            id: displayTrayNotificationCheckButton
+            Layout.row: 1
+            Layout.column: 0
+            Layout.columnSpan: 6
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            KeyNavigation.tab: updateIntervalSpinBox
+            text: qsTr("Display tray notifications")
+            checkable: true
+            checked: currentDevice.m_notifications
+            onCheckedChanged: {
+              dataManager.setNotifications(root.modelIndex, checked)
+            }
+          }
+          QQC2.Label {
+            id: updateIntervalLabel
+            Layout.row: 2
+            Layout.column: 0
+            Layout.columnSpan: 2
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.preferredHeight: 3
+            Layout.leftMargin: 10
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Update interval:")
+          }
+          QQC2.SpinBox {
+            id: updateIntervalSpinBox
+            Layout.row: 2
+            Layout.column: 3
+            Layout.columnSpan: 5
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.preferredWidth: 5
+            KeyNavigation.tab: comboBoxTheme
+            from: 0
+            to: 1000
+            stepSize: 125
+            value: currentDevice.m_updateInterval
+            onValueChanged: {
+              dataManager.setUpdateInterval(root.modelIndex, value)
+            }
+          }
+          QQC2.Label {
+            id: iconThemeLabel
+            Layout.row: 3
+            Layout.column: 0
+            Layout.columnSpan: 3
+
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            Layout.preferredHeight: 4
+            Layout.leftMargin: 10
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Icon theme:")
+          }
+          QQC2.ComboBox {
+            id: comboBoxTheme
+            Layout.row: 3
+            Layout.column: 3
+            Layout.columnSpan: 5
+
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.preferredWidth: 5
+
+            KeyNavigation.tab: interfaceList
+            model: [qsTr("Classic"), qsTr("Modern"), qsTr("Network"), qsTr("Wireless"), qsTr("Kppp")]
+            currentIndex: currentDevice.m_theme
+            onCurrentIndexChanged: {
+              dataManager.setTheme(root.modelIndex, comboBoxTheme.currentIndex)
+            }
+          }
+          QQC2.Label {
+            id: previewLabel
+            Layout.row: 4
+            Layout.column: 0
+            Layout.columnSpan: 2
+
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.preferredWidth: 3
+            Layout.leftMargin: 10
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Preview:")
+          }
+          RowLayout {
+            id: iconsRowLayout
+            Layout.row: 4
+            Layout.column: 3
+            Layout.columnSpan: 5
+
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.preferredWidth: 5
+            spacing: __p.spacing
+            component IconImage: Image {
+              height: 32
+              width: 32
+              fillMode: Image.PreserveAspectFit
+              sourceSize.width: width
+              sourceSize.height: height
+            }
+            Item {
+              Layout.fillWidth: true
+            }
+            IconImage {
+              id: iconError
+              source: "qrc:/res/img/theme" + currentDevice.m_theme + "_error.png"
+              QQC2.ToolTip.visible: hovered
+              QQC2.ToolTip.text: qsTr("Error state image")
+            }
+            IconImage {
+              id: iconNone
+              source: "qrc:/res/img/theme" + currentDevice.m_theme + "_none.png"
+              QQC2.ToolTip.visible: hovered
+              QQC2.ToolTip.text: qsTr("None device image")
+            }
+            IconImage {
+              id: iconTx
+              source: "qrc:/res/img/theme" + currentDevice.m_theme + "_tx.png"
+              QQC2.ToolTip.visible: hovered
+              QQC2.ToolTip.text: qsTr("Device Tx mode image")
+            }
+            IconImage {
+              id: iconRx
+              source: "qrc:/res/img/theme" + currentDevice.m_theme + "_rx.png"
+              QQC2.ToolTip.visible: hovered
+              QQC2.ToolTip.text: qsTr("Device Rx mode image")
+            }
+            IconImage {
+              id: iconBoth
+              source: "qrc:/res/img/theme" + currentDevice.m_theme + "_both.png"
+              QQC2.ToolTip.visible: hovered
+              QQC2.ToolTip.text: qsTr("Device Both (Tx and Rx) mode image")
+            }
+            Item {
+              Layout.fillWidth: true
+            }
+          }
+        }
+      }
+      SimpleGroupBox {
+        id: mAppearanceGroup
+        Layout.preferredHeight: 4
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+        borderText: qsTr("Chart appearance")
+        font {
+          family: AppSingleton.droidFont.name
+          pointSize: AppSingleton.smallFontSize
+        }
+        contentItem: Rectangle {
+          anchors.fill: parent
+          anchors.margins: __p.padding_amount_2x * 3
+          opacity: 0.8
+          color: "green"
+        }
+      }
+      Rectangle {
+        id: buttonRect
+        Layout.preferredHeight: 1
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+        border {
+          color: "darkgrey"
+          width: 2
+        }
+        radius: 4
+        color: "blue"
+      }
     }
   }
 
