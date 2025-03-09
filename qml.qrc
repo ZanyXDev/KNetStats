@@ -12,5 +12,7 @@
         <file>res/qml/ui_items/qmldir</file>
         <file>res/qml/ui_items/dev_listview.qml</file>
         <file>res/qml/ui_items/s_groupbox.qml</file>
+        <file>res/qml/ui_items/color_button.qml</file>
+        <file>res/qml/common/check_pattern.qml</file>
     </qresource>
 </RCC>
