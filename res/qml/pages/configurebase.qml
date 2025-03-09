@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15 as QQC2
 import QtQuick.Layouts 1.15
+import QtQuick.Dialogs 1.3
 import QtGraphicalEffects 1.0
 
 import common 1.0
@@ -26,6 +27,7 @@ QQC2.Page {
     property int m_updateInterval
     property bool m_monitoring
     property bool m_notifications
+    property bool m_chartTransparentBackground
     property int m_theme
   }
 
@@ -60,11 +62,12 @@ QQC2.Page {
       id: leftLayout
       Layout.fillHeight: true
       Layout.fillWidth: true
-      Layout.preferredHeight: 2
+      Layout.preferredHeight: 3
       spacing: __p.spacing
       DeviceListView {
         id: interfaceList
-        Layout.preferredHeight: 9
+        Layout.topMargin: 10
+        Layout.preferredHeight: 8
         Layout.preferredWidth: 2
         Layout.fillHeight: true
         Layout.fillWidth: true
@@ -84,7 +87,7 @@ QQC2.Page {
       }
       QQC2.Button {
         id: buttonRefresh
-        Layout.preferredHeight: 1
+        Layout.preferredHeight: 2
         Layout.preferredWidth: 2
         Layout.fillHeight: true
         Layout.fillWidth: true
@@ -96,7 +99,7 @@ QQC2.Page {
       id: rightLayout
       Layout.fillHeight: true
       Layout.fillWidth: true
-      Layout.preferredWidth: 8
+      Layout.preferredWidth: 6
       spacing: __p.spacing
       SimpleGroupBox {
         id: interfaceConfigurationGroup
@@ -228,7 +231,7 @@ QQC2.Page {
             Layout.leftMargin: 10
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
-            text: qsTr("Preview:")
+            text: qsTr("Preview:[Error,None,Tx,Rx,Both]")
           }
           RowLayout {
             id: iconsRowLayout
@@ -254,32 +257,22 @@ QQC2.Page {
             IconImage {
               id: iconError
               source: "qrc:/res/img/theme" + currentDevice.m_theme + "_error.png"
-              QQC2.ToolTip.visible: hovered
-              QQC2.ToolTip.text: qsTr("Error state image")
             }
             IconImage {
               id: iconNone
               source: "qrc:/res/img/theme" + currentDevice.m_theme + "_none.png"
-              QQC2.ToolTip.visible: hovered
-              QQC2.ToolTip.text: qsTr("None device image")
             }
             IconImage {
               id: iconTx
               source: "qrc:/res/img/theme" + currentDevice.m_theme + "_tx.png"
-              QQC2.ToolTip.visible: hovered
-              QQC2.ToolTip.text: qsTr("Device Tx mode image")
             }
             IconImage {
               id: iconRx
               source: "qrc:/res/img/theme" + currentDevice.m_theme + "_rx.png"
-              QQC2.ToolTip.visible: hovered
-              QQC2.ToolTip.text: qsTr("Device Rx mode image")
             }
             IconImage {
               id: iconBoth
               source: "qrc:/res/img/theme" + currentDevice.m_theme + "_both.png"
-              QQC2.ToolTip.visible: hovered
-              QQC2.ToolTip.text: qsTr("Device Both (Tx and Rx) mode image")
             }
             Item {
               Layout.fillWidth: true
@@ -298,11 +291,124 @@ QQC2.Page {
           family: AppSingleton.droidFont.name
           pointSize: AppSingleton.smallFontSize
         }
-        contentItem: Rectangle {
+        contentItem: GridLayout {
           anchors.fill: parent
           anchors.margins: __p.padding_amount_2x * 3
-          opacity: 0.8
-          color: "green"
+          rowSpacing: __p.spacing
+          columns: 6
+          rows: 4
+
+          QQC2.Label {
+            id: uploadLineColorLabel
+            Layout.row: 1
+            Layout.column: 0
+            Layout.columnSpan: 3
+
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            Layout.preferredHeight: 4
+            Layout.leftMargin: 10
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Upload line color")
+          }
+          ColorButton {
+            id: uploadColorButton
+            Layout.row: 1
+            Layout.column: 4
+            Layout.columnSpan: 4
+
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.preferredWidth: 4
+            //KeyNavigation.tab: interfaceList
+            onClicked: {
+              console.log(` select color ${uploadColorButton.color}`)
+            }
+          }
+          QQC2.Label {
+            id: downloadLineColorLabel
+            Layout.row: 2
+            Layout.column: 0
+            Layout.columnSpan: 3
+
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            Layout.preferredHeight: 4
+            Layout.leftMargin: 10
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Download line color")
+          }
+          ColorButton {
+            id: downloadColorButton
+            Layout.row: 2
+            Layout.column: 4
+            Layout.columnSpan: 4
+
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.preferredWidth: 4
+            //KeyNavigation.tab: interfaceList
+            onClicked: {
+              console.log(` select color ${uploadColorButton.color}`)
+            }
+          }
+          QQC2.Label {
+            id: backgroundLineColorLabel
+            Layout.row: 3
+            Layout.column: 0
+            Layout.columnSpan: 3
+
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            Layout.preferredHeight: 4
+            Layout.leftMargin: 10
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("Download line color")
+          }
+          ColorButton {
+            id: backgroundColorButton
+            Layout.row: 3
+            Layout.column: 4
+            Layout.columnSpan: 4
+
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.preferredWidth: 4
+            //KeyNavigation.tab: interfaceList
+            onClicked: {
+              console.log(` select color ${uploadColorButton.color}`)
+            }
+          }
+          QQC2.CheckBox {
+            id: transparentBackground
+            Layout.row: 4
+            Layout.column: 0
+            Layout.columnSpan: 6
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            focus: true
+            KeyNavigation.tab: displayTrayNotificationCheckButton
+            text: qsTr("Transparent background")
+            checkable: true
+            checked: currentDevice.m_chartTransparentBackground
+            onCheckedChanged: {
+
+              //dataManager.setMonitoring(root.modelIndex, checked)
+            }
+          }
         }
       }
       Rectangle {
@@ -331,5 +437,6 @@ QQC2.Page {
     currentDevice.m_monitoring = itemData.monitoring
     currentDevice.m_notifications = itemData.notification
     currentDevice.m_theme = itemData.theme
+    currentDevice.m_chartTransparentBackground = itemData.charttransparentbackground
   }
 }
