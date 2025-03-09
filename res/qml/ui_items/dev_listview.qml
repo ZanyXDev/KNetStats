@@ -64,7 +64,7 @@ FocusScope {
         text: root.headerText
         font {
           family: AppSingleton.droidFont.name
-          pointSize: AppSingleton.averageFontSize
+          pointSize: AppSingleton.middleFontSize
         }
       }
       Item {
