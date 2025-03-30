@@ -28,7 +28,7 @@ import common 1.0
  *
  * @inherits QtQuick.Controls.Button
  */
-QQC2.Button {
+Item {
   id: root
 
 
@@ -49,6 +49,14 @@ QQC2.Button {
    */
   property bool showAlphaChannel: true
 
+  property bool isActive: root.enabled && mArea.containsMouse
+
+
+  /**
+      * @var mouseArea Mouse area element covering the button.
+      */
+  property alias mouseArea: mArea
+
 
   /**
    * This signal is emitted when the color dialog has been accepted
@@ -56,39 +64,48 @@ QQC2.Button {
    * @since 5.61
    */
   signal accepted(color color)
+  signal hoverChanged
 
   implicitWidth: 40 // to perfectly clone kcolorbutton from kwidgetaddons
+  implicitHeight: 90
 
   Accessible.role: Accessible.Button
   Accessible.name: qsTr("Color button")
-  Accessible.description: enabled ? qsTr(("Current color is %1. This button will open a color chooser dialog.").arg(
-                                           color)) : qsTr(("Current color is %1.").arg(color))
-  background: Rectangle {
+  Accessible.description: enabled ? qsTr(
+                                      ("Current color is %1. This button will open a color chooser dialog.").arg(
+                                        color)) : qsTr(
+                                      ("Current color is %1.").arg(color))
+
+  Rectangle {
     id: bgrRect
     radius: 4
     color: "transparent"
     anchors.fill: parent
     border {
       width: 2
-      color: "black"
+      color: "darkgrey" /// TODO clear alpha channal
     }
   }
   // create a checkerboard background for alpha to be adjusted
   Rectangle {
     id: colorBlock
+    property double verticalMargin: parent.height / 4
+    property double horizontalMargin: parent.width / 4
 
-    anchors.centerIn: bgrRect
-    anchors.fill: bgrRect
-
-    anchors.margins: 8
+    anchors {
+      centerIn: bgrRect
+      topMargin: verticalMargin
+      bottomMargin: verticalMargin
+      leftMargin: horizontalMargin
+      rightMargin: horizontalMargin
+      fill: parent
+    }
+    radius: 4
     CheckerPattern {
       id: checkerPattern
       anchors.fill: colorBlock
       visible: colorDialog.currentColor.a < 1
-      onVisibleChanged: {
-        console.log(`checkerPattern.visible ${checkerPattern.visible}`)
-        console.log(`colorDialog.currentColor.a ${colorDialog.currentColor.a}`)
-      }
+      squareColor: colorDialog.currentColor
     }
     color: root.enabled ? colorDialog.currentColor : disabledPalette.button
 
@@ -96,16 +113,64 @@ QQC2.Button {
       id: disabledPalette
       colorGroup: SystemPalette.Disabled
     }
+    MouseArea {
+      id: mArea
+      anchors.fill: parent
+      hoverEnabled: true
+      cursorShape: isActive ? Qt.PointingHandCursor : Qt.ArrowCursor
+
+      onClicked: {
+        colorDialog.open()
+        enabled = false
+      }
+
+      onHoveredChanged: root.hoverChanged()
+    }
   }
 
   QtDialogs.ColorDialog {
     id: colorDialog
-    onAccepted: root.accepted(color)
+    onAccepted: {
+      root.accepted(color)
+      checkerPattern.requestPaint()
+      mArea.enabled = true
+    }
+    onRejected: {
+      mArea.enabled = true
+    }
     showAlphaChannel: root.showAlphaChannel
   }
 
-  onClicked: {
-    colorDialog.open()
-    checkerPattern.requestPaint()
+  state: mArea.pressed ? "buttonDown" : "buttonUp"
+  states: [
+    State {
+      name: "buttonDown"
+      PropertyChanges {
+        target: bgrRect
+        scale: 0.6
+      }
+      PropertyChanges {
+        target: colorBlock
+        scale: 0.8
+      }
+    },
+    State {
+      name: "buttonUp"
+      PropertyChanges {
+        target: bgrRect
+        scale: 1.0
+      }
+      PropertyChanges {
+        target: colorBlock
+        scale: 1.0
+      }
+    }
+  ]
+  transitions: Transition {
+    NumberAnimation {
+      properties: scale
+      easing.type: Easing.InOutQuad
+      duration: AppSingleton.timer200
+    }
   }
 }

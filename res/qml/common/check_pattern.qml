@@ -12,12 +12,13 @@ Canvas {
 
   onPaint: {
     var ctx = getContext('2d')
-    ctx.fillStyle = backgroundColor
+    ctx.fillStyle = root.backgroundColor
     ctx.globalAlpha = 0.7 // Добавляем прозрачность
     ctx.fillRect(0, 0, width, height)
 
+    ctx.fillStyle = root.squareColor
     ctx.globalAlpha = 1.0 // Возвращаем полную непрозрачность для квадратов
-    ctx.fillStyle = squareColor
+
     for (var j = 0; j < width; j += cellSize) {
       for (var i = 0; i < height; i += cellSize) {
         ctx.fillRect(j, i, squareSize, squareSize)
