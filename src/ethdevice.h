@@ -22,9 +22,9 @@ struct EthDevice {
     int m_theme{0};
     bool m_cardType{false};
     // chart view
-    uint m_chartUplColor{0}; // save and restore QColor.rgba() and QColor::fromRgba(value.toUInt());
-    uint m_chartDldColor{0};
-    uint m_chartBgColor{0};
+    QString m_chartUplColor{"red"}; // save and restore QColor.rgba() and QColor::fromRgba(value.toUInt());
+    QString m_chartDldColor{"yellow"};
+    QString m_chartBgColor{"green"};
     bool m_chartTransparentBackground{false};
     //	Rx and Tx to bytes and packets
     quint64 m_maxSpeed{0};

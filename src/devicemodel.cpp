@@ -196,19 +196,19 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
             ethDevice.m_cardType = value.toBool();
         break;
     case ChartUplColorRole:
-        flag = value.canConvert<uint>();
+       flag = value.canConvert<QString>();
         if (flag)
-            ethDevice.m_chartUplColor = value.toUInt();
+            ethDevice.m_chartUplColor = value.toString();
         break;
     case ChartDldColorRole:
-        flag = value.canConvert<uint>();
+       flag = value.canConvert<QString>();
         if (flag)
-            ethDevice.m_chartDldColor = value.toUInt();
+            ethDevice.m_chartDldColor = value.toString();
         break;
     case ChartBgColorRole:
-        flag = value.canConvert<uint>();
+        flag = value.canConvert<QString>();
         if (flag)
-            ethDevice.m_chartBgColor = value.toUInt();
+            ethDevice.m_chartBgColor = value.toString();
         break;
     case ChartTransparentBackgroundRole:
         flag = value.canConvert<bool>();
