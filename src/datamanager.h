@@ -33,6 +33,6 @@ signals:
 private:
     DeviceModel* m_deviceModel;
 
-    bool fillDevice(const QString &interfaceName, EthDevice &m_device);
+    bool fillDevice(const QString &interfaceName, EthDevice &m_device) const;
 };
 

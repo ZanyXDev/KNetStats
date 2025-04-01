@@ -122,8 +122,10 @@ QVariantMap DataManager::get(int index) const
     return m_data;
 }
 
+
+
 //------------------------------ Private --------------------------------------
-bool DataManager::fillDevice(const QString &interfaceName, EthDevice &m_device)
+bool DataManager::fillDevice(const QString &interfaceName, EthDevice &m_device) const
 {
     // Лямбда для проверки существования директории /sys/class/net/interface
     auto interfaceIsValid = [](const QString& sysDevPath) {
@@ -170,8 +172,8 @@ bool DataManager::fillDevice(const QString &interfaceName, EthDevice &m_device)
         QStringList netmasks;
 
         for (const QNetworkAddressEntry &addr : interface.addressEntries()) {
-            ipAddresses << addr.ip().toString();
-            netmasks << addr.netmask().toString();
+            ipAddresses += addr.ip().toString();
+            netmasks += addr.netmask().toString();
         }
 
         m_device.m_IP = ipAddresses.join('\n');
