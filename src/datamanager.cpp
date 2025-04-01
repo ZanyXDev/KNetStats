@@ -75,32 +75,45 @@ bool DataManager::loadSettings(const QString &appConfigDir)
     return false;
 }
 
+bool DataManager::setDeviceProperty(int index, const QVariant &value, int role) {
+    if (index < 0 || index >= m_deviceModel->rowCount()) return false;
+    QModelIndex idx = m_deviceModel->index(index, 0);
+    return m_deviceModel->setData(idx, value, role);
+}
+
 bool DataManager::setMonitoring(int index, const QVariant &value)
 {
-    if (index < 0 || index >= m_deviceModel->rowCount() ) return false;
-    const QModelIndex idx = m_deviceModel->index(index,0);
-    return m_deviceModel->setData(idx, value, m_deviceModel->MonitoringRole);
+    return setDeviceProperty(index,value, m_deviceModel->MonitoringRole);
 }
 
 bool DataManager::setNotifications(int index, const QVariant &value)
 {
-    if (index < 0 || index >= m_deviceModel->rowCount() ) return false;
-    const QModelIndex idx = m_deviceModel->index(index,0);
-    return m_deviceModel->setData(idx, value, m_deviceModel->NotificationsRole);
+    return setDeviceProperty(index,value, m_deviceModel->NotificationsRole);
 }
 
 bool DataManager::setTheme(int index, const QVariant &value)
 {
-    if (index < 0 || index >= m_deviceModel->rowCount() ) return false;
-    const QModelIndex idx = m_deviceModel->index(index,0);
-    return m_deviceModel->setData(idx, value, m_deviceModel->ThemeRole);
+     return setDeviceProperty(index,value, m_deviceModel->ThemeRole);
+}
+
+bool DataManager::setChartUplColor(int index, const QVariant &value)
+{
+     return setDeviceProperty(index,value, m_deviceModel->ChartUplColorRole);
+}
+
+bool DataManager::setChartDldColor(int index, const QVariant &value)
+{
+     return setDeviceProperty(index,value, m_deviceModel->ChartDldColorRole);
+}
+
+bool DataManager::setChartBgColor(int index, const QVariant &value)
+{
+    return setDeviceProperty(index,value, m_deviceModel->ChartBgColorRole);
 }
 
 bool DataManager::setUpdateInterval(int index, const QVariant &value)
 {
-    if (index < 0 || index >= m_deviceModel->rowCount() ) return false;
-    const QModelIndex idx = m_deviceModel->index(index,0);
-    return m_deviceModel->setData(idx, value, m_deviceModel->UpdateIntervalRole);
+   return setDeviceProperty(index,value, m_deviceModel->UpdateIntervalRole);
 }
 
 QVariantMap DataManager::get(int index) const
