@@ -93,17 +93,17 @@ bool DataManager::setNotifications(int index, const QVariant &value)
 
 bool DataManager::setTheme(int index, const QVariant &value)
 {
-     return setDeviceProperty(index,value, m_deviceModel->ThemeRole);
+    return setDeviceProperty(index,value, m_deviceModel->ThemeRole);
 }
 
 bool DataManager::setChartUplColor(int index, const QVariant &value)
 {
-     return setDeviceProperty(index,value, m_deviceModel->ChartUplColorRole);
+    return setDeviceProperty(index,value, m_deviceModel->ChartUplColorRole);
 }
 
 bool DataManager::setChartDldColor(int index, const QVariant &value)
 {
-     return setDeviceProperty(index,value, m_deviceModel->ChartDldColorRole);
+    return setDeviceProperty(index,value, m_deviceModel->ChartDldColorRole);
 }
 
 bool DataManager::setChartBgColor(int index, const QVariant &value)
@@ -113,7 +113,12 @@ bool DataManager::setChartBgColor(int index, const QVariant &value)
 
 bool DataManager::setUpdateInterval(int index, const QVariant &value)
 {
-   return setDeviceProperty(index,value, m_deviceModel->UpdateIntervalRole);
+    return setDeviceProperty(index,value, m_deviceModel->UpdateIntervalRole);
+}
+
+bool DataManager::setTransparentBackground(int index, const QVariant &value)
+{
+    return setDeviceProperty(index,value, m_deviceModel->ChartTransparentBackgroundRole);
 }
 
 QVariantMap DataManager::get(int index) const

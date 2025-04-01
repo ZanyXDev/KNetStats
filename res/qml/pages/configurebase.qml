@@ -29,6 +29,9 @@ QQC2.Page {
     property bool m_notifications
     property bool m_chartTransparentBackground
     property int m_theme
+    property string m_chartUplColor
+    property string m_chartDldColor
+    property string m_chartBgColor
   }
 
   // ----- Signal handlers
@@ -108,10 +111,6 @@ QQC2.Page {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
         borderText: qsTr("InterfaceConfiguration")
-        font {
-          family: AppSingleton.droidFont.name
-          pointSize: AppSingleton.smallFontSize
-        }
 
         contentItem: GridLayout {
           anchors.fill: parent
@@ -287,17 +286,14 @@ QQC2.Page {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
         borderText: qsTr("Chart appearance")
-        font {
-          family: AppSingleton.droidFont.name
-          pointSize: AppSingleton.smallFontSize
-        }
+
         contentItem: GridLayout {
           anchors.fill: parent
           anchors.margins: __p.padding_amount_2x * 3
+          anchors.topMargin: __p.padding_amount_2x * 5
           rowSpacing: __p.spacing
           columns: 6
           rows: 4
-
           QQC2.Label {
             id: uploadLineColorLabel
             Layout.row: 1
@@ -313,20 +309,24 @@ QQC2.Page {
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
             text: qsTr("Upload line color")
+            font {
+              family: AppSingleton.droidFont.name
+              pointSize: AppSingleton.smallFontSize
+            }
           }
           ColorButton {
             id: uploadColorButton
             Layout.row: 1
             Layout.column: 4
             Layout.columnSpan: 4
-
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.preferredWidth: 4
             //KeyNavigation.tab: interfaceList
-            onClicked: {
-              console.log(` select color ${uploadColorButton.color}`)
+            color: currentDevice.m_chartUplColor
+            onAccepted: {
+              dataManager.setChartUplColor(root.modelIndex, color)
             }
           }
           QQC2.Label {
@@ -344,20 +344,25 @@ QQC2.Page {
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
             text: qsTr("Download line color")
+            font {
+              family: AppSingleton.droidFont.name
+              pointSize: AppSingleton.smallFontSize
+            }
           }
           ColorButton {
             id: downloadColorButton
             Layout.row: 2
             Layout.column: 4
             Layout.columnSpan: 4
-
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.preferredWidth: 4
+
             //KeyNavigation.tab: interfaceList
-            onClicked: {
-              console.log(` select color ${uploadColorButton.color}`)
+            color: currentDevice.m_chartDldColor
+            onAccepted: {
+              dataManager.setChartUplColor(root.modelIndex, color)
             }
           }
           QQC2.Label {
@@ -374,7 +379,11 @@ QQC2.Page {
             Layout.leftMargin: 10
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
-            text: qsTr("Download line color")
+            text: qsTr("Background line color")
+            font {
+              family: AppSingleton.droidFont.name
+              pointSize: AppSingleton.smallFontSize
+            }
           }
           ColorButton {
             id: backgroundColorButton
@@ -387,8 +396,9 @@ QQC2.Page {
             Layout.fillWidth: true
             Layout.preferredWidth: 4
             //KeyNavigation.tab: interfaceList
-            onClicked: {
-              console.log(` select color ${uploadColorButton.color}`)
+            color: currentDevice.m_chartBgColor
+            onAccepted: {
+              dataManager.setChartUplColor(root.modelIndex, color)
             }
           }
           QQC2.CheckBox {
@@ -405,8 +415,7 @@ QQC2.Page {
             checkable: true
             checked: currentDevice.m_chartTransparentBackground
             onCheckedChanged: {
-
-              //dataManager.setMonitoring(root.modelIndex, checked)
+              dataManager.setTransparentBackground(root.modelIndex, checked)
             }
           }
         }
@@ -429,8 +438,8 @@ QQC2.Page {
 
   // ----- JavaScript functions
   function getValuesFromIndex() {
-
     var itemData = dataManager.get(modelIndex)
+
     currentDevice.m_interfaceName = itemData.interfacename
     currentDevice.m_sysDevPath = itemData.sysdevpath
     currentDevice.m_updateInterval = itemData.updateinterval
@@ -438,5 +447,8 @@ QQC2.Page {
     currentDevice.m_notifications = itemData.notification
     currentDevice.m_theme = itemData.theme
     currentDevice.m_chartTransparentBackground = itemData.charttransparentbackground
+    currentDevice.m_chartUplColor = itemData.chartuplcolor
+    currentDevice.m_chartDldColor = itemData.chartdldcolor
+    currentDevice.m_chartBgColor = itemData.chartbgcolor
   }
 }

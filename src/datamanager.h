@@ -31,6 +31,7 @@ public:
     Q_INVOKABLE bool setChartDldColor(int index, const QVariant &value);
     Q_INVOKABLE bool setChartBgColor(int index, const QVariant &value);
     Q_INVOKABLE bool setUpdateInterval(int index, const QVariant &value);
+    Q_INVOKABLE bool setTransparentBackground(int index, const QVariant &value);
     Q_INVOKABLE QVariantMap get(int index) const;
 
 
