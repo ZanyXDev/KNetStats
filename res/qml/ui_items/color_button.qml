@@ -35,7 +35,7 @@ Item {
   /**
    * The user selected color
    */
-  property alias color: colorDialog.currentColor
+  property color color
 
 
   /**
@@ -71,11 +71,12 @@ Item {
 
   Accessible.role: Accessible.Button
   Accessible.name: qsTr("Color button")
-  Accessible.description: enabled ? qsTr(
-                                      ("Current color is %1. This button will open a color chooser dialog.").arg(
-                                        color)) : qsTr(
-                                      ("Current color is %1.").arg(color))
+  Accessible.description: enabled ? qsTr(("Current color is %1. This button will open a color chooser dialog.").arg(
+                                           color)) : qsTr(("Current color is %1.").arg(color))
 
+  onColorChanged: {
+    colorDialog.setColor(color)
+  }
   Rectangle {
     id: bgrRect
     radius: 4
@@ -108,7 +109,9 @@ Item {
       squareColor: colorDialog.currentColor
     }
     color: root.enabled ? colorDialog.currentColor : disabledPalette.button
-
+    onColorChanged: {
+      checkerPattern.requestPaint()
+    }
     SystemPalette {
       id: disabledPalette
       colorGroup: SystemPalette.Disabled
@@ -130,6 +133,7 @@ Item {
 
   QtDialogs.ColorDialog {
     id: colorDialog
+
     onAccepted: {
       root.accepted(color)
       checkerPattern.requestPaint()
