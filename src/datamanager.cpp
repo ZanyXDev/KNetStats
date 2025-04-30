@@ -1,26 +1,31 @@
 #include "datamanager.h"
 #include <QDir>
 #include <QModelIndex>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 DataManager::DataManager(QObject *parent)
     : QObject{parent}
     , m_deviceModel(new DeviceModel(this))
 {
-    QObject::connect(m_deviceModel,&DeviceModel::dataChanged,
-                     this,&DataManager::dataChanged);
+    if (m_deviceModel){
+        QObject::connect(m_deviceModel,&DeviceModel::dataChanged,
+                         this,&DataManager::dataChanged);
+    }
 }
 
 DataManager::~DataManager()
-{
-    qDebug() << Q_FUNC_INFO;
-    if (m_deviceModel)
-        delete m_deviceModel;
+{    
+    if (m_deviceModel){
+
+        m_deviceModel->deleteLater();
+    }
 }
 
 void DataManager::refreshInterfaces()
 {
-    if (!m_deviceModel)
-        return;
+    if (!m_deviceModel) return;
 
     QStringList realInterfaceList;
 
@@ -79,6 +84,12 @@ bool DataManager::setDeviceProperty(int index, const QVariant &value, int role) 
     if (index < 0 || index >= m_deviceModel->rowCount()) return false;
     QModelIndex idx = m_deviceModel->index(index, 0);
     return m_deviceModel->setData(idx, value, role);
+}
+
+bool DataManager::saveSettings(const QString &appConfigDir)
+{
+    qDebug() << "appConfigDir:" << appConfigDir;
+    return false;
 }
 
 bool DataManager::setMonitoring(int index, const QVariant &value)

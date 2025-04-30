@@ -56,6 +56,7 @@ QQC2.Page {
   // ----- Visual children
   RowLayout {
     id: mainLayout
+    ///TODO release Undo/redo ability ??? https://www.phind.com/search/cm8yiav7l00022v6rvnyqgh2o
     anchors {
       fill: parent
       margins: __p.padding_amount_2x * 2
@@ -110,7 +111,7 @@ QQC2.Page {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-        borderText: qsTr("InterfaceConfiguration")
+        borderText: qsTr("InterfaceConfiguration: ") + currentDevice.m_interfaceName
 
         contentItem: GridLayout {
           anchors.fill: parent
